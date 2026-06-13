@@ -1,4 +1,4 @@
-using ExpensesTracker.Api.Endpoints;
+using ExpensesTracker.Api.Categories;
 using ExpensesTracker.Application;
 using ExpensesTracker.Infrastructure;
 using Scalar.AspNetCore;
@@ -8,6 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks();
 
