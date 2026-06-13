@@ -25,5 +25,15 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasIndex(x => x.Email)
             .IsUnique();
+
+        builder.HasData(
+            new
+            {
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                Email = "demo@example.com",
+                PasswordHash = "temporary-password-hash",
+                CreatedAtUtc = new DateTimeOffset(
+                2026, 1, 1, 0, 0, 0, TimeSpan.Zero)
+            });
     }
 }
