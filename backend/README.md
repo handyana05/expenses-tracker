@@ -84,7 +84,7 @@ flowchart TD
 # Solution Structure
 
 ```text
-ExpenseTracker.Api
+backend
 │
 ├── ExpenseTracker.Api
 │
