@@ -1,15 +1,14 @@
-﻿using ExpensesTracker.Api.Contracts.Categories;
-using ExpensesTracker.Application.Categories.DTOs;
+﻿using ExpensesTracker.Application.Categories.DTOs;
 using ExpensesTracker.Application.Categories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExpensesTracker.Api.Endpoints.Categories;
+namespace ExpensesTracker.Api.Categories;
 
 public static class CategoryEndpoints
 {
     public static IEndpointRouteBuilder MapCategoryEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/categories")
+        var group = app.MapGroup(CategoryRoutes.Base)
             .WithTags("Categories");
 
         group.MapGet("/", GetCategoriesAsync)
