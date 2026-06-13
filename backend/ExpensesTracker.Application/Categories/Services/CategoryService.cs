@@ -19,7 +19,7 @@ public sealed class CategoryService(
 
     public async Task<CategoryDto> CreateAsync(
         Guid userId, 
-        CategoryDto dto, 
+        CreateCategoryDto dto, 
         CancellationToken cancellationToken = default)
     {
         var category = Category.Create(
@@ -82,7 +82,7 @@ public sealed class CategoryService(
 
     public async Task<CategoryDto?> UpdateAsync(
         Guid userId, 
-        CategoryDto dto, 
+        UpdateCategoryDto dto, 
         CancellationToken cancellationToken = default)
     {
         var category = await _categoryRepository
