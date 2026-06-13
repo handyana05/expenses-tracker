@@ -13,4 +13,42 @@ public class Transaction : AuditableEntity
 
     public Guid CategoryId { get; private set; }
     public Category Category { get; private set; } = null!;
+
+    private Transaction()
+    { }
+
+    private Transaction(
+        Guid userId,
+        Guid categoryId,
+        decimal amount,
+        DateTimeOffset transactionDate,
+        string? description = "")
+    {
+        UserId = userId;
+        CategoryId = categoryId;
+        Amount = amount;
+        TransactionDate = transactionDate;
+        Description = description;
+    }
+
+    public static Transaction Create(
+        Guid userId,
+        Guid categoryId,
+        decimal amount,
+        DateTimeOffset transactionDate,
+        string? description = "")
+        => new(userId, categoryId, amount, transactionDate, description);
+
+    public void Update(
+        Guid categoryId,
+        decimal amount,
+        DateTimeOffset transactionDate,
+        string? description = "")
+    {
+        CategoryId = categoryId;
+        Amount = amount;
+        TransactionDate = transactionDate;
+        Description = description;
+        SetModified();
+    }
 }

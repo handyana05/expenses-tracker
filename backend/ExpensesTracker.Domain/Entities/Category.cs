@@ -13,4 +13,25 @@ public class Category : AuditableEntity
 
     private readonly List<Transaction> _transactions = [];
     public IReadOnlyCollection<Transaction> Transactions => _transactions.AsReadOnly();
+
+    private Category()
+    { }
+
+    private Category(Guid userId, string name, CategoryType type)
+    {
+        UserId = userId;
+        Name = name;
+        Type = type;
+    }
+
+    public static Category Create(Guid userId, string name, CategoryType type)
+        => new(userId, name, type);
+
+    public void Update(string name, CategoryType type)
+    {
+        Name = name;
+        Type = type;
+
+        SetModified();
+    }
 }

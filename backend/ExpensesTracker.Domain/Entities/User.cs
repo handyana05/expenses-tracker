@@ -13,4 +13,17 @@ public class User : AuditableEntity
 
     private readonly List<Transaction> _transactions = [];
     public IReadOnlyCollection<Transaction> Transactions => _transactions.AsReadOnly();
+
+    private User()
+    { }
+
+    private User(string email, string passwordHash, string? displayName = "")
+    {
+        Email = email;
+        PasswordHash = passwordHash;
+        DisplayName = displayName;
+    }
+
+    public static User Create(string email, string passwordHash, string? displayName = "")
+        => new(email, passwordHash, displayName);
 }
