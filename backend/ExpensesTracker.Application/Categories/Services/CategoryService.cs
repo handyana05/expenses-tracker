@@ -50,8 +50,8 @@ public sealed class CategoryService(
             return false;
         }
 
-        await _categoryRepository
-            .DeleteAsync(category, cancellationToken);
+        _categoryRepository
+            .Delete(category);
 
         await _unitOfWork
             .SaveChangesAsync(cancellationToken);
