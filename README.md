@@ -87,6 +87,8 @@ The backend follows Clean Architecture and contains all business logic and API e
 
 See:
 
+[Expenses Tracker API](./expenses-tracker-api/README.md)
+
 ```text
 backend/README.md
 ```
