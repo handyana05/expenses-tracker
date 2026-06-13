@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="Authentication\" />
-    <Folder Include="DependencyInjection\" />
   </ItemGroup>
 
   <ItemGroup>
