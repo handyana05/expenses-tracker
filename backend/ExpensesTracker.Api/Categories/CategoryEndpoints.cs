@@ -1,4 +1,5 @@
-﻿using ExpensesTracker.Application.Categories.DTOs;
+﻿using ExpensesTracker.Api.Categories.Contracts;
+using ExpensesTracker.Application.Categories.DTOs;
 using ExpensesTracker.Application.Categories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
