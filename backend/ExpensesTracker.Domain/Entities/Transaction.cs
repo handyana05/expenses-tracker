@@ -22,11 +22,11 @@ public class Transaction : AuditableEntity
         Guid categoryId,
         decimal amount,
         DateTimeOffset transactionDate,
-        string? description = "")
+        string? description = null)
     {
+        SetAmount(amount);
         UserId = userId;
         CategoryId = categoryId;
-        Amount = amount;
         TransactionDate = transactionDate;
         Description = description;
     }
@@ -36,19 +36,31 @@ public class Transaction : AuditableEntity
         Guid categoryId,
         decimal amount,
         DateTimeOffset transactionDate,
-        string? description = "")
+        string? description = null)
         => new(userId, categoryId, amount, transactionDate, description);
 
     public void Update(
         Guid categoryId,
         decimal amount,
         DateTimeOffset transactionDate,
-        string? description = "")
+        string? description = null)
     {
+        SetAmount(amount);
         CategoryId = categoryId;
-        Amount = amount;
         TransactionDate = transactionDate;
         Description = description;
         SetModified();
+    }
+
+    private void SetAmount(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(amount),
+                "Transaction amount must be greater than zero.");
+        }
+
+        Amount = amount;
     }
 }
