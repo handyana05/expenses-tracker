@@ -1,4 +1,5 @@
 using ExpensesTracker.Api.Categories;
+using ExpensesTracker.Api.Transactions;
 using ExpensesTracker.Application;
 using ExpensesTracker.Infrastructure;
 using Scalar.AspNetCore;
@@ -31,5 +32,6 @@ app.UseHttpsRedirection();
 
 app.MapHealthChecks("/health");
 app.MapCategoryEndpoints();
+app.MapTransactionEndpoints();
 
 app.Run();
