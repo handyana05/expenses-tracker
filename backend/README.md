@@ -59,23 +59,19 @@ The application follows Clean Architecture principles to ensure maintainability,
 
 ```mermaid
 flowchart TD
-
     Client["Client Applications"]
-
-    API["Presentation Layer<br/>ASP.NET Core API"]
-
-    APP["Application Layer<br/>Use Cases / Services"]
-
+    API["Presentation Layer<br/>ASP.NET Core Minimal API"]
+    APP["Application Layer<br/>Services, DTOs, Interfaces"]
     DOMAIN["Domain Layer<br/>Entities & Business Rules"]
-
-    INFRA["Infrastructure Layer<br/>EF Core / PostgreSQL"]
-
+    INFRA["Infrastructure Layer<br/>EF Core, Repositories, PostgreSQL"]
     DB[(PostgreSQL)]
 
     Client --> API
     API --> APP
+    API --> INFRA
     APP --> DOMAIN
-    APP --> INFRA
+    INFRA --> APP
+    INFRA --> DOMAIN
     INFRA --> DB
 ```
 
