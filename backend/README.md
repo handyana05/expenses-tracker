@@ -327,7 +327,6 @@ sequenceDiagram
 
 ```mermaid
 erDiagram
-
     USERS {
         uuid Id
         string Email
@@ -337,21 +336,22 @@ erDiagram
     CATEGORIES {
         uuid Id
         string Name
+        string Type
+        uuid UserId
     }
 
     TRANSACTIONS {
         uuid Id
         decimal Amount
-        string Type
+        uuid UserId
         uuid CategoryId
-        datetime Date
+        datetime TransactionDate
         string Description
     }
 
+    USERS ||--o{ CATEGORIES : owns
     USERS ||--o{ TRANSACTIONS : owns
-
     CATEGORIES ||--o{ TRANSACTIONS : categorizes
-}
 ```
 
 ---
