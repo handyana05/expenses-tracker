@@ -450,7 +450,7 @@ flowchart LR
 
 # Screenshots
 
-## Swagger UI
+## Scalar UI
 
 _Add screenshot after implementation._
 
