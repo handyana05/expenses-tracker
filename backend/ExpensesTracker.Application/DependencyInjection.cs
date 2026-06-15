@@ -1,4 +1,6 @@
-﻿using ExpensesTracker.Application.Categories.Interfaces;
+﻿using ExpensesTracker.Application.Authentication.Interfaces;
+using ExpensesTracker.Application.Authentication.Services;
+using ExpensesTracker.Application.Categories.Interfaces;
 using ExpensesTracker.Application.Categories.Services;
 using ExpensesTracker.Application.Reports.Interfaces;
 using ExpensesTracker.Application.Reports.Services;
@@ -13,6 +15,7 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(
         this IServiceCollection services)
     {
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ITransactionService, TransactionService>();
         services.AddScoped<IReportService, ReportService>();

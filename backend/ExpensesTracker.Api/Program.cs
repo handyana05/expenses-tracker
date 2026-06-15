@@ -1,4 +1,6 @@
+using ExpensesTracker.Api.Authentication;
 using ExpensesTracker.Api.Categories;
+using ExpensesTracker.Api.Reports;
 using ExpensesTracker.Api.Transactions;
 using ExpensesTracker.Application;
 using ExpensesTracker.Infrastructure;
@@ -31,7 +33,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapHealthChecks("/health");
+app.MapAuthEndpoints();
 app.MapCategoryEndpoints();
 app.MapTransactionEndpoints();
+app.MapReportEndpoints();
 
 app.Run();

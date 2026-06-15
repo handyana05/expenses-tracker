@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Api.Categories.Contracts;
+using ExpensesTracker.Application.Abstractions.Identity;
 using ExpensesTracker.Application.Categories.DTOs;
 using ExpensesTracker.Application.Categories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -52,9 +53,10 @@ public static class CategoryEndpoints
 
     private static async Task<IResult> GetCategoriesAsync(
         [FromServices] ICategoryService categoryService,
+        [FromServices] ICurrentUser currentUser,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
 
         var categories = await categoryService
             .GetByUserIdAsync(userId, cancellationToken);
@@ -64,10 +66,11 @@ public static class CategoryEndpoints
 
     private static async Task<IResult> GetCategoryByIdAsync(
         [FromServices] ICategoryService categoryService,
+        [FromServices] ICurrentUser currentUser,
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var category = await categoryService
             .GetByIdAsync(id, userId, cancellationToken);
         return category is not null
@@ -77,10 +80,11 @@ public static class CategoryEndpoints
 
     private static async Task<IResult> CreateCategoryAsync(
         [FromServices] ICategoryService categoryService,
+        [FromServices] ICurrentUser currentUser,
         [FromBody] CreateCategoryRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var dto = new CreateCategoryDto(
             request.Name,
             request.Type);
@@ -94,11 +98,12 @@ public static class CategoryEndpoints
 
     private static async Task<IResult> UpdateCategoryAsync(
         [FromServices] ICategoryService categoryService,
+        [FromServices] ICurrentUser currentUser,
         [FromRoute] Guid id,
         [FromBody] UpdateCategoryRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var dto = new UpdateCategoryDto(
             id,
             request.Name,
@@ -112,17 +117,15 @@ public static class CategoryEndpoints
 
     private static async Task<IResult> DeleteCategoryAsync(
         [FromServices] ICategoryService categoryService,
+        [FromServices] ICurrentUser currentUser,
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var isDeleted = await categoryService
             .DeleteAsync(id, userId, cancellationToken);
         return isDeleted
             ? Results.NoContent()
             : Results.NotFound();
     }
-
-    private static Guid GetTemporaryUserId()
-        => Guid.Parse("00000000-0000-0000-0000-000000000001");
 }

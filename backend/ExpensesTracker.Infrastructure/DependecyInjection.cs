@@ -1,4 +1,8 @@
-﻿using ExpensesTracker.Application.Abstractions.Persistence;
+﻿using ExpensesTracker.Application.Abstractions.Authentication;
+using ExpensesTracker.Application.Abstractions.Identity;
+using ExpensesTracker.Application.Abstractions.Persistence;
+using ExpensesTracker.Infrastructure.Authentication;
+using ExpensesTracker.Infrastructure.Identity;
 using ExpensesTracker.Infrastructure.Persistence.Context;
 using ExpensesTracker.Infrastructure.Persistence.Repositories;
 using ExpensesTracker.Infrastructure.Persistence.UnitOfWork;
@@ -17,6 +21,23 @@ public static class DependecyInjection
         services.AddDbContext<ExpensesTrackerDbContext>(options =>
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection")));
+
+        services.Configure<JwtOptions>(
+            options =>
+            {
+                configuration
+                    .GetSection(JwtOptions.SectionName)
+                    .Bind(options);
+
+                options.SecretKey =
+                    Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
+                    ?? throw new InvalidOperationException("JWT_SECRET_KEY environment variable is missing.");
+            });
+
+        services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+        services.AddScoped<ICurrentUser, CurrentUser>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();

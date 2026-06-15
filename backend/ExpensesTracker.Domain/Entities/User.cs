@@ -15,13 +15,19 @@ public class User : AuditableEntity
     private User()
     { }
 
-    private User(string email, string passwordHash, string? displayName = "")
+    private User(string email, string passwordHash, string? displayName = null)
     {
         Email = email;
         PasswordHash = passwordHash;
         DisplayName = displayName;
     }
 
-    public static User Create(string email, string passwordHash, string? displayName = "")
+    public static User Create(string email, string passwordHash, string? displayName = null)
         => new(email, passwordHash, displayName);
+
+    public void UpdatePasswordHash(string passwordHash)
+    {
+        PasswordHash = passwordHash;
+        SetModified();
+    }
 }

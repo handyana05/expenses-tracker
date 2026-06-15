@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Api.Transactions.Contracts;
+using ExpensesTracker.Application.Abstractions.Identity;
 using ExpensesTracker.Application.Transactions.DTOs;
 using ExpensesTracker.Application.Transactions.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -52,9 +53,10 @@ public static class TransactionEndpoints
 
     private static async Task<IResult> GetTransactionsAsync(
         [FromServices] ITransactionService transactionService,
+        [FromServices] ICurrentUser currentUser,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var transactions = await transactionService
             .GetByUserIdAsync(userId, cancellationToken);
         return Results.Ok(transactions);
@@ -62,10 +64,11 @@ public static class TransactionEndpoints
 
     private static async Task<IResult> GetTransactionByIdAsync(
         [FromServices] ITransactionService transactionService,
+        [FromServices] ICurrentUser currentUser,
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var transaction = await transactionService
             .GetByIdAsync(id, userId, cancellationToken);
         
@@ -76,10 +79,11 @@ public static class TransactionEndpoints
 
     private static async Task<IResult> CreateTransactionAsync(
         [FromServices] ITransactionService transactionService,
+        [FromServices] ICurrentUser currentUser,
         [FromBody] CreateTransactionRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var dto = new CreateTransactionDto(
             request.CategoryId,
             request.Amount,
@@ -96,11 +100,12 @@ public static class TransactionEndpoints
 
     private static async Task<IResult> UpdateTransactionAsync(
         [FromServices] ITransactionService transactionService,
+        [FromServices] ICurrentUser currentUser,
         [FromRoute] Guid id,
         [FromBody] UpdateTransactionRequest request,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var dto = new UpdateTransactionDto(
             id,
             request.CategoryId,
@@ -116,17 +121,15 @@ public static class TransactionEndpoints
 
     private static async Task<IResult> DeleteTransactionAsync(
         [FromServices] ITransactionService transactionService,
+        [FromServices] ICurrentUser currentUser,
         [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
-        var userId = GetTemporaryUserId();
+        var userId = currentUser.UserId;
         var deleted = await transactionService
             .DeleteAsync(userId, id, cancellationToken);
         return deleted
             ? Results.NoContent()
             : Results.NotFound();
     }
-
-    private static Guid GetTemporaryUserId()
-        => Guid.Parse("00000000-0000-0000-0000-000000000001");
 }
