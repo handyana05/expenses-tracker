@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Api.Categories.Contracts;
+using ExpensesTracker.Api.Common.Validation;
 using ExpensesTracker.Application.Abstractions.Identity;
 using ExpensesTracker.Application.Categories.DTOs;
 using ExpensesTracker.Application.Categories.Interfaces;
@@ -32,7 +33,8 @@ public static class CategoryEndpoints
             .WithSummary("Create a category")
             .WithDescription("Creates a new income or expense category for the current user.")
             .Produces<CategoryDto>(StatusCodes.Status201Created)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter<CreateCategoryRequest>>();
 
         group.MapPut("/{id:guid}", UpdateCategoryAsync)
             .WithName("UpdateCategory")
@@ -40,7 +42,8 @@ public static class CategoryEndpoints
             .WithDescription("Updates the name and type of an existing category for the current user.")
             .Produces<CategoryDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter<UpdateCategoryRequest>>();
 
         group.MapDelete("/{id:guid}", DeleteCategoryAsync)
             .WithName("DeleteCategory")

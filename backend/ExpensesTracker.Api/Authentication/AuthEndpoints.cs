@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Api.Authentication.Contracts;
+using ExpensesTracker.Api.Common.Validation;
 using ExpensesTracker.Application.Authentication.DTOs;
 using ExpensesTracker.Application.Authentication.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,16 @@ public static class AuthEndpoints
             .WithSummary("Register a new user")
             .WithDescription("Creates a new user account and returns a JWT access token.")
             .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter<RegisterRequest>>();
 
         group.MapPost("/login", LoginAsync)
             .WithName("Login")
             .WithSummary("Login")
             .WithDescription("Authenticate a user and returs a JWT access token.")
             .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status401Unauthorized);
+            .Produces(StatusCodes.Status401Unauthorized)
+            .AddEndpointFilter<ValidationFilter<LoginRequest>>();
 
         return app;
     }

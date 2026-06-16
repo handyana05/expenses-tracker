@@ -1,4 +1,5 @@
 using ExpensesTracker.Api.Authentication;
+using ExpensesTracker.Api.Authentication.Contracts;
 using ExpensesTracker.Api.Categories;
 using ExpensesTracker.Api.Common.ExceptionHandling;
 using ExpensesTracker.Api.Reports;
@@ -6,6 +7,7 @@ using ExpensesTracker.Api.Transactions;
 using ExpensesTracker.Application;
 using ExpensesTracker.Infrastructure;
 using ExpensesTracker.Infrastructure.Authentication;
+using FluentValidation;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,8 @@ builder.Services.AddHealthChecks();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 

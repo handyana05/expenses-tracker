@@ -1,4 +1,6 @@
-﻿using ExpensesTracker.Api.Transactions.Contracts;
+﻿using ExpensesTracker.Api.Categories.Contracts;
+using ExpensesTracker.Api.Common.Validation;
+using ExpensesTracker.Api.Transactions.Contracts;
 using ExpensesTracker.Application.Abstractions.Identity;
 using ExpensesTracker.Application.Transactions.DTOs;
 using ExpensesTracker.Application.Transactions.Interfaces;
@@ -32,7 +34,8 @@ public static class TransactionEndpoints
             .WithSummary("Create a transaction")
             .WithDescription("Creates a new income or expense transaction for the current user.")
             .Produces<TransactionDto>(StatusCodes.Status201Created)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter<CreateTransactionRequest>>();
 
         group.MapPut("/{id:guid}", UpdateTransactionAsync)
             .WithName("UpdateTransaction")
@@ -40,7 +43,8 @@ public static class TransactionEndpoints
             .WithDescription("Updates an existing transaction")
             .Produces<TransactionDto>(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status400BadRequest);
+            .Produces(StatusCodes.Status400BadRequest)
+            .AddEndpointFilter<ValidationFilter<UpdateTransactionRequest>>();
 
         group.MapDelete("/{id:guid}", DeleteTransactionAsync)
             .WithName("DeleteTransaction")
