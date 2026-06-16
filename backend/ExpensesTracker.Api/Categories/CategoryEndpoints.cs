@@ -11,7 +11,8 @@ public static class CategoryEndpoints
     public static IEndpointRouteBuilder MapCategoryEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup(CategoryRoutes.Base)
-            .WithTags("Categories");
+            .WithTags("Categories")
+            .RequireAuthorization();
 
         group.MapGet("/", GetCategoriesAsync)
             .WithName("GetCategories")

@@ -10,7 +10,8 @@ public static class ReportEndpoints
     public static IEndpointRouteBuilder MapReportEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup(ReportRoutes.Base)
-            .WithTags("Reports");
+            .WithTags("Reports")
+            .RequireAuthorization();
 
         group.MapGet("/monthly-summary", GetMonthlySummaryAsync)
             .WithName("GetMonthlySummary")
