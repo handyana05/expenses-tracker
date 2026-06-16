@@ -1,4 +1,5 @@
 ﻿using ExpensesTracker.Application.Abstractions.Persistence;
+using ExpensesTracker.Application.Common.Exceptions;
 using ExpensesTracker.Application.Transactions.DTOs;
 using ExpensesTracker.Application.Transactions.Interfaces;
 using ExpensesTracker.Application.Transactions.Mappers;
@@ -28,7 +29,7 @@ public sealed class TransactionService(
 
         if (category is null)
         {
-            throw new InvalidOperationException("Category not found.");
+            throw new NotFoundException("Category not found.");
         }
 
         var transaction = Transaction.Create(
@@ -102,7 +103,7 @@ public sealed class TransactionService(
 
         if (category is null)
         {
-            throw new InvalidOperationException("Category not found.");
+            throw new NotFoundException("Category not found.");
         }
 
         transaction.Update(

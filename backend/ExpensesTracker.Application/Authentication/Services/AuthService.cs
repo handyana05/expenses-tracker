@@ -2,6 +2,7 @@
 using ExpensesTracker.Application.Abstractions.Persistence;
 using ExpensesTracker.Application.Authentication.DTOs;
 using ExpensesTracker.Application.Authentication.Interfaces;
+using ExpensesTracker.Application.Common.Exceptions;
 using ExpensesTracker.Domain.Entities;
 
 namespace ExpensesTracker.Application.Authentication.Services;
@@ -59,7 +60,7 @@ public sealed class AuthService(
 
         if (existingUser is not null) 
         {
-            throw new InvalidOperationException("User already exists.");
+            throw new ConflictException("User already exists.");
         }
 
         var user = User.Create(
