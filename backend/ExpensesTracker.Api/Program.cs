@@ -1,9 +1,11 @@
 using ExpensesTracker.Api.Authentication;
 using ExpensesTracker.Api.Categories;
+using ExpensesTracker.Api.Common.ExceptionHandling;
 using ExpensesTracker.Api.Reports;
 using ExpensesTracker.Api.Transactions;
 using ExpensesTracker.Application;
 using ExpensesTracker.Infrastructure;
+using ExpensesTracker.Infrastructure.Authentication;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +21,9 @@ builder.Configuration
 builder.Services.AddOpenApi();
 
 builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddHealthChecks();
 
@@ -38,6 +43,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 app.MapAuthEndpoints();
