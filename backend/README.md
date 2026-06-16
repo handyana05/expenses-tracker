@@ -45,11 +45,16 @@ This project demonstrates enterprise-grade backend development practices includi
 - Entity Framework Core
 - PostgreSQL
 - FluentValidation
-- Swagger/OpenAPI
+- Scalar OpenAPI
 - Serilog Logging
 - xUnit Unit Tests
 - Docker Support
 - GitHub Actions CI/CD
+
+### Cross-Cutting Concerns
+- Global exception handling
+- RFC7807 ProblemDetails
+- Options Pattern
 
 ---
 
@@ -74,6 +79,21 @@ flowchart TD
     INFRA --> DOMAIN
     INFRA --> DB
 ```
+
+## Authentication Flow
+
+Register
+→ Password Hashing
+→ PostgreSQL
+
+Login
+→ Password Verification
+→ JWT Generation
+
+JWT
+→ Authentication Middleware
+→ CurrentUser
+→ Protected Endpoints
 
 ---
 
