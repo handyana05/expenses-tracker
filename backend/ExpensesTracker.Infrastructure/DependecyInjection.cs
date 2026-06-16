@@ -22,17 +22,8 @@ public static class DependecyInjection
             options.UseNpgsql(
                 configuration.GetConnectionString("DefaultConnection")));
 
-        services.Configure<JwtOptions>(
-            options =>
-            {
-                configuration
-                    .GetSection(JwtOptions.SectionName)
-                    .Bind(options);
-
-                options.SecretKey =
-                    Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
-                    ?? throw new InvalidOperationException("JWT_SECRET_KEY environment variable is missing.");
-            });
+        services.Configure<JwtOptions>(configuration
+                    .GetSection(JwtOptions.SectionName));
 
         services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
