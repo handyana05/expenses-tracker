@@ -2,7 +2,15 @@
 
 Production-style Personal Finance Management API built with ASP.NET Core, Clean Architecture, PostgreSQL, Docker, JWT Authentication, and automated testing.
 
-The project demonstrates enterprise-grade software engineering practices including domain-driven design, authentication, testing, CI/CD, observability, and cloud-ready deployment.
+The project demonstrates enterprise-grade software engineering practices:
+- ASP.NET Core
+- Clean Architecture
+- PostgreSQL
+- Docker
+- JWT Authentication
+- FluentValidation
+- xUnit
+- GitHub Actions
 
 ---
 
