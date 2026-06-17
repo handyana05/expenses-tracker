@@ -1,6 +1,6 @@
-# Expense Tracker
+# Personal Finance Management API
 
-A modern personal finance management application built using ASP.NET Core, PostgreSQL, Docker, and Clean Architecture principles.
+Production-style Personal Finance Management API built with ASP.NET Core, Clean Architecture, PostgreSQL, Docker, JWT Authentication, and automated testing.
 
 The project demonstrates enterprise-grade software engineering practices including domain-driven design, authentication, testing, CI/CD, observability, and cloud-ready deployment.
 
