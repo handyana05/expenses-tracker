@@ -2,6 +2,7 @@
 using ExpensesTracker.Application.Categories.DTOs;
 using ExpensesTracker.Application.Categories.Interfaces;
 using ExpensesTracker.Application.Categories.Mappers;
+using ExpensesTracker.Application.Common.Exceptions;
 using ExpensesTracker.Domain.Entities;
 
 namespace ExpensesTracker.Application.Categories.Services;
@@ -22,6 +23,16 @@ public sealed class CategoryService(
         CreateCategoryDto dto, 
         CancellationToken cancellationToken = default)
     {
+        var categoryExists = await _categoryRepository.ExistsByNameAsync(
+            userId,
+            dto.Name,
+            cancellationToken);
+
+        if (categoryExists)
+        {
+            throw new ConflictException("Category already exists.");
+        }
+
         var category = Category.Create(
             userId,
             dto.Name, 
@@ -78,7 +89,7 @@ public sealed class CategoryService(
             .ToList();
     }
 
-    public async Task<CategoryDto?> UpdateAsync(
+    public async Task<CategoryDto> UpdateAsync(
         Guid userId, 
         UpdateCategoryDto dto, 
         CancellationToken cancellationToken = default)
@@ -89,6 +100,18 @@ public sealed class CategoryService(
         if (category is null)
         {
             throw new NotFoundException("Category not found.");
+        }
+
+        var categoryExists = await _categoryRepository
+            .ExistsByNameAsync(
+                userId,
+                dto.Name,
+                category.Id,
+                cancellationToken);
+
+        if (categoryExists)
+        {
+            throw new ConflictException("Category already exists.");
         }
 
         category.Update(dto.Name, dto.Type);

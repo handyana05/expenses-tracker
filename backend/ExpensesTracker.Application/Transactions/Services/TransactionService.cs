@@ -46,24 +46,6 @@ public sealed class TransactionService(
         return transaction.ToDto(category);
     }
 
-    public async Task<bool> DeleteAsync(
-        Guid id, 
-        Guid userId, 
-        CancellationToken cancellationToken = default)
-    {
-        var transaction = await _transactionRepository
-            .GetByIdAsync(id, userId, cancellationToken);
-
-        if (transaction is null)
-        {
-            return false;
-        }
-
-        _transactionRepository.Delete(transaction);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
-        return true;
-    }
-
     public async Task<TransactionDto?> GetByIdAsync(
         Guid id, 
         Guid userId, 
