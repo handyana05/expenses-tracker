@@ -68,10 +68,10 @@ public sealed class AuthService(
             string.Empty,
             dto.DisplayName);
 
-        var passwordHas = _passwordHasher
+        var passwordHash = _passwordHasher
             .HashPassword(user, dto.Password);
 
-        user.UpdatePasswordHash(passwordHas);
+        user.UpdatePasswordHash(passwordHash);
 
         await _userRepository.AddAsync(user, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
