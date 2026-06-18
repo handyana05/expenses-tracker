@@ -1,5 +1,7 @@
 <Solution>
+  <Project Path="ExpensesTracker.Api.IntegrationTests/ExpensesTracker.Api.IntegrationTests.csproj" Id="0be3e835-a03c-4c0a-b580-1f219b62a857" />
   <Project Path="ExpensesTracker.Api/ExpensesTracker.Api.csproj" />
+  <Project Path="ExpensesTracker.Application.Tests/ExpensesTracker.Application.Tests.csproj" Id="cc552087-3799-414f-8372-e10a8ce8fff7" />
   <Project Path="ExpensesTracker.Application/ExpensesTracker.Application.csproj" />
   <Project Path="ExpensesTracker.Domain/ExpensesTracker.Domain.csproj" />
   <Project Path="ExpensesTracker.Infrastructure/ExpensesTracker.Infrastructure.csproj" />
