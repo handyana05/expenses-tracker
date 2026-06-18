@@ -18,12 +18,12 @@ public interface ICategoryService
         CreateCategoryDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<CategoryDto?> UpdateAsync(
+    Task<CategoryDto> UpdateAsync(
         Guid userId,
         UpdateCategoryDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<bool> DeleteAsync(
+    Task DeleteAsync(
         Guid id,
         Guid userId,
         CancellationToken cancellationToken = default);

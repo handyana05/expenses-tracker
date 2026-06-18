@@ -18,12 +18,12 @@ public interface ITransactionService
         Guid userId,
         CancellationToken cancellationToken = default);
 
-    Task<TransactionDto?> UpdateAsync(
+    Task<TransactionDto> UpdateAsync(
         Guid userId,
         UpdateTransactionDto dto,
         CancellationToken cancellationToken = default);
 
-    Task<bool> DeleteAsync(
+    Task DeleteAsync(
         Guid id,
         Guid userId,
         CancellationToken cancellationToken = default);

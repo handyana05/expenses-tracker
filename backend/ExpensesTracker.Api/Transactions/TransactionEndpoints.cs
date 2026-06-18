@@ -131,10 +131,8 @@ public static class TransactionEndpoints
         CancellationToken cancellationToken)
     {
         var userId = currentUser.UserId;
-        var deleted = await transactionService
+        await transactionService
             .DeleteAsync(userId, id, cancellationToken);
-        return deleted
-            ? Results.NoContent()
-            : Results.NotFound();
+        return Results.NoContent();
     }
 }

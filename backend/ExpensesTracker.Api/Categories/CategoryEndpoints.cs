@@ -114,9 +114,7 @@ public static class CategoryEndpoints
             request.Type);
         var updatedCategory = await categoryService
             .UpdateAsync(userId, dto, cancellationToken);
-        return updatedCategory is not null
-            ? Results.Ok(updatedCategory)
-            : Results.NotFound();
+        return Results.Ok(updatedCategory);
     }
 
     private static async Task<IResult> DeleteCategoryAsync(
@@ -126,10 +124,8 @@ public static class CategoryEndpoints
         CancellationToken cancellationToken)
     {
         var userId = currentUser.UserId;
-        var isDeleted = await categoryService
+        await categoryService
             .DeleteAsync(id, userId, cancellationToken);
-        return isDeleted
-            ? Results.NoContent()
-            : Results.NotFound();
+        return Results.NoContent();
     }
 }
