@@ -26,8 +26,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Authentication\" />
     <Folder Include="Categories\" />
     <Folder Include="Reports\" />
     <Folder Include="Transactions\" />
