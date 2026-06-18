@@ -85,7 +85,7 @@ public sealed class TransactionService(
             .ToList();
     }
 
-    public async Task<TransactionDto?> UpdateAsync(
+    public async Task<TransactionDto> UpdateAsync(
         Guid userId, 
         UpdateTransactionDto dto, 
         CancellationToken cancellationToken = default)
@@ -95,7 +95,7 @@ public sealed class TransactionService(
 
         if (transaction is null)
         {
-            return null;
+            throw new NotFoundException("Transaction not found.");
         }
 
         var category = await _categoryRepository
@@ -116,6 +116,23 @@ public sealed class TransactionService(
 
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        return transaction.ToDto();
+        return transaction.ToDto(category);
+    }
+
+    public async Task DeleteAsync(
+        Guid id,
+        Guid userId,
+        CancellationToken cancellationToken = default)
+    {
+        var transaction = await _transactionRepository
+            .GetByIdAsync(id, userId, cancellationToken);
+
+        if (transaction is null)
+        {
+            throw new NotFoundException("Transaction not found.");
+        }
+
+        _transactionRepository.Delete(transaction);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
 }

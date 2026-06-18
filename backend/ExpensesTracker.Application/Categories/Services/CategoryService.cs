@@ -37,7 +37,7 @@ public sealed class CategoryService(
             .ToDto();
     }
 
-    public async Task<bool> DeleteAsync(
+    public async Task DeleteAsync(
         Guid id, 
         Guid userId, 
         CancellationToken cancellationToken = default)
@@ -47,7 +47,7 @@ public sealed class CategoryService(
 
         if (category is null)
         {
-            return false;
+            throw new NotFoundException("Category not found.");
         }
 
         _categoryRepository
@@ -55,8 +55,6 @@ public sealed class CategoryService(
 
         await _unitOfWork
             .SaveChangesAsync(cancellationToken);
-
-        return true;
     }
 
     public async Task<CategoryDto?> GetByIdAsync(
@@ -90,7 +88,7 @@ public sealed class CategoryService(
 
         if (category is null)
         {
-            return null;
+            throw new NotFoundException("Category not found.");
         }
 
         category.Update(dto.Name, dto.Type);
