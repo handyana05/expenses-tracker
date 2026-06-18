@@ -44,4 +44,37 @@ public sealed class CategoryRepository(
         _dbContext.Categories
             .Update(category);
     }
+
+    public async Task<bool> ExistsByNameAsync(
+        Guid userId,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        return await ExistsByNamePrivateAsync(
+            userId, name, null, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByNameAsync(
+        Guid userId,
+        string name,
+        Guid excludeCategoryId,
+        CancellationToken cancellationToken = default)
+    {
+        return await ExistsByNamePrivateAsync(
+            userId, name, excludeCategoryId, cancellationToken);
+    }
+
+    private Task<bool> ExistsByNamePrivateAsync(
+        Guid userId,
+        string name,
+        Guid? excludeCategoryId,
+        CancellationToken cancellationToken)
+    {
+        return _dbContext.Categories
+            .AnyAsync(
+                x => x.UserId == userId &&
+                     x.Name.ToLower() == name.ToLower() &&
+                     (!excludeCategoryId.HasValue || x.Id != excludeCategoryId.Value),
+                cancellationToken);
+    }
 }
