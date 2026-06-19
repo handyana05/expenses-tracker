@@ -1,5 +1,4 @@
-﻿using ExpensesTracker.Api.Categories.Contracts;
-using ExpensesTracker.Api.Common.Validation;
+﻿using ExpensesTracker.Api.Common.Validation;
 using ExpensesTracker.Api.Transactions.Contracts;
 using ExpensesTracker.Application.Abstractions.Identity;
 using ExpensesTracker.Application.Transactions.DTOs;
@@ -132,7 +131,7 @@ public static class TransactionEndpoints
     {
         var userId = currentUser.UserId;
         await transactionService
-            .DeleteAsync(userId, id, cancellationToken);
+            .DeleteAsync(id, userId, cancellationToken);
         return Results.NoContent();
     }
 }
