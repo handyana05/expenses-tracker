@@ -1,5 +1,4 @@
 using ExpensesTracker.Api.Authentication;
-using ExpensesTracker.Api.Authentication.Contracts;
 using ExpensesTracker.Api.Categories;
 using ExpensesTracker.Api.Common.ExceptionHandling;
 using ExpensesTracker.Api.Reports;
