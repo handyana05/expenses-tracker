@@ -26,9 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\" />
     <Folder Include="Reports\" />
-    <Folder Include="Transactions\" />
   </ItemGroup>
 
 </Project>
