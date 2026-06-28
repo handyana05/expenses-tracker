@@ -1,3 +1,9 @@
+![.NET](https://img.shields.io/badge/.NET-10-512BD4?logo=dotnet)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql)
+![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
+![GitHub Actions](https://img.shields.io/github/actions/workflow/status/handyana05/expense-tracker/backend-ci.yml?branch=main)
+![License](https://img.shields.io/badge/License-MIT-green)
+
 # Personal Finance Management System
 
 > A production-style **Personal Finance Management System** built with **ASP.NET 10, Clean Architecture, PostgreSQL, Docker, JWT Authentication**, and comprehensive automated testing.
