@@ -635,16 +635,18 @@ Workflow file:
 
 ## Scalar UI
 
-_Add screenshot after implementation._
-
-## Docker Deployment
-
-_Add screenshot after implementation._
+![Scalar-Introduction](../docs/backend-scallar-introduction.png)
+![Scalar-Authentication](../docs//backend-scallar-authentication.png)
+![Scalar-Categories-1](../docs/backend-scallar-categories-1.png)
+![Scalar-Categories-2](../docs/backend-scallar-categories-2.png)
 
 ## GitHub Actions
 
-_Add screenshot after implementation._
+![CI-1](../docs/backend-ci-1.png)
+![CI-2](../docs/backend-ci-2.png)
 
+## Code Coverage
+![Coverage](../docs/backend-code-coverage.png)
 
 ---
 
