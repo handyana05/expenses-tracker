@@ -244,8 +244,8 @@ Additional documentation is available inside the project.
 
 | Documentation | Description   |
 |---------------|---------------|
-| ``backend/README.md`` | Backend architecture, setup and API documentation |
-| ``frontend/README.md`` | Frontend documentation (planned) |
+| ![``backend/README.md``](./backend/README.md) | Backend architecture, setup and API documentation |
+| ![``frontend/README.md``](./frontend/README.md) | Frontend documentation (planned) |
 
 ---
 
