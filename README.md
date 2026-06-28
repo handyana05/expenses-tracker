@@ -256,14 +256,22 @@ Additional documentation is available inside the project.
 
 ---
 
-## Screenshots
+# Screenshots
 
-The following screenshots will be added as the project evolves.
+## Scalar UI
 
-- Scalar API Documentation
-- GitHub Actions
-- Code Coverage Report
-- Angular Dashboard
+![Scalar-Introduction](../docs/backend-scallar-introduction.png)
+![Scalar-Authentication](../docs//backend-scallar-authentication.png)
+![Scalar-Categories-1](../docs/backend-scallar-categories-1.png)
+![Scalar-Categories-2](../docs/backend-scallar-categories-2.png)
+
+## GitHub Actions
+
+![CI-1](../docs/backend-ci-1.png)
+![CI-2](../docs/backend-ci-2.png)
+
+## Code Coverage
+![Coverage](../docs/backend-code-coverage.png)
 
 ---
 
