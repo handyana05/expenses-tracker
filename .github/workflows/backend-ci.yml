@@ -35,11 +35,24 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool
 
+      - name: List TestResults
+        run: |
+            echo "Current directory:"
+            pwd
+
+            echo ""
+            echo "TestResults:"
+            find . -type f | grep coverage || true
+
+            echo ""
+            echo "Directory tree:"
+            find backend/TestResults || true
+
       - name: Generate coverage report
         run: |
           reportgenerator \
-            -reports:"backend/TestResults/**/coverage.cobertura.xml" \
-            -targetdir:"backend/CoverageReport" \
+            -reports:"TestResults/**/coverage.cobertura.xml" \
+            -targetdir:"CoverageReport" \
             -reporttypes:"Html;MarkdownSummary"
 
       - name: Upload coverage report
