@@ -114,8 +114,9 @@ This project focuses on demonstrating **how production-quality backend applicati
 
 The solution follows **Clean Architecture** to separate business logic from infrastructure and presentation concerns.
 
-```
+```mermaid
 flowchart TD
+
     Client["Client Applications<br/>(Future Angular Frontend)"]
 
     API["Presentation Layer<br/>ASP.NET Core Minimal API"]
@@ -244,8 +245,8 @@ Additional documentation is available inside the project.
 
 | Documentation | Description   |
 |---------------|---------------|
-| ![``backend/README.md``](./backend/README.md) | Backend architecture, setup and API documentation |
-| ![``frontend/README.md``](./frontend/README.md) | Frontend documentation (planned) |
+| [`backend/README.md`](./backend/README.md) | Backend architecture, setup and API documentation |
+| [`frontend/README.md`](./frontend/README.md) | Frontend documentation (planned) |
 
 ---
 
