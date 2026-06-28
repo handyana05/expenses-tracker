@@ -1,6 +1,6 @@
 # Expense Tracker API
 
-> **Note:** Production-style REST API for personal finance management built with **ASP.NET 10, Clean Architecture, Entity Framework Core, PostgreSQL, JWT Authentication, FluentValidation**, Docker, and automated tests.
+> Production-style REST API for personal finance management built with **ASP.NET 10, Clean Architecture, Entity Framework Core, PostgreSQL, JWT Authentication, FluentValidation**, Docker, and automated tests.
 
 This backend is designed as a portfolio project demonstrating modern .NET backend engineering practices, including authentication, validation, persistence, testing, containerized development, and CI automation.
 

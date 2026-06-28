@@ -1,6 +1,6 @@
 # Personal Finance Management System
 
-A production-style **Personal Finance Management System** built with **ASP.NET 10, Clean Architecture, PostgreSQL, Docker, JWT Authentication**, and comprehensive automated testing.
+> A production-style **Personal Finance Management System** built with **ASP.NET 10, Clean Architecture, PostgreSQL, Docker, JWT Authentication**, and comprehensive automated testing.
 
 ---
 
