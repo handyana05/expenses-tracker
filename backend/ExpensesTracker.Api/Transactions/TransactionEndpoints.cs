@@ -118,9 +118,7 @@ public static class TransactionEndpoints
             request.Description);
         var transaction = await transactionService
             .UpdateAsync(userId, dto, cancellationToken);
-        return transaction is null
-            ? Results.NotFound()
-            : Results.Ok(transaction);
+        return Results.Ok(transaction);
     }
 
     private static async Task<IResult> DeleteTransactionAsync(
