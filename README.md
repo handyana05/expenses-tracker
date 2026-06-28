@@ -260,18 +260,18 @@ Additional documentation is available inside the project.
 
 ## Scalar UI
 
-![Scalar-Introduction](../docs/backend-scallar-introduction.png)
-![Scalar-Authentication](../docs//backend-scallar-authentication.png)
-![Scalar-Categories-1](../docs/backend-scallar-categories-1.png)
-![Scalar-Categories-2](../docs/backend-scallar-categories-2.png)
+![Scalar-Introduction](./docs/backend-scallar-introduction.png)
+![Scalar-Authentication](./docs//backend-scallar-authentication.png)
+![Scalar-Categories-1](./docs/backend-scallar-categories-1.png)
+![Scalar-Categories-2](./docs/backend-scallar-categories-2.png)
 
 ## GitHub Actions
 
-![CI-1](../docs/backend-ci-1.png)
-![CI-2](../docs/backend-ci-2.png)
+![CI-1](./docs/backend-ci-1.png)
+![CI-2](./docs/backend-ci-2.png)
 
 ## Code Coverage
-![Coverage](../docs/backend-code-coverage.png)
+![Coverage](./docs/backend-code-coverage.png)
 
 ---
 
