@@ -32,7 +32,7 @@ public static class ReportEndpoints
     {
         if (month < 1 || month > 12)
         {
-            return Results.BadRequest("Month must between 1 and 12");
+            return Results.BadRequest("Month must be between 1 and 12.");
         }
 
         var userId = currentUser.UserId;
