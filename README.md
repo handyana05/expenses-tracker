@@ -301,7 +301,7 @@ The following screenshots will be added as the project evolves.
 
 Senior Software Engineer
 
-Technologies:
+Core Technologies:
 
 - C#
 - .NET

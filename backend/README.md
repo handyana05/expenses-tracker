@@ -1,8 +1,8 @@
 # Expense Tracker API
 
-A production-ready REST API built with ASP.NET Core, Entity Framework Core, PostgreSQL, JWT Authentication, Docker, and Clean Architecture principles.
+> **Note:** Production-style REST API for personal finance management built with **ASP.NET 10, Clean Architecture, Entity Framework Core, PostgreSQL, JWT Authentication, FluentValidation**, Docker, and automated tests.
 
-This project demonstrates enterprise-grade backend development practices including authentication, validation, testing, containerization, and CI/CD automation.
+This backend is designed as a portfolio project demonstrating modern .NET backend engineering practices, including authentication, validation, persistence, testing, containerized development, and CI automation.
 
 ---
 
@@ -14,14 +14,17 @@ This project demonstrates enterprise-grade backend development practices includi
 - User Login
 - JWT Bearer Authentication
 - Secure Password Hashing
-- Protected Endpoints
+- Current user resolution
+- Protected endpoints
+- User data isolation
 
 ### Category Management
 
 - Create Category
 - Update Category
 - Delete Category
-- List Categories
+- List user-specific categories
+- Prevent duplicate category names per user
 
 ### Transaction Management
 
@@ -29,75 +32,112 @@ This project demonstrates enterprise-grade backend development practices includi
 - Create Expense Transactions
 - Update Transactions
 - Delete Transactions
-- Filter Transactions
+- List user-specific transactions
+- Validate category ownership before creating or updating transactions
 
 ### Reporting
 
-- Monthly Income Summary
-- Monthly Expense Summary
-- Balance Calculation
-- Category-based Reports
-
-### Technical Features
-
-- Clean Architecture
-- Repository Pattern
-- Entity Framework Core
-- PostgreSQL
-- FluentValidation
-- Scalar OpenAPI
-- Serilog Logging
-- xUnit Unit Tests
-- Docker Support
-- GitHub Actions CI/CD
+- Monthly financial summary
+- Total income calculation
+- Total expense calculation
+- Monthly balance calculation
 
 ### Cross-Cutting Concerns
+
+- FluentValidation request validation
+- Reusable validation endpoint filter
 - Global exception handling
-- RFC7807 ProblemDetails
-- Options Pattern
+- RFC7807 ProblemDetails responses
+- Options Pattern for configuration
+- Dependency Injection
+- Repository Pattern
+- Unit of Work
+
+### Testing & Quality
+
+- Unit tests for Application services
+- Integration tests for API endpoints
+- PostgreSQL Testcontainers
+- GitHub Actions CI
+- Code coverage collection
+- HTML coverage report generation
 
 ---
 
-# Architecture
+## Technology Stack
 
-The application follows Clean Architecture principles to ensure maintainability, testability, and separation of concerns.
+### Runtime & Framework
+
+- .NET 10
+- ASP.NET Core Minimal APIs
+- C#
+
+### Database
+
+- PostgreSQL
+- Entity Framework Core
+- EF Core Migrations
+
+### Authentication
+
+- JWT Bearer Authentication
+- ASP.NET Core password hashing
+
+### Validation
+
+- FluentValidation
+- Minimal API endpoint filters
+
+### Testing
+
+- xUnit
+- FluentAssertions
+- Moq
+- Testcontainers
+- Coverlet
+
+### DevOps
+
+- Docker
+- Docker Compose
+- GitHub Actions
+- ReportGenerator
+
+---
+
+## Architecture
+
+The backend follows **Clean Architecture** to keep business logic independent from infrastructure and presentation concerns.
 
 ```mermaid
 flowchart TD
-    Client["Client Applications"]
-    API["Presentation Layer<br/>ASP.NET Core Minimal API"]
-    APP["Application Layer<br/>Services, DTOs, Interfaces"]
-    DOMAIN["Domain Layer<br/>Entities & Business Rules"]
-    INFRA["Infrastructure Layer<br/>EF Core, Repositories, PostgreSQL"]
-    DB[(PostgreSQL)]
-
-    Client --> API
-    API --> APP
-    API --> INFRA
-    APP --> DOMAIN
-    INFRA --> APP
-    INFRA --> DOMAIN
+    API["Presentation Layer<br/>ExpensesTracker.Api"] 
+    APP["Application Layer<br/>Services, DTOs, Interfaces"] 
+    DOMAIN["Domain Layer<br/>Entities, Enums, Business Rules"] 
+    INFRA["Infrastructure Layer<br/>EF Core, Repositories, Authentication"] 
+    DB[(PostgreSQL)] 
+    
+    API --> APP 
+    API --> INFRA 
+    APP --> DOMAIN 
+    INFRA --> APP 
+    INFRA --> DOMAIN 
     INFRA --> DB
 ```
 
-## Authentication Flow
+### Layer Responsibilities
 
-Register
-→ Password Hashing
-→ PostgreSQL
-
-Login
-→ Password Verification
-→ JWT Generation
-
-JWT
-→ Authentication Middleware
-→ CurrentUser
-→ Protected Endpoints
+| **Layer** | **Responsibility** |
+|-----------|--------------------|
+| API       | Minimal API endpoints, request contracts, filters, authentication middleware  |
+| Application   |	Business use cases, DTOs, service interfaces, repository abstractions   |
+| Domain    |	Entities, enums, core business rules    |
+| Infrastructure    |	EF Core DbContext, repositories, JWT generation, password hashing   |
+| Tests |	Unit and integration tests  |
 
 ---
 
-# Solution Structure
+## Solution Structure
 
 ```text
 backend
@@ -117,104 +157,234 @@ backend
 
 ---
 
-# Technology Stack
+## Request Flow
 
-## Backend
+```mermaid
+sequenceDiagram
 
-- ASP.NET Core 9
-- C#
-- Entity Framework Core
-
-## Database
-
-- PostgreSQL
-
-## Authentication
-
-- JWT Bearer Authentication
-
-## Validation
-
-- FluentValidation
-
-## Logging
-
-- Serilog
-
-## Testing
-
-- xUnit
-- FluentAssertions
-
-## Containerization
-
-- Docker
-- Docker Compose
-
-## CI/CD
-
-- GitHub Actions
-
----
-
-# Domain Model
-
-## User
-
-```csharp
-public class User
-{
-    public Guid Id { get; set; }
-
-    public string Email { get; set; }
-
-    public string PasswordHash { get; set; }
-}
-```
-
-## Category
-
-```csharp
-public class Category
-{
-    public Guid Id { get; set; }
-
-    public string Name { get; set; }
-}
-```
-
-## Transaction
-
-```csharp
-public class Transaction
-{
-    public Guid Id { get; set; }
-
-    public decimal Amount { get; set; }
-
-    public TransactionType Type { get; set; }
-
-    public Guid CategoryId { get; set; }
-
-    public DateTime Date { get; set; }
-
-    public string Description { get; set; }
-}
+    participant Client 
+    participant API as Minimal API Endpoint 
+    participant Filter as Validation Filter 
+    participant Service as Application Service 
+    participant Repo as Repository 
+    participant DB as PostgreSQL 
+    
+    Client->>API: HTTP Request 
+    API->>Filter: Validate request 
+    Filter-->>API: Valid request 
+    API->>Service: Execute use case 
+    Service->>Repo: Query or persist data 
+    Repo->>DB: EF Core operation 
+    DB-->>Repo: Result 
+    Repo-->>Service: Data 
+    Service-->>API: DTO 
+    API-->>Client: HTTP Response
 ```
 
 ---
 
-# API Endpoints
+## Authentication Flow
 
-## Authentication
+```mermaid
+sequenceDiagram 
 
-### Register
+    participant Client 
+    participant API as Auth Endpoint 
+    participant Auth as AuthService 
+    participant UserRepo as UserRepository 
+    participant Hasher as PasswordHasher 
+    participant Jwt as JwtTokenGenerator 
+    participant DB as PostgreSQL 
+    
+    Client->>API: POST /api/auth/register 
+    API->>Auth: RegisterAsync 
+    Auth->>UserRepo: Check existing email 
+    UserRepo->>DB: Query user 
+    DB-->>UserRepo: No existing user 
+    Auth->>Hasher: Hash password 
+    Auth->>UserRepo: Save user 
+    UserRepo->>DB: Insert user 
+    Auth->>Jwt: Generate token 
+    Jwt-->>Auth: Access token 
+    Auth-->>API: AuthResultDto 
+    API-->>Client: 200 OK
+```
+
+---
+
+## Database Schema
+
+```mermaid
+erDiagram
+    USERS { 
+        uuid Id 
+        string Email 
+        string PasswordHash 
+        string DisplayName 
+    } 
+    
+    CATEGORIES { 
+        uuid Id 
+        string Name 
+        string Type 
+        uuid UserId 
+    } 
+    
+    TRANSACTIONS { 
+        uuid Id 
+        decimal Amount 
+        uuid UserId 
+        uuid CategoryId 
+        datetime TransactionDate 
+        string Description 
+    } 
+    
+    USERS ||--o{ CATEGORIES : owns 
+    USERS ||--o{ TRANSACTIONS : owns 
+    CATEGORIES ||--o{ TRANSACTIONS : categorizes
+```
+
+---
+
+## Architecture Decisions
+
+| Decision  | Reason    |
+|-----------|-----------|
+| Clean Architecture    | Keeps domain and application logic independent from infrastructure     |
+| Minimal APIs    |	Lightweight and modern ASP.NET Core API style     |
+| Repository Pattern    |	Encapsulates database access and improves testability     |
+| Unit of Work    |	Centralizes transaction persistence through EF Core     |
+| JWT Authentication    |	Stateless authentication for REST APIs     |
+| CurrentUser abstraction    |	Keeps user resolution out of application services     |
+| FluentValidation    |	Keeps validation logic outside endpoint handlers     |
+| Global Exception Handler    |	Centralizes business exception to HTTP response mapping     |
+| Testcontainers    |	Enables integration tests against a real PostgreSQL database     |
+| Options Pattern    |	Strongly typed configuration for JWT settings     |
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Install:
+- .NET 10 SDK
+- Docker Desktop
+- PostgreSQL client tool such as pgAdmin, DBeaver, or DataGrip
+- Git
+
+---
+
+## Local Configuration
+
+The API supports layered configuration.
+
+The recommended local setup is:
+
+``appsettings.json``
+``appsettings.Development.json``
+``appsettings.Development.Local.json``
+
+``appsettings.Development.Local.json`` should contain machine-specific secrets and must not be committed to Git.
+
+Example:
+
+```json
+
+{ 
+    "Jwt": { 
+        "SecretKey": "your-local-development-secret-key-with-at-least-32-characters" 
+    }
+}
+
+```
+
+Make sure `.gitignore` contains:
+
+`appsettings.Development.Local.json`
+
+---
+
+## Docker & PostgreSQL
+
+From the repository root:
+
+```bash
+docker compose up -d
+```
+
+This starts PostgreSQL for local development.
+
+To stop the containers:
+
+```bash
+docker compose down
+```
+
+To stop the containers and remove the volumes:
+
+```bash
+docker compose down -v
+```
+
+Use `docker compose down -v` only when you want to completely reset the local database, as it deletes all PostgreSQL data stored in Docker volumes.
+
+---
+
+## Database Migrations
+
+From the `backend` directory:
+
+```bash
+dotnet ef database update \ 
+    --project src/ExpensesTracker.Infrastructure \ 
+    --startup-project src/ExpensesTracker.Api
+```
+
+On Windows PowerShell:
+
+```bash
+dotnet ef database update ` 
+    --project src/ExpensesTracker.Infrastructure ` 
+    --startup-project src/ExpensesTracker.Api
+```
+
+To create a new migration:
+
+```bash
+dotnet ef migrations add MigrationName \ 
+    --project src/ExpensesTracker.Infrastructure \ 
+    --startup-project src/ExpensesTracker.Api \ 
+    --output-dir Persistence/Migrations
+```
+
+---
+
+## Running the API
+
+From the `backend` directory:
+
+`dotnet run --project src/ExpensesTracker.Api`
+
+The API exposes OpenAPI documentation through Scalar.
+
+Typical URL:
+
+`https://localhost:<port>/scalar`
+
+---
+
+## API Endpoints
+
+### Authentication
+
+#### Register
 
 ```http
 POST /api/auth/register
 ```
 
-### Login
+#### Login
 
 ```http
 POST /api/auth/login
@@ -222,27 +392,33 @@ POST /api/auth/login
 
 ---
 
-## Categories
+### Categories
 
-### Get Categories
+#### Get Current User's Categories
 
 ```http
 GET /api/categories
 ```
 
-### Create Category
+#### Get Category by ID
+
+```http
+GET /api/categories/{id}
+```
+
+#### Create Category
 
 ```http
 POST /api/categories
 ```
 
-### Update Category
+#### Update Category
 
 ```http
 PUT /api/categories/{id}
 ```
 
-### Delete Category
+#### Delete Category
 
 ```http
 DELETE /api/categories/{id}
@@ -250,15 +426,21 @@ DELETE /api/categories/{id}
 
 ---
 
-## Transactions
+### Transactions
 
-### Get Transactions
+#### Get Current User's Transactions
 
 ```http
 GET /api/transactions
 ```
 
-### Create Transaction
+#### Get Transaction by ID
+
+```http
+GET /api/transactions/{id}
+```
+
+#### Create Transaction
 
 ```http
 POST /api/transactions
@@ -275,13 +457,13 @@ Example:
 }
 ```
 
-### Update Transaction
+#### Update Transaction
 
 ```http
 PUT /api/transactions/{id}
 ```
 
-### Delete Transaction
+#### Delete Transaction
 
 ```http
 DELETE /api/transactions/{id}
@@ -289,178 +471,157 @@ DELETE /api/transactions/{id}
 
 ---
 
-## Reports
+### Reports
 
-### Monthly Report
+#### Get Monthly Financial Summary
 
 ```http
-GET /api/reports/monthly
+GET /api/reports/monthly-summary?year=2026&month=6
 ```
 
 Example Response:
 
 ```json
 {
-  "income": 5000,
-  "expenses": 2500,
+  "totalIncome": 5000,
+  "totalExpenses": 2500,
   "balance": 2500
 }
 ```
 
 ---
 
-# Request Flow
+## Validation
 
-```mermaid
-sequenceDiagram
+Request validation is implemented with FluentValidation and a reusable Minimal API endpoint filter.
 
-    participant Client
-    participant API
-    participant Service
-    participant Repository
-    participant Database
+Invalid requests return `400 Bad Request` with validation details.
 
-    Client->>API: POST /api/transactions
+Example invalid request:
 
-    API->>Service: Validate Request
+```json
+{ 
+    "name": "", 
+    "type": 2 
+}
+```
 
-    Service->>Repository: Save Transaction
+Example response:
 
-    Repository->>Database: Insert Record
-
-    Database-->>Repository: Success
-
-    Repository-->>Service: Success
-
-    Service-->>API: Success
-
-    API-->>Client: 201 Created
+```json
+{ 
+    "errors": { 
+        "Name": [ 
+            "'Name' must not be empty." 
+        ] 
+    } 
+}
 ```
 
 ---
 
-# Database Schema
+## Error Handling
 
-```mermaid
-erDiagram
-    USERS {
-        uuid Id
-        string Email
-        string PasswordHash
-    }
+Business exceptions are mapped to HTTP responses using a global exception handler.
 
-    CATEGORIES {
-        uuid Id
-        string Name
-        string Type
-        uuid UserId
-    }
+| Exception | HTTP Status   |
+|-----------|---------------|
+| `NotFoundException`   | 404 Not Found |
+| `ConflictException`   |	409 Conflict    |
+| `UnauthorizedException`   |	401 Unauthorized    |
+| Unhandled Exception   |	500 Internal Server Error   |
 
-    TRANSACTIONS {
-        uuid Id
-        decimal Amount
-        uuid UserId
-        uuid CategoryId
-        datetime TransactionDate
-        string Description
-    }
-
-    USERS ||--o{ CATEGORIES : owns
-    USERS ||--o{ TRANSACTIONS : owns
-    CATEGORIES ||--o{ TRANSACTIONS : categorizes
-```
+Responses follow the RFC7807 ProblemDetails format.
 
 ---
 
-# Running Locally
+## Testing
 
-## Clone Repository
+The backend contains both unit and integration tests.
 
-```bash
-git clone https://github.com/yourname/expense-tracker-api.git
-```
+Run all tests:
 
-## Start Database
-
-```bash
-docker compose up -d postgres
-```
-
-## Apply Migrations
-
-```bash
-dotnet ef database update
-```
-
-## Run API
-
-```bash
-dotnet run --project src/ExpenseTracker.Api
-```
+`dotnet test`
 
 ---
 
-# Docker
+## Unit Tests
 
-Build:
+Unit tests are located in:
 
-```bash
-docker build -t expense-tracker-api .
-```
+`ExpensesTracker.Application.Tests`
 
-Run:
+They cover:
 
-```bash
-docker run -p 8080:8080 expense-tracker-api
-```
+- Authentication service
+- Category service
+- Transaction service
+- Report service
 
----
+Unit tests use:
 
-# Testing
-
-Run Unit Tests
-
-```bash
-dotnet test
-```
+- xUnit
+- Moq
+- FluentAssertions
 
 ---
 
-# CI/CD
+## Integration Tests
 
-GitHub Actions automatically:
+Integration tests are located in:
 
-- Restore dependencies
-- Build solution
-- Run unit tests
-- Generate artifacts
+`ExpensesTracker.Api.IntegrationTests`
 
-```mermaid
-flowchart LR
+They cover:
 
-    Commit --> Build
+- Authentication endpoints
+- Category endpoints
+- Transaction endpoints
+- Report endpoints
 
-    Build --> Test
+Integration tests run the API against a real PostgreSQL database using Testcontainers.
 
-    Test --> Package
+This validates:
 
-    Package --> Deploy
-```
+- Routing
+- Authentication
+- Authorization
+- Validation
+- Exception handling
+- EF Core persistence
+- Database queries
 
 ---
 
-# Future Improvements
+## Code Coverage
 
-- Refresh Tokens
-- Role-Based Authorization
-- OpenTelemetry
-- Prometheus Metrics
-- Grafana Dashboards
-- RabbitMQ Event Publishing
-- Expense Import/Export
-- Budget Planning
-- Email Notifications
-- Azure Deployment
+Code coverage is collected in CI using Coverlet.
+
+A readable HTML coverage report is generated with ReportGenerator and uploaded as a GitHub Actions artifact.
+
+Local coverage command:
+
+`dotnet test --collect:"XPlat Code Coverage"`
+
+---
+
+## CI/CD
+
+GitHub Actions automatically runs on push and pull request.
+
+The backend workflow performs:
+
+- Restore
+- Build
+- Unit tests
+- Integration tests
+- Code coverage collection
+- Coverage report generation
+- Coverage artifact upload
+
+Workflow file:
+
+`.github/workflows/backend-ci.yml`
 
 ---
 
@@ -478,6 +639,29 @@ _Add screenshot after implementation._
 
 _Add screenshot after implementation._
 
+
+---
+
+# Future Improvements
+
+Planned backend improvements:
+
+- Refresh tokens
+- Role-based authorization
+- Pagination
+- Sorting
+- Filtering
+- Additional report endpoints
+- Expense by category report
+- Monthly trend report
+- Budget planning
+- OpenTelemetry
+- Prometheus metrics
+- Grafana dashboards
+- Azure deployment
+- Kubernetes manifests
+- AI-powered spending insights
+
 ---
 
 # Author
@@ -486,5 +670,20 @@ _Add screenshot after implementation._
 
 Senior Software Engineer
 
-Technologies:
-ASP.NET Core • C# • Azure • Docker • Kubernetes • PostgreSQL • Entity Framework Core • Clean Architecture
+Core Technologies:
+
+- C#
+- .NET
+- ASP.NET Core
+- Azure
+- Docker
+- Kubernetes
+- PostgreSQL
+- Angular
+- Clean Architecture
+
+LinkedIn:
+https://www.linkedin.com/in/handyana-sumitra-atmaja
+
+GitHub:
+https://github.com/handyana05
