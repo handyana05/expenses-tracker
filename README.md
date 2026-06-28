@@ -1,32 +1,150 @@
-# Personal Finance Management API
+# Personal Finance Management System
 
-Production-style Personal Finance Management API built with ASP.NET Core, Clean Architecture, PostgreSQL, Docker, JWT Authentication, and automated testing.
-
-The project demonstrates enterprise-grade software engineering practices:
-- ASP.NET Core
-- Clean Architecture
-- PostgreSQL
-- Docker
-- JWT Authentication
-- FluentValidation
-- xUnit
-- GitHub Actions
+A production-style **Personal Finance Management System** built with **ASP.NET 10, Clean Architecture, PostgreSQL, Docker, JWT Authentication**, and comprehensive automated testing.
 
 ---
 
-## Project Goals
+## Overview
 
-The purpose of this project is to showcase:
+Expense Tracker is a backend-first personal finance management application designed to demonstrate modern software engineering practices rather than simply implementing CRUD operations.
+
+The project emphasizes maintainability, scalability, testability, and clean software architecture while providing a solid foundation for a future Angular frontend and cloud-native deployment.
+
+Although the frontend is still under development, the backend is fully functional and designed to support real-world personal finance scenarios.
+
+---
+
+## Why This Project?
+
+Many portfolio projects demonstrate how to build REST APIs.
+
+This project focuses on demonstrating **how production-quality backend applications are designed**, including:
 
 - Clean Architecture
-- ASP.NET Core Web API
+- Domain-driven design principles
+- Authentication & Authorization
+- Separation of concerns
+- Automated testing
+- Continuous Integration
+- Dockerized development
+- Maintainable codebase
+
+---
+
+## Key Features
+
+### Authentication
+
+- JWT Bearer Authentication
+- Secure password hashing
+- User registration
+- User login
+- Protected endpoints
+
+### Category Management
+
+- Create categories
+- Update categories
+- Delete categories
+- User-specific categories
+
+### Transaction Management
+
+- Income transactions
+- Expense transactions
+- Update transactions
+- Delete transactions
+- User isolation
+
+### Reporting
+
+- Monthly income summary
+- Monthly expense summary
+- Monthly balance calculation
+
+### Quality
+
+- Clean Architecture
+- FluentValidation
+- Global Exception Handling
+- RFC7807 Problem Details
+- Unit Tests
+- Integration Tests
+- GitHub Actions
+- Code Coverage
+
+---
+
+## Technology Stack
+
+### Backend
+
+- ASP.NET 10
+- ASP.NET Core Minimal APIs
 - Entity Framework Core
 - PostgreSQL
 - JWT Authentication
+- FluentValidation
+- Serilog
+
+### Testing
+
+- xUnit
+- FluentAssertions
+- Moq
+- Testcontainers
+- Coverlet
+
+### DevOps
+
 - Docker
+- Docker Compose
 - GitHub Actions
-- Automated Testing
-- Cloud-ready deployment patterns
+
+### Planned Frontend
+
+- Angular
+- TypeScript
+- Angular Material
+- Chart.js
+
+---
+
+## Architecture
+
+The solution follows **Clean Architecture** to separate business logic from infrastructure and presentation concerns.
+
+```
+flowchart TD
+    Client["Client Applications<br/>(Future Angular Frontend)"]
+
+    API["Presentation Layer<br/>ASP.NET Core Minimal API"]
+
+    APP["Application Layer<br/>Services, DTOs, Interfaces"]
+
+    DOMAIN["Domain Layer<br/>Entities & Business Rules"]
+
+    INFRA["Infrastructure Layer<br/>EF Core, Repositories, PostgreSQL"]
+
+    DB[(PostgreSQL)]
+
+    Client --> API
+    API --> APP
+    API --> INFRA
+    APP --> DOMAIN
+    INFRA --> APP
+    INFRA --> DOMAIN
+    INFRA --> DB
+```
+
+### Design Principles
+
+- Dependency Inversion
+- SOLID Principles
+- Repository Pattern
+- Unit of Work
+- Options Pattern
+- Dependency Injection
 
 ---
 
@@ -35,83 +153,110 @@ The purpose of this project is to showcase:
 ```text
 expense-tracker/
 ├── backend/
+│   └── README.md
 ├── frontend/
+│   └── README.md
 ├── docs/
 ├── .github/
+├── README.md
 └── docker-compose.yml
 ```
 
 ---
 
-## Architecture Overview
+## Current Project Status
 
-```mermaid
-flowchart LR
+### Completed
 
-    User["User"]
-
-    Frontend["Frontend (Future Angular App)"]
-
-    API["ASP.NET Core Web API"]
-
-    PostgreSQL[(PostgreSQL)]
-
-    User --> Frontend
-
-    Frontend --> API
-
-    API --> PostgreSQL
-```
-
----
-
-## Current Status
-
-### Implemented
-
-- Backend API
-- Authentication
-- Categories
-- Transactions
+- ASP.NET Minimal API
+- JWT Authentication
+- Category Management
+- Transaction Management
 - Monthly Reports
+- PostgreSQL
+- Docker
+- FluentValidation
+- Global Exception Handling
 - Unit Tests
-- Docker Support
+- Integration Tests
+- GitHub Actions CI
+- Code Coverage
+
+### In Progress
+
+- Repository Documentation
+- API Screenshots
 
 ### Planned
 
 - Angular Frontend
+- Dashboard
+- Charts
+- Budget Planning
 - OpenTelemetry
 - Prometheus
-- Grafana Dashboard
+- Grafana
 - Azure Deployment
-- Budget Planning
-- Notifications
+- Kubernetes
+- AI-powered Spending Insights
 
 ---
 
-## Backend
+## Architecture Decisions
 
-The backend follows Clean Architecture and contains all business logic and API endpoints.
-
-See:
-
-[Expenses Tracker API](./backend/README.md)
-
-for detailed documentation.
+| Decision  | Reason    |
+|-----------|-----------|
+| Clean Architecture | Separation of concerns and long-term maintainability|
+| Minimal APIs | Lightweight, modern ASP.NET Core development |
+| PostgreSQL | Open-source relational database with excellent EF Core support |
+| JWT Authentication | Stateless authentication suitable for REST APIs |
+| FluentValidation | Keep validation outside endpoint logic |
+| Testcontainers | Reliable integration tests using a real PostgreSQL instance |
+| GitHub Actions | Continuous Integration and automated quality checks |
 
 ---
 
-## Frontend
+## Quality Assurance
 
-The frontend application will be added in a future release.
+The project includes multiple layers of automated quality checks.
 
-Planned stack:
+### Unit Tests
 
-- Angular
-- TypeScript
-- Angular Material
-- JWT Authentication
-- Dashboard & Reporting
+- Authentication Services
+- Category Services
+- Transaction Services
+- Report Services
+
+### Integration Tests
+
+- Authentication Endpoints
+- Category Endpoints
+- Transaction Endpoints
+- Report Endpoints
+
+Integration tests execute against a real PostgreSQL database using Testcontainers.
+
+---
+
+## Documentation
+
+Additional documentation is available inside the project.
+
+| Documentation | Description   |
+|---------------|---------------|
+| ``backend/README.md`` | Backend architecture, setup and API documentation |
+| ``frontend/README.md`` | Frontend documentation (planned) |
+
+---
+
+## Screenshots
+
+The following screenshots will be added as the project evolves.
+
+- Scalar API Documentation
+- GitHub Actions
+- Code Coverage Report
+- Angular Dashboard
 
 ---
 
@@ -119,7 +264,7 @@ Planned stack:
 
 ### Phase 1
 
-- REST API
+- Backend REST API
 - Authentication
 - Categories
 - Transactions
@@ -128,56 +273,28 @@ Planned stack:
 ### Phase 2
 
 - Angular Frontend
-- Charts & Dashboard
-- User Settings
+- Dashboard
+- Charts
+- Responsive UI
 
 ### Phase 3
 
 - OpenTelemetry
 - Prometheus
 - Grafana
-- Kubernetes Deployment
+- Azure Deployment
+- Kubernetes
 
 ### Phase 4
 
-- AI-powered spending insights
-- Receipt scanning
-- Budget forecasting
+- AI-powered Spending Insights
+- Budget Forecasting
+- Receipt Scanning
+- Smart Financial Recommendations
 
 ---
 
-## Technologies
-
-### Backend
-
-- ASP.NET Core
-- Entity Framework Core
-- PostgreSQL
-- FluentValidation
-- Serilog
-
-### DevOps
-
-- Docker
-- GitHub Actions
-
-### Planned
-
-- Angular
-- OpenTelemetry
-- Prometheus
-- Grafana
-- Kubernetes
-
----
-
-## Screenshots
-
-Screenshots will be added as the project evolves.
-
----
-
-## Author
+## About the Author
 
 **Handyana Sumitra Atmaja**
 
@@ -185,10 +302,24 @@ Senior Software Engineer
 
 Technologies:
 
-C# • .NET • Azure • Docker • Kubernetes • PostgreSQL • Angular • Clean Architecture
+- C#
+- .NET
+- ASP.NET Core
+- Azure
+- Docker
+- Kubernetes
+- PostgreSQL
+- Angular
+- Clean Architecture
 
 LinkedIn:
 https://www.linkedin.com/in/handyana-sumitra-atmaja
 
 GitHub:
 https://github.com/handyana05
+
+---
+
+## License
+
+This project is licensed under the MIT License.
