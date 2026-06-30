@@ -1,0 +1,15 @@
+<h1>Categories</h1>
+
+@if (categories.isLoading()) {
+  <p>Loading categories...</p>
+} @else if (categories.error()) {
+  <p>Could not load categories.</p>
+} @else if (categories.value().length === 0) {
+  <p>No categories yet.</p>
+} @else {
+  <ul>
+    @for (category of categories.value(); track category.id) {
+      <li>{{ category.name }} - {{ category.type }}</li>
+    }
+  </ul>
+}

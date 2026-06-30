@@ -2,6 +2,16 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.4.
 
+## Frontend Architecture Decisions
+
+| Decision | Reason |
+|----------|--------|
+| Facades for commands | Keep components thin and isolate workflows such as create, update, delete and navigation |
+| `httpResource` for queries | Use Angular's built-in loading, error and value handling for GET requests |
+| Signals for UI state | Avoid unnecessary RxJS state management for local reactive state |
+| `@Service()` and `inject()` | Follow modern Angular 22 dependency injection style |
+| Feature-based folders | Keep feature-specific components, forms, facades and models together |
+
 ## Development server
 
 To start a local development server, run:

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Login } from './login';
+import { provideHttpClient } from '@angular/common/http';
+import { provideRouter } from '@angular/router';
+import { API_URL } from '../../../core/config/api.config';
 
 describe('Login', () => {
   let component: Login;
@@ -9,6 +12,14 @@ describe('Login', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Login],
+      providers: [
+        provideHttpClient(),
+        provideRouter([]),
+        {
+          provide: API_URL,
+          useValue: 'https://localhost:7115/api',
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Login);

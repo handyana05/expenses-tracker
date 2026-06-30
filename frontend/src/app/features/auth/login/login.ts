@@ -1,45 +1,33 @@
 import { Component, inject, signal } from '@angular/core';
-import { Auth } from '../../../core/auth/auth/auth';
 import { LoginFormFactory } from './login.form-factory';
-import { Router } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoginFacade } from './login-facade/login-facade';
+import { LoginCommand } from './login.model';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule],
+  providers: [LoginFacade],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
-  private readonly auth = inject(Auth);
-  private readonly router = inject(Router);
+  readonly facade = inject(LoginFacade);
 
   readonly form = LoginFormFactory.create();
 
-  readonly isSubmitting = signal(false);
-  readonly errorMessage = signal<string | null>(null);
-
   submit(): void {
-    if (this.form.invalid || this.isSubmitting()) {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    this.isSubmitting.set(true);
-    this.errorMessage.set(null);
+    if (this.facade.loading()) {
+      return;
+    }
 
-    this.auth.login(this.form.getRawValue())
-      .subscribe({
-        next: async () => {
-          await this.router.navigate(['/dashboard']);
-        },
-        error: () => {
-          this.errorMessage.set('Invalid email or password.');
-          this.isSubmitting.set(false);
-        },
-        complete: () => {
-          this.isSubmitting.set(false);
-        }
-      })
+    const command: LoginCommand = this.form.getRawValue();
+
+    this.facade.login(command);
   }
 }
