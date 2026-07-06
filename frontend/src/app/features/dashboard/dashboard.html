@@ -1,1 +1,26 @@
-<p>dashboard works!</p>
+<h1>Expense Tracker</h1>
+
+<nav>
+  <a routerLink="/dashboard">Dashboard</a> |
+  <a routerLink="/categories">Categories</a> |
+  <a routerLink="/transactions">Transactions</a> |
+  <a routerLink="/reports">Reports</a>
+</nav>
+
+<button type="button" (click)="logout()">Logout</button>
+
+<hr />
+
+<h2>This Month</h2>
+
+@if (monthlySummary.isLoading()) {
+  <p>Loading dashboard...</p>
+} @else if (monthlySummary.error()) {
+  <p>Could not load dashboard.</p>
+} @else {
+  <section>
+    <p>Total Income: {{ monthlySummary.value().totalIncome }}</p>
+    <p>Total Expenses: {{ monthlySummary.value().totalExpenses }}</p>
+    <p>Balance: {{ monthlySummary.value().balance }}</p>
+  </section>
+}

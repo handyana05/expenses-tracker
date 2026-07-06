@@ -1,0 +1,35 @@
+<h1>Reports</h1>
+
+<label>
+  Year
+  <input
+    type="number"
+    [ngModel]="year()"
+    (ngModelChange)="year.set($event)" />
+</label>
+
+<label>
+  Month
+  <input
+    type="number"
+    min="1"
+    max="12"
+    [ngModel]="month()"
+    (ngModelChange)="month.set($event)" />
+</label>
+
+<button type="button" (click)="reload()">Load</button>
+
+<hr />
+
+@if (monthlySummary.isLoading()) {
+  <p>Loading summary...</p>
+} @else if (monthlySummary.error()) {
+  <p>Could not load monthly summary.</p>
+} @else {
+  <section>
+    <p>Total Income: {{ monthlySummary.value().totalIncome }}</p>
+    <p>Total Expenses: {{ monthlySummary.value().totalExpenses }}</p>
+    <p>Balance: {{ monthlySummary.value().balance }}</p>
+  </section>
+}

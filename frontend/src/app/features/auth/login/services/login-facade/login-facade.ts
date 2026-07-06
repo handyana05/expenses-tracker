@@ -1,8 +1,8 @@
 import { inject, Service, signal } from '@angular/core';
-import { Auth } from '../../../../core/auth/auth/auth';
+import { Auth } from '../../../../../core/auth/auth/auth';
 import { Router } from '@angular/router';
-import { LoginCommand } from '../login.model';
-import { LoginRequest } from '../../../../core/models/login-request.model';
+import { LoginCommand } from '../../models/login.model';
+import { LoginRequest } from '../../../../../core/models/login-request.model';
 
 @Service()
 export class LoginFacade {

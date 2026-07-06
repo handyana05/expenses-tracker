@@ -4,11 +4,13 @@ import { Register } from './features/auth/register/register';
 import { Dashboard } from './features/dashboard/dashboard';
 import { authGuard } from './core/guards/auth-guard';
 import { Categories } from './features/categories/categories';
+import { Transactions } from './features/transactions/transactions';
+import { Reports } from './features/reports/reports';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
   {
@@ -30,7 +32,17 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'transactions',
+    component: Transactions,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'reports',
+    component: Reports,
+    canActivate: [authGuard]
+  },
+  {
     path: '**',
-    redirectTo: 'login',
+    redirectTo: 'dashboard',
   },
 ];

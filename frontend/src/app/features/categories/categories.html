@@ -1,5 +1,55 @@
 <h1>Categories</h1>
 
+<form [formGroup]="form" (ngSubmit)="createCategory()">
+  <h2>
+    @if (isEditing) {
+      Edit Category
+    } @else {
+      Create Category
+    }
+  </h2>
+
+  @if (facade.error()) {
+    <p>{{ facade.error() }}</p>
+  }
+
+  <label>
+    Name
+    <input type="text" formControlName="name" />
+  </label>
+
+  @if (form.controls.name.touched && form.controls.name.invalid) {
+    <small>Name is required.</small>
+  }
+
+  <label>
+    Type
+    <select formControlName="type">
+      <option value="Income">Income</option>
+      <option value="Expense">Expense</option>
+    </select>
+  </label>
+
+  <button
+    type="submit"
+    [disabled]="facade.creating() || facade.updating()">
+    {{ submitButtonText }}
+  </button>
+
+  @if (isEditing) {
+    <button
+      type="button"
+      (click)="cancelEdit()"
+      [disabled]="facade.updating()">
+      Cancel
+    </button>
+  }
+</form>
+
+<hr />
+
+<h2>Your Categories</h2>
+
 @if (categories.isLoading()) {
   <p>Loading categories...</p>
 } @else if (categories.error()) {
@@ -7,9 +57,35 @@
 } @else if (categories.value().length === 0) {
   <p>No categories yet.</p>
 } @else {
-  <ul>
-    @for (category of categories.value(); track category.id) {
-      <li>{{ category.name }} - {{ category.type }}</li>
-    }
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (category of categories.value(); track category.id) {
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>{{ category.type }}</td>
+          <td>
+            <button
+              type="button"
+              (click)="editCategory(category)">
+              Edit
+            </button>
+
+            <button
+              type="button"
+              (click)="deleteCategory(category.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
 }

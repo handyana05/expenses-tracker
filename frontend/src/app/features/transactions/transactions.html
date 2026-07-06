@@ -1,0 +1,99 @@
+<h1>Transactions</h1>
+
+<form [formGroup]="form" (ngSubmit)="saveTransaction()">
+  <h2>
+    @if (isEditing) {
+      Edit Transaction
+    } @else {
+      Create Transaction
+    }
+  </h2>
+
+  @if (facade.error()) {
+    <p>{{ facade.error() }}</p>
+  }
+
+  <label>
+    Category
+    <select formControlName="categoryId">
+      <option value="">Select category</option>
+
+      @for (category of categories.value(); track category.id) {
+        <option [value]="category.id">
+          {{ category.name }} ({{ category.type }})
+        </option>
+      }
+    </select>
+  </label>
+
+  <label>
+    Amount
+    <input type="number" formControlName="amount" />
+  </label>
+
+  <label>
+    Date
+    <input type="date" formControlName="transactionDate" />
+  </label>
+
+  <label>
+    Description
+    <input type="text" formControlName="description" />
+  </label>
+
+  <button
+    type="submit"
+    [disabled]="facade.creating() || facade.updating()">
+    {{ submitButtonText }}
+  </button>
+
+  @if (isEditing) {
+    <button type="button" (click)="cancelEdit()">
+      Cancel
+    </button>
+  }
+</form>
+
+<hr />
+
+<h2>Your Transactions</h2>
+
+@if (transactions.isLoading()) {
+  <p>Loading transactions...</p>
+} @else if (transactions.error()) {
+  <p>Could not load transactions.</p>
+} @else if (transactions.value().length === 0) {
+  <p>No transactions yet.</p>
+} @else {
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (transaction of transactions.value(); track transaction.id) {
+        <tr>
+          <td>{{ transaction.transactionDate | date: 'yyyy-MM-dd' }}</td>
+          <td>{{ transaction.categoryName }}</td>
+          <td>{{ transaction.amount }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>
+            <button type="button" (click)="editTransaction(transaction)">
+              Edit
+            </button>
+
+            <button type="button" (click)="deleteTransaction(transaction.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

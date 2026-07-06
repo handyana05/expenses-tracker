@@ -6,6 +6,7 @@ import { tap } from 'rxjs';
 import { API_URL } from '../../config/api.config';
 import { RegisterRequest } from '../../models/register-request.model';
 import { AuthState } from '../auth-state/auth-state';
+import { ApiRoutes } from '../../api/api-routes';
 
 @Service()
 export class Auth {
@@ -15,13 +16,13 @@ export class Auth {
 
     login(request: LoginRequest) {
         return this.http
-            .post<AuthResult>(`${this.apiUrl}/auth/login`, request)
+            .post<AuthResult>(`${this.apiUrl}${ApiRoutes.auth.login}`, request)
             .pipe(tap((result) => this.authState.setAuthenticated(result.accessToken)));
     }
 
     register(request: RegisterRequest) {
         return this.http
-            .post<AuthResult>(`${this.apiUrl}/auth/register`, request)
+            .post<AuthResult>(`${this.apiUrl}${ApiRoutes.auth.register}`, request)
             .pipe(tap((result) => this.authState.setAuthenticated(result.accessToken)));
     }
 

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
 import { LoginFacade } from './login-facade';
-import { LoginCommand } from '../login.model';
-import { Auth } from '../../../../core/auth/auth/auth';
+import { LoginCommand } from '../../models/login.model';
+import { Auth } from '../../../../../core/auth/auth/auth';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
 

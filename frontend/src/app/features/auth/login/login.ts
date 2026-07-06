@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { LoginFormFactory } from './login.form-factory';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LoginFacade } from './login-facade/login-facade';
-import { LoginCommand } from './login.model';
+import { LoginFacade } from './services/login-facade/login-facade';
+import { LoginCommand } from './models/login.model';
 
 @Component({
   selector: 'app-login',
