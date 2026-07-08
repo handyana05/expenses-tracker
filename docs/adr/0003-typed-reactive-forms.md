@@ -1,7 +1,4 @@
 
-## `0003-typed-reactive-forms.md`
-
-```md
 # ADR-0003: Use Typed Reactive Forms with Form Factories
 
 ## Status
@@ -25,3 +22,4 @@ features/categories/
 ├── category-form.factory.ts
 ├── category.models.ts
 └── categories.ts
+```

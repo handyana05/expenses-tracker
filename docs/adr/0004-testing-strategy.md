@@ -1,7 +1,3 @@
-
-## `0004-testing-strategy.md`
-
-```md
 # ADR-0004: Frontend Testing Strategy
 
 ## Status

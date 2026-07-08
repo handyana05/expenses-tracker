@@ -1,7 +1,4 @@
 
-## `0002-command-pattern.md`
-
-```md
 # ADR-0002: Use Facade and Service for Commands
 
 ## Status
@@ -33,3 +30,4 @@ Component
 → Facade
 → Service
 → Backend API
+```
