@@ -5,6 +5,8 @@ import { HttpTestingController, provideHttpClientTesting } from '@angular/common
 import { CategoryFacade } from './services/category-facade/category-facade';
 import { API_URL } from '../../core/config/api.config';
 import { provideHttpClient } from '@angular/common/http';
+import { CategoryType } from '../../shared/models/category-type.model';
+import { of } from 'rxjs';
 
 describe('Categories', () => {
   let fixture: ComponentFixture<Categories>;
@@ -31,7 +33,10 @@ describe('Categories', () => {
       providers: [
         provideHttpClient(),
         provideHttpClientTesting(),
-        { provide: API_URL, useValue: apiUrl },
+        {
+          provide: API_URL,
+          useValue: apiUrl,
+        },
       ],
     })
       .overrideComponent(Categories, {
@@ -58,6 +63,7 @@ describe('Categories', () => {
 
   afterEach(() => {
     httpMock.verify();
+    vi.restoreAllMocks();
   });
 
   it('should create', () => {
@@ -65,60 +71,91 @@ describe('Categories', () => {
   });
 
   it('should create category when form is valid', () => {
-    facadeMock.create.mockImplementation((_command, onSuccess) => {
-      onSuccess?.();
-    });
+    facadeMock.create.mockReturnValue(of({}));
 
     component.form.setValue({
       name: 'Food',
-      type: 'Expense',
+      type: CategoryType.Expense,
     });
 
     component.createCategory();
 
-    expect(facadeMock.create).toHaveBeenCalledWith(
-      {
-        name: 'Food',
-        type: 'Expense',
-      },
-      expect.any(Function)
-    );
+    expect(facadeMock.create).toHaveBeenCalledWith({
+      name: 'Food',
+      type: CategoryType.Expense,
+    });
 
     expect(component.form.getRawValue()).toEqual({
       name: '',
-      type: 'Expense',
+      type: CategoryType.Expense,
     });
   });
 
-  it('should update category when editing', () => {
-    facadeMock.update.mockImplementation((_command, onSuccess) => {
-      onSuccess?.();
+  it('should not create category when form is invalid', () => {
+    component.form.setValue({
+      name: '',
+      type: CategoryType.Expense,
     });
+
+    component.createCategory();
+
+    expect(facadeMock.create).not.toHaveBeenCalled();
+  });
+
+  it('should populate form when editing category', () => {
+    component.editCategory({
+      id: 'category-id',
+      name: 'Salary',
+      type: CategoryType.Income,
+    });
+
+    expect(component.form.getRawValue()).toEqual({
+      name: 'Salary',
+      type: CategoryType.Income,
+    });
+
+    expect(component.isEditing).toBe(true);
+  });
+
+  it('should update category when editing', () => {
+    facadeMock.update.mockReturnValue(of({}));
 
     component.editCategory({
       id: 'category-id',
       name: 'Salary',
-      type: 'Income',
+      type: CategoryType.Income,
     });
 
     component.createCategory();
 
-    expect(facadeMock.update).toHaveBeenCalledOnce();
-
-    expect(facadeMock.update).toHaveBeenCalledWith(
-      {
-        id: 'category-id',
-        name: 'Salary',
-        type: 'Income',
-      },
-      expect.any(Function)
-    );
+    expect(facadeMock.update).toHaveBeenCalledWith({
+      id: 'category-id',
+      name: 'Salary',
+      type: CategoryType.Income,
+    });
 
     expect(facadeMock.create).not.toHaveBeenCalled();
 
     expect(component.form.getRawValue()).toEqual({
       name: '',
-      type: 'Expense',
+      type: CategoryType.Expense,
+    });
+
+    expect(component.isEditing).toBe(false);
+  });
+
+  it('should cancel editing', () => {
+    component.editCategory({
+      id: 'category-id',
+      name: 'Salary',
+      type: CategoryType.Income,
+    });
+
+    component.cancelEdit();
+
+    expect(component.form.getRawValue()).toEqual({
+      name: '',
+      type: CategoryType.Expense,
     });
 
     expect(component.isEditing).toBe(false);
@@ -126,19 +163,12 @@ describe('Categories', () => {
 
   it('should delete category when confirmed', () => {
     vi.spyOn(window, 'confirm').mockReturnValue(true);
-
-    facadeMock.delete.mockImplementation((_id, onSuccess) => {
-      onSuccess?.();
-    });
+    facadeMock.delete.mockReturnValue(of({}));
 
     component.deleteCategory('category-id');
 
     expect(window.confirm).toHaveBeenCalled();
-
-    expect(facadeMock.delete).toHaveBeenCalledWith(
-      'category-id',
-      expect.any(Function)
-    );
+    expect(facadeMock.delete).toHaveBeenCalledWith('category-id');
   });
 
   it('should not delete category when confirmation is cancelled', () => {
@@ -147,20 +177,5 @@ describe('Categories', () => {
     component.deleteCategory('category-id');
 
     expect(facadeMock.delete).not.toHaveBeenCalled();
-  });
-
-  it('should populate the form when editing', () => {
-    component.editCategory({
-      id: 'category-id',
-      name: 'Salary',
-      type: 'Income',
-    });
-
-    expect(component.form.getRawValue()).toEqual({
-      name: 'Salary',
-      type: 'Income',
-    });
-
-    expect(component.isEditing).toBe(true);
   });
 });

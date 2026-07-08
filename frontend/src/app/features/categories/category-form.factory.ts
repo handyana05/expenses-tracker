@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { CategoryType } from './models/category-type.model';
+import { CategoryType } from '../../shared/models/category-type.model';
 
 export type CategoryForm = FormGroup<{
   name: FormControl<string>;
@@ -14,7 +14,7 @@ export class CategoryFormFactory {
         nonNullable: true,
         validators: [Validators.required],
       }),
-      type: new FormControl<CategoryType>('Expense', {
+      type: new FormControl<CategoryType>(CategoryType.Expense, {
         nonNullable: true,
         validators: [Validators.required],
       }),

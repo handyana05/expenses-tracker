@@ -1,4 +1,7 @@
-<h1>Categories</h1>
+<app-page-header
+  title="Categories"
+  subtitle="Manage your income and expense categories">
+</app-page-header>
 
 <form [formGroup]="form" (ngSubmit)="createCategory()">
   <h2>
@@ -13,24 +16,32 @@
     <p>{{ facade.error() }}</p>
   }
 
-  <label>
-    Name
-    <input type="text" formControlName="name" />
-  </label>
+  <mat-form-field appearance="outline">
+    <mat-label>Name</mat-label>
+    <input
+        matInput
+        formControlName="name">
+  </mat-form-field>
 
   @if (form.controls.name.touched && form.controls.name.invalid) {
     <small>Name is required.</small>
   }
 
-  <label>
-    Type
-    <select formControlName="type">
-      <option value="Income">Income</option>
-      <option value="Expense">Expense</option>
-    </select>
-  </label>
+  <mat-form-field appearance="outline">
+    <mat-label>Type</mat-label>
+    <mat-select formControlName="type">
+        <mat-option [value]="CategoryType.Income">
+            Income
+        </mat-option>
+        <mat-option [value]="CategoryType.Expense">
+            Expense
+        </mat-option>
+    </mat-select>
+  </mat-form-field>
 
   <button
+    mat-flat-button
+    color="primary"
     type="submit"
     [disabled]="facade.creating() || facade.updating()">
     {{ submitButtonText }}
@@ -38,6 +49,7 @@
 
   @if (isEditing) {
     <button
+      mat-button
       type="button"
       (click)="cancelEdit()"
       [disabled]="facade.updating()">
@@ -51,11 +63,14 @@
 <h2>Your Categories</h2>
 
 @if (categories.isLoading()) {
-  <p>Loading categories...</p>
+  <app-loading-spinner />
 } @else if (categories.error()) {
   <p>Could not load categories.</p>
 } @else if (categories.value().length === 0) {
-  <p>No categories yet.</p>
+  <app-empty-state
+      title="No categories"
+      description="Create your first category.">
+  </app-empty-state>
 } @else {
   <table>
     <thead>

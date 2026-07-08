@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { API_URL } from '../../../../core/config/api.config';
 import { CreateCategoryCommand } from '../../models/create-category.command';
+import { CategoryType } from '../../../../shared/models/category-type.model';
 
 describe('Category', () => {
   let service: Category;
@@ -34,7 +35,7 @@ describe('Category', () => {
   it('should create a category', () => {
     const command: CreateCategoryCommand = {
       name: 'Food',
-      type: 'Expense',
+      type: CategoryType.Expense,
     };
 
     service.create(command).subscribe();
@@ -51,7 +52,7 @@ describe('Category', () => {
     const command: UpdateCategoryCommand = {
       id: 'category-id',
       name: 'Salary',
-      type: 'Income',
+      type: CategoryType.Income,
     };
 
     service.update(command).subscribe();

@@ -2,6 +2,7 @@ import { inject, Service, signal } from '@angular/core';
 import { Category } from '../category/category';
 import { CreateCategoryCommand } from '../../models/create-category.command';
 import { UpdateCategoryCommand } from '../../models/update-category.command';
+import { finalize, Observable, tap } from 'rxjs';
 
 @Service()
 export class CategoryFacade {
@@ -12,57 +13,39 @@ export class CategoryFacade {
     readonly deleting = signal(false);
     readonly error = signal<string | null>(null);
 
-    create(command: CreateCategoryCommand, onSuccess?: () => void): void {
+    create(command: CreateCategoryCommand): Observable<Object> {
         this.creating.set(true);
         this.error.set(null);
 
-        this.categoryService.create(command).subscribe({
-            next: () => {
-                onSuccess?.();
-            },
-            error: () => {
-                this.error.set('Could not create category.');
-                this.creating.set(false);
-            },
-            complete: () => {
-                this.creating.set(false);
-            }
-        });
+        return this.categoryService.create(command).pipe(
+            tap({
+                error: () => this.error.set('Could not create category.')
+            }),
+            finalize(() => this.creating.set(false))
+        );
     }
 
-    update(command: UpdateCategoryCommand, onSuccess?: () => void) {
+    update(command: UpdateCategoryCommand): Observable<Object> {
         this.updating.set(true);
         this.error.set(null);
 
-        this.categoryService.update(command).subscribe({
-            next: () => {
-                onSuccess?.();
-            },
-            error: () => {
-                this.error.set('Could not update category.');
-                this.updating.set(false);
-            },
-            complete: () => {
-                this.updating.set(false);
-            }
-        });
+        return this.categoryService.update(command).pipe(
+            tap({
+                error: () => this.error.set('Could not update category.')
+            }),
+            finalize(() => this.updating.set(false))
+        );
     }
 
-    delete(id: string, onSuccess?: () => void) {
+    delete(id: string): Observable<Object> {
         this.deleting.set(true);
         this.error.set(null);
 
-        this.categoryService.delete(id).subscribe({
-            next: () => {
-                onSuccess?.();
-            },
-            error: () => {
-                this.error.set('Could not delete category.');
-                this.deleting.set(false);
-            },
-            complete: () => {
-                this.deleting.set(false);
-            }
-        });
+        return this.categoryService.delete(id).pipe(
+            tap({
+                error: () => this.error.set('Could not delete category.')
+            }),
+            finalize(() => this.deleting.set(false))
+        );
     }
 }
