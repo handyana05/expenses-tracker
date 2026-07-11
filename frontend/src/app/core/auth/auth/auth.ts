@@ -17,13 +17,13 @@ export class Auth {
     login(request: LoginRequest) {
         return this.http
             .post<AuthResult>(`${this.apiUrl}${ApiRoutes.auth.login}`, request)
-            .pipe(tap((result) => this.authState.setAuthenticated(result.accessToken)));
+            .pipe(tap((result) => this.setAuthenticated(result)));
     }
 
     register(request: RegisterRequest) {
         return this.http
             .post<AuthResult>(`${this.apiUrl}${ApiRoutes.auth.register}`, request)
-            .pipe(tap((result) => this.authState.setAuthenticated(result.accessToken)));
+            .pipe(tap((result) => this.setAuthenticated(result)));
     }
 
     logout(): void {
@@ -32,5 +32,12 @@ export class Auth {
 
     isAuthenticated(): boolean {
         return this.authState.isAuthenticated();
+    }
+
+    private setAuthenticated(result: AuthResult): void {
+        this.authState.setAuthenticated(result.accessToken, {
+            email: result.email,
+            displayName: result.displayName ?? null,
+        });
     }
 }

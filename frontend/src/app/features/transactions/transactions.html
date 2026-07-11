@@ -58,7 +58,7 @@
       </button>
 
       @if (isEditing) {
-        <button mat-flat-button color="primary" type="button" (click)="cancelEdit()">
+        <button mat-button type="button" (click)="cancelEdit()">
           <mat-icon>close</mat-icon>
           Cancel
         </button>
@@ -116,13 +116,13 @@
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td mat-cell *matCellDef="let transaction">
-          <button mat-flat-button color="primary" type="button" (click)="editTransaction(transaction)">
+        <td mat-cell class="table-actions" *matCellDef="let transaction">
+          <button mat-button type="button" (click)="editTransaction(transaction)">
             <mat-icon>edit</mat-icon>
             Edit
           </button>
 
-          <button mat-flat-button color="primary" type="button" (click)="deleteTransaction(transaction.id)">
+          <button class="danger-action" mat-button type="button" (click)="deleteTransaction(transaction.id)">
             <mat-icon>delete</mat-icon>
             Delete
           </button>

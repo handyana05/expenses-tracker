@@ -36,6 +36,14 @@ table {
   min-width: 520px;
 }
 
+.table-actions {
+  white-space: nowrap;
+}
+
+.danger-action {
+  color: var(--mat-sys-error);
+}
+
 @media (max-width: 600px) {
   form {
     grid-template-columns: 1fr;

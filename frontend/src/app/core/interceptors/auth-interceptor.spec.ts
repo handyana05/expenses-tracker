@@ -14,6 +14,7 @@ import { AuthState } from '../auth/auth-state/auth-state';
 import { TokenStorage } from '../auth/token-storage/token-storage';
 import { Router } from '@angular/router';
 import { AppRoutes } from '../../shared/constants/app-routes';
+import { UserStorage } from '../auth/user-storage/user-storage';
 
 describe('authInterceptor', () => {
   let http: HttpClient;
@@ -32,6 +33,7 @@ describe('authInterceptor', () => {
       providers: [
         AuthState,
         TokenStorage,
+        UserStorage,
         { provide: Router, useValue: routerMock },
         provideHttpClient(withInterceptors([authInterceptor])),
         provideHttpClientTesting(),

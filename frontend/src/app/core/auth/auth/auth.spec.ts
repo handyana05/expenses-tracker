@@ -9,6 +9,7 @@ import { AuthState } from '../auth-state/auth-state';
 import { TokenStorage } from '../token-storage/token-storage';
 import { provideHttpClient } from '@angular/common/http';
 import { API_URL } from '../../config/api.config';
+import { UserStorage } from '../user-storage/user-storage';
 
 describe('Auth', () => {
   let auth: Auth;
@@ -25,6 +26,7 @@ describe('Auth', () => {
         Auth,
         AuthState,
         TokenStorage,
+        UserStorage,
         provideHttpClient(),
         provideHttpClientTesting(),
         {
@@ -70,6 +72,10 @@ describe('Auth', () => {
 
     expect(authState.isAuthenticated()).toBe(true);
     expect(authState.accessToken()).toBe(response.accessToken);
+    expect(authState.user()).toEqual({
+      email: response.email,
+      displayName: response.displayName,
+    });
   });
 
   it('should register and set authenticated state', () => {
@@ -99,6 +105,7 @@ describe('Auth', () => {
 
     expect(authState.isAuthenticated()).toBe(true);
     expect(authState.accessToken()).toBe(response.accessToken);
+    expect(authState.user()?.displayName).toBe(request.displayName);
   });
 
   it('should logout and clear authenticated state', () => {

@@ -66,6 +66,13 @@
       <span>Expense Tracker</span>
       <span class="shell__spacer"></span>
 
+      <div class="shell__user" [title]="authState.userLabel()">
+        <span class="shell__avatar" aria-hidden="true">
+          {{ authState.userInitials() }}
+        </span>
+        <span class="shell__user-label">{{ authState.userLabel() }}</span>
+      </div>
+
       <button mat-button type="button" (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout

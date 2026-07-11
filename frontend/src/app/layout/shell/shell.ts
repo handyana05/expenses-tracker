@@ -11,6 +11,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { Auth } from '../../core/auth/auth/auth';
 import { AppRoutes } from '../../shared/constants/app-routes';
+import { AuthState } from '../../core/auth/auth-state/auth-state';
 
 @Component({
   selector: 'app-shell',
@@ -29,6 +30,7 @@ import { AppRoutes } from '../../shared/constants/app-routes';
 })
 export class Shell {
   private readonly auth = inject(Auth);
+  readonly authState = inject(AuthState);
   private readonly router = inject(Router);
   private readonly breakpointObserver = inject(BreakpointObserver);
 

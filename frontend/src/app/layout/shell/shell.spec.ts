@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Shell } from './shell';
 import { API_URL } from '../../core/config/api.config';
 import { provideRouter } from '@angular/router';
+import { AuthState } from '../../core/auth/auth-state/auth-state';
 
 describe('Shell', () => {
   let component: Shell;
@@ -20,6 +21,11 @@ describe('Shell', () => {
       ],
     }).compileComponents();
 
+    TestBed.inject(AuthState).setAuthenticated('test-token', {
+      email: 'jane@example.com',
+      displayName: 'Jane Doe',
+    });
+
     fixture = TestBed.createComponent(Shell);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -27,5 +33,10 @@ describe('Shell', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show the authenticated user initials and display name', () => {
+    expect(fixture.nativeElement.querySelector('.shell__avatar').textContent.trim()).toBe('JD');
+    expect(fixture.nativeElement.querySelector('.shell__user-label').textContent.trim()).toBe('Jane Doe');
   });
 });
