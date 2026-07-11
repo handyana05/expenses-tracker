@@ -498,6 +498,18 @@ POST /api/transactions/import
 }
 ```
 
+#### Export Transactions
+
+Transaction export is performed by the Angular frontend from the authenticated
+user's already-loaded transaction list. It does not require a separate backend
+endpoint or an additional API request.
+
+The exported CSV uses this header:
+
+```csv
+Date,Category,Type,Amount,Description
+```
+
 ---
 
 ### Reports
