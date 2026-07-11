@@ -149,6 +149,18 @@ category ownership and saves the batch in one unit of work.
 
 ## Screenshots
 
-### Landing page
+### Landing Page
 
 ![LandingPage](../docs/frontend-landing-page.png)
+
+### Categories Page
+
+![CategoriesPage](../docs/frontend-categories-page.png)
+
+### Transactions Page
+
+![TransactionsPage](../docs/frontend-transactions-page.png)
+
+### Reports Page
+
+![ReportsPage](../docs/frontend-reports-page.png)

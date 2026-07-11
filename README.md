@@ -287,9 +287,12 @@ Additional documentation is available inside the project.
 ![Scalar-Categories-1](./docs/backend-scallar-categories-1.png)
 ![Scalar-Categories-2](./docs/backend-scallar-categories-2.png)
 
-## Frontend Landing Page
+## Frontend
 
 ![LandingPage](./docs/frontend-landing-page.png)
+![CategoriesPage](../docs/frontend-categories-page.png)
+![TransactionsPage](../docs/frontend-transactions-page.png)
+![ReportsPage](../docs/frontend-reports-page.png)
 
 ## GitHub Actions
 
