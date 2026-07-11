@@ -351,41 +351,54 @@ trusted reverse proxy or cloud ingress and production secret management.
 
 ## Development Roadmap
 
-### Phase 1
+### Phase 1 — Complete: Backend Foundation
 
 - Backend REST API
 - Authentication
 - Categories
 - Transactions
 - Reports
+- Automated unit and integration tests
+- PostgreSQL persistence and migrations
 
-### Phase 2 — Current
+### Phase 2 — Complete: Frontend MVP
 
 - Angular Frontend
-- Dashboard
-- Responsive UI
-- Frontend automated tests
-- Public landing page
-
-### Phase 2.1 — Next
-
-- Complete mobile-layout verification
+- Public landing page and authentication flows
+- Responsive shell and active navigation
+- Categories and Transactions CRUD
+- Dashboard and monthly reports
+- Reports visualization
 - CSV import and export
+- Frontend automated tests
+- Production multi-stage Docker images
+- Full-stack Docker Compose orchestration
 
-### Phase 3
+### Phase 3 — Current: Deployment Readiness
+
+- Complete phone and tablet viewport verification
+- Resolve dependency security advisories
+- Reduce the initial Angular bundle warning
+- Choose and provision the cloud hosting platform
+- Configure managed secrets, TLS, and production database access
+- Add deployment CI/CD and post-deployment health verification
+
+### Phase 4 — Observability
 
 - OpenTelemetry
+- Structured production logging
 - Prometheus
 - Grafana
-- Azure Deployment
-- Kubernetes
+- Alerts and operational dashboards
 
-### Phase 4
+### Phase 5 — Future Product Enhancements
 
 - AI-powered Spending Insights
-- Budget Forecasting
+- Budgets and forecasting
+- Recurring transactions
+- Notifications
 - Receipt Scanning
-- Smart Financial Recommendations
+- Dark mode and localization
 
 ---
 
