@@ -290,9 +290,9 @@ Additional documentation is available inside the project.
 ## Frontend
 
 ![LandingPage](./docs/frontend-landing-page.png)
-![CategoriesPage](../docs/frontend-categories-page.png)
-![TransactionsPage](../docs/frontend-transactions-page.png)
-![ReportsPage](../docs/frontend-reports-page.png)
+![CategoriesPage](./docs/frontend-categories-page.png)
+![TransactionsPage](./docs/frontend-transactions-page.png)
+![ReportsPage](./docs/frontend-reports-page.png)
 
 ## GitHub Actions
 
