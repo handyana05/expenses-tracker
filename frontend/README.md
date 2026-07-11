@@ -1,5 +1,11 @@
 # Expense Tracker Frontend
 
+![Angular](https://img.shields.io/badge/Angular-22-DD0031?logo=angular)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)
+![Angular Material](https://img.shields.io/badge/Angular_Material-22-3F51B5?logo=angular)
+![Vitest](https://img.shields.io/badge/Vitest-4-6E9F18?logo=vitest&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Chart.js-4-FF6384?logo=chartdotjs&logoColor=white)
+
 Angular 22 frontend for the Expense Tracker application. It provides a public
 landing page and an authenticated personal-finance workspace for categories,
 transactions, dashboard summaries, and monthly reports.
