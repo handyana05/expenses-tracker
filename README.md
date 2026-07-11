@@ -208,6 +208,7 @@ expense-tracker/
 - Dashboard and Monthly Reports UI
 - Income-versus-expenses report visualization
 - Responsive, categorized recent-transaction presentation
+- Transaction CSV import and export
 - Shared Material presentation components
 - Frontend unit tests
 
@@ -215,11 +216,10 @@ expense-tracker/
 
 - Repository Documentation
 - Frontend mobile-layout verification
-- CSV import and export
+- Production Docker and deployment workflow
 
 ### Planned
 
-- CSV import and export
 - Production deployment
 - Budget Planning
 - OpenTelemetry
@@ -286,6 +286,10 @@ Additional documentation is available inside the project.
 ![Scalar-Authentication](./docs//backend-scallar-authentication.png)
 ![Scalar-Categories-1](./docs/backend-scallar-categories-1.png)
 ![Scalar-Categories-2](./docs/backend-scallar-categories-2.png)
+
+## Frontend Landing Page
+
+![LandingPage](../docs/frontend-lading-page.png)
 
 ## GitHub Actions
 

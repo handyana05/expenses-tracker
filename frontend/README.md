@@ -25,6 +25,7 @@ transactions, dashboard summaries, and monthly reports.
 - Transaction CRUD
 - Current-month dashboard summary and responsive, categorized recent activity
 - Monthly income, expense, and balance reports with a comparison chart
+- Transaction CSV import and export
 - Reusable loading, empty-state, page-card, page-header, summary-card, confirmation,
   and snackbar UI
 
@@ -110,6 +111,24 @@ npm run build
 The build currently reports an existing initial-bundle budget warning. New
 features should avoid adding further budget warnings.
 
+## Transaction CSV Format
+
+Transaction exports and imports use the following case-sensitive header row:
+
+```csv
+Date,Category,Type,Amount,Description
+```
+
+- `Date` uses `YYYY-MM-DD`.
+- `Category` must match an existing category for the signed-in user.
+- `Type` is `Income` or `Expense` and must match that category.
+- `Amount` is a positive number using `.` as the decimal separator.
+- `Description` is optional and limited to 500 characters.
+- A single import supports at most 500 transactions.
+
+The frontend validates the complete file before upload. The backend validates
+category ownership and saves the batch in one unit of work.
+
 ## Testing Conventions
 
 - Services verify HTTP methods, URLs, bodies, and responses.
@@ -123,6 +142,13 @@ features should avoid adding further budget warnings.
 
 1. Keep the complete test suite and production build green.
 2. Finish mobile-layout verification at phone and tablet widths.
-3. Add CSV import and export.
-4. Complete production Docker configuration and deployment.
-5. Add observability and, later, AI-powered spending insights.
+3. Complete production Docker configuration and deployment.
+4. Add observability and, later, AI-powered spending insights.
+
+---
+
+## Screenshots
+
+### Landing page
+
+![LandingPage](../docs/frontend-lading-page.png)
