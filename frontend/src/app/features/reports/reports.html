@@ -63,4 +63,35 @@
     tone="balance"
     [value]="monthlySummary.value().balance" />
   </div>
+
+  <br />
+
+  <app-page-card>
+    <div class="chart-heading">
+      <div>
+        <h2>Income and Expenses</h2>
+        <p>Compare money earned and spent for the selected month.</p>
+      </div>
+      <mat-icon>donut_large</mat-icon>
+    </div>
+
+    @if (hasActivity()) {
+      <div class="chart-container">
+        <canvas
+          baseChart
+          type="doughnut"
+          aria-label="Income and expenses comparison chart"
+          role="img"
+          [data]="comparisonChartData()"
+          [options]="comparisonChartOptions">
+        </canvas>
+      </div>
+    } @else {
+      <app-empty-state
+        icon="donut_small"
+        title="No activity this month"
+        description="Add income or expense transactions to see a comparison.">
+      </app-empty-state>
+    }
+  </app-page-card>
 }

@@ -30,6 +30,34 @@
   color: #d32f2f;
 }
 
+.chart-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.chart-heading h2,
+.chart-heading p {
+  margin: 0;
+}
+
+.chart-heading p {
+  margin-top: 6px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.chart-heading > mat-icon {
+  color: var(--mat-sys-primary);
+}
+
+.chart-container {
+  position: relative;
+  width: min(100%, 520px);
+  height: 340px;
+  margin: 24px auto 0;
+}
+
 @media (max-width: 900px) {
   .summary-grid {
     grid-template-columns: 1fr;
@@ -44,5 +72,9 @@
   .report-filters button {
     margin-top: 8px;
     justify-self: start;
+  }
+
+  .chart-container {
+    height: 280px;
   }
 }

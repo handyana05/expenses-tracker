@@ -45,4 +45,10 @@ describe('Reports', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should create comparison chart data from the monthly summary', () => {
+    expect(component.comparisonChartData().labels).toEqual(['Income', 'Expenses']);
+    expect(component.comparisonChartData().datasets[0].data).toEqual([0, 0]);
+    expect(component.hasActivity()).toBe(false);
+  });
 });

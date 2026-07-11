@@ -24,7 +24,7 @@ transactions, dashboard summaries, and monthly reports.
 - Category CRUD
 - Transaction CRUD
 - Current-month dashboard summary and recent transactions
-- Monthly income, expense, and balance reports
+- Monthly income, expense, and balance reports with a comparison chart
 - Reusable loading, empty-state, page-card, page-header, summary-card, confirmation,
   and snackbar UI
 
@@ -65,7 +65,8 @@ only perform HTTP communication. More detail is available in
 The authenticated routes render inside the responsive application shell. If an
 API request made with a token returns `401 Unauthorized`, the interceptor clears
 the local session and redirects to `/login`. A `403 Forbidden` response does not
-clear the session.
+clear the session. Reports is lazy-loaded so Chart.js does not increase the
+initial application bundle.
 
 ## Local Development
 
@@ -122,8 +123,7 @@ features should avoid adding further budget warnings.
 
 1. Keep the complete test suite and production build green.
 2. Finish mobile-layout verification at phone and tablet widths.
-3. Add useful Reports visualizations.
-4. Improve Dashboard recent-transaction presentation.
-5. Add CSV import and export.
-6. Complete production Docker configuration and deployment.
-7. Add observability and, later, AI-powered spending insights.
+3. Improve Dashboard recent-transaction presentation.
+4. Add CSV import and export.
+5. Complete production Docker configuration and deployment.
+6. Add observability and, later, AI-powered spending insights.

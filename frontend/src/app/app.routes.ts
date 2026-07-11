@@ -5,7 +5,6 @@ import { Dashboard } from './features/dashboard/dashboard';
 import { authGuard } from './core/guards/auth-guard';
 import { Categories } from './features/categories/categories';
 import { Transactions } from './features/transactions/transactions';
-import { Reports } from './features/reports/reports';
 import { Shell } from './layout/shell/shell';
 import { Landing } from './features/landing/landing';
 
@@ -47,7 +46,8 @@ export const routes: Routes = [
       },
       {
         path: 'reports',
-        component: Reports
+        loadComponent: () =>
+          import('./features/reports/reports').then(({ Reports }) => Reports)
       },
     ]
   },

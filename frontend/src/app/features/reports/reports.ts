@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { API_URL } from '../../core/config/api.config';
 import { httpResource } from '@angular/common/http';
 import { MonthlySummary } from './models/report.model';
@@ -10,6 +10,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import {
+  ArcElement,
+  ChartData,
+  ChartOptions,
+  DoughnutController,
+  Legend,
+  Tooltip,
+} from 'chart.js';
+import { BaseChartDirective, provideCharts } from 'ng2-charts';
 
 @Component({
   selector: 'app-reports',
@@ -26,6 +35,12 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
+    BaseChartDirective,
+  ],
+  providers: [
+    provideCharts({
+      registerables: [DoughnutController, ArcElement, Legend, Tooltip],
+    }),
   ],
   templateUrl: './reports.html',
   styleUrl: './reports.scss',
@@ -47,6 +62,47 @@ export class Reports {
       },
     }
   );
+
+  readonly hasActivity = computed(() => {
+    const summary = this.monthlySummary.value();
+    return summary.totalIncome > 0 || summary.totalExpenses > 0;
+  });
+
+  readonly comparisonChartData = computed<ChartData<'doughnut'>>(() => {
+    const summary = this.monthlySummary.value();
+
+    return {
+      labels: ['Income', 'Expenses'],
+      datasets: [
+        {
+          data: [summary.totalIncome, summary.totalExpenses],
+          backgroundColor: ['#2e7d32', '#d32f2f'],
+          borderWidth: 0,
+          hoverOffset: 6,
+        },
+      ],
+    };
+  });
+
+  readonly comparisonChartOptions: ChartOptions<'doughnut'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '68%',
+    plugins: {
+      legend: {
+        position: 'bottom',
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) =>
+            `${context.label}: ${new Intl.NumberFormat('de-DE', {
+              style: 'currency',
+              currency: 'EUR',
+            }).format(context.parsed)}`,
+        },
+      },
+    },
+  };
 
   reload(): void {
     this.monthlySummary.reload();
