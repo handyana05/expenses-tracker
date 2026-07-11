@@ -23,7 +23,7 @@ transactions, dashboard summaries, and monthly reports.
 - Responsive authenticated shell with active navigation
 - Category CRUD
 - Transaction CRUD
-- Current-month dashboard summary and recent transactions
+- Current-month dashboard summary and responsive, categorized recent activity
 - Monthly income, expense, and balance reports with a comparison chart
 - Reusable loading, empty-state, page-card, page-header, summary-card, confirmation,
   and snackbar UI
@@ -123,7 +123,6 @@ features should avoid adding further budget warnings.
 
 1. Keep the complete test suite and production build green.
 2. Finish mobile-layout verification at phone and tablet widths.
-3. Improve Dashboard recent-transaction presentation.
-4. Add CSV import and export.
-5. Complete production Docker configuration and deployment.
-6. Add observability and, later, AI-powered spending insights.
+3. Add CSV import and export.
+4. Complete production Docker configuration and deployment.
+5. Add observability and, later, AI-powered spending insights.

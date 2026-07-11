@@ -207,6 +207,7 @@ expense-tracker/
 - Categories and Transactions UI
 - Dashboard and Monthly Reports UI
 - Income-versus-expenses report visualization
+- Responsive, categorized recent-transaction presentation
 - Shared Material presentation components
 - Frontend unit tests
 
@@ -214,7 +215,7 @@ expense-tracker/
 
 - Repository Documentation
 - Frontend mobile-layout verification
-- Dashboard presentation polish
+- CSV import and export
 
 ### Planned
 
@@ -317,7 +318,6 @@ Additional documentation is available inside the project.
 ### Phase 2.1 — Next
 
 - Complete mobile-layout verification
-- Dashboard presentation polish
 - CSV import and export
 
 ### Phase 3

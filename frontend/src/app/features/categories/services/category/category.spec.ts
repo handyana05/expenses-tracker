@@ -43,7 +43,10 @@ describe('Category', () => {
     const request = httpMock.expectOne(`${apiUrl}/categories`);
 
     expect(request.request.method).toBe('POST');
-    expect(request.request.body).toEqual(command);
+    expect(request.request.body).toEqual({
+      name: 'Food',
+      type: 2,
+    });
 
     request.flush({});
   });
@@ -60,7 +63,11 @@ describe('Category', () => {
     const request = httpMock.expectOne(`${apiUrl}/categories/${command.id}`);
 
     expect(request.request.method).toBe('PUT');
-    expect(request.request.body).toEqual(command);
+    expect(request.request.body).toEqual({
+      id: 'category-id',
+      name: 'Salary',
+      type: 1,
+    });
 
     request.flush({});
   });
@@ -75,5 +82,10 @@ describe('Category', () => {
     expect(request.request.method).toBe('DELETE');
 
     request.flush({});
+  });
+
+  it('should keep category enum values aligned with the backend contract', () => {
+    expect(CategoryType.Income).toBe(1);
+    expect(CategoryType.Expense).toBe(2);
   });
 });

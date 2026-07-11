@@ -5,8 +5,12 @@
   </a>
 
   <nav class="header-actions" aria-label="Account navigation">
-    <a mat-button routerLink="/login">Sign in</a>
-    <a mat-flat-button routerLink="/register">Create account</a>
+    @if (authState.isAuthenticated()) {
+      <a mat-flat-button routerLink="/dashboard">Open dashboard</a>
+    } @else {
+      <a mat-button routerLink="/login">Sign in</a>
+      <a mat-flat-button routerLink="/register">Create account</a>
+    }
   </nav>
 </header>
 
@@ -21,11 +25,18 @@
       </p>
 
       <div class="hero__actions">
-        <a mat-flat-button routerLink="/register">
-          <mat-icon>rocket_launch</mat-icon>
-          Get started
-        </a>
-        <a mat-stroked-button routerLink="/login">Sign in</a>
+        @if (authState.isAuthenticated()) {
+          <a mat-flat-button routerLink="/dashboard">
+            <mat-icon>dashboard</mat-icon>
+            Open dashboard
+          </a>
+        } @else {
+          <a mat-flat-button routerLink="/register">
+            <mat-icon>rocket_launch</mat-icon>
+            Get started
+          </a>
+          <a mat-stroked-button routerLink="/login">Sign in</a>
+        }
       </div>
 
       <p class="hero__note">
@@ -146,10 +157,17 @@
       <h2>Ready to understand your finances?</h2>
       <p>Create an account and start tracking in minutes.</p>
     </div>
-    <a mat-flat-button routerLink="/register">
-      Create your account
-      <mat-icon>arrow_forward</mat-icon>
-    </a>
+    @if (authState.isAuthenticated()) {
+      <a mat-flat-button routerLink="/dashboard">
+        Open dashboard
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
+    } @else {
+      <a mat-flat-button routerLink="/register">
+        Create your account
+        <mat-icon>arrow_forward</mat-icon>
+      </a>
+    }
   </section>
 </main>
 

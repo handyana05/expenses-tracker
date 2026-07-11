@@ -1,4 +1,4 @@
 export enum CategoryType {
-  Income = 0,
-  Expense = 1,
+  Income = 1,
+  Expense = 2,
 }

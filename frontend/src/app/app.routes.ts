@@ -7,6 +7,7 @@ import { Categories } from './features/categories/categories';
 import { Transactions } from './features/transactions/transactions';
 import { Shell } from './layout/shell/shell';
 import { Landing } from './features/landing/landing';
+import { guestGuard } from './core/guards/guest-guard';
 
 export const routes: Routes = [
   {
@@ -17,10 +18,12 @@ export const routes: Routes = [
   {
     path: 'login',
     component: Login,
+    canActivate: [guestGuard],
   },
   {
     path: 'register',
     component: Register,
+    canActivate: [guestGuard],
   },
   {
     path: '',
