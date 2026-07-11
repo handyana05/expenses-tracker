@@ -2,5 +2,5 @@
 
 public sealed record MonthlySummaryDto(
     decimal TotalIncome,
-    decimal TotalExpense,
+    decimal TotalExpenses,
     decimal Balance);

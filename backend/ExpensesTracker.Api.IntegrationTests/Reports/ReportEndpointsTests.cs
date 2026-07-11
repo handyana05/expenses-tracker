@@ -55,7 +55,7 @@ public sealed class ReportEndpointsTests(
 
         summary.Should().NotBeNull();
         summary!.TotalIncome.Should().Be(5000m);
-        summary.TotalExpense.Should().Be(1200m);
+        summary.TotalExpenses.Should().Be(1200m);
         summary.Balance.Should().Be(3800m);
     }
 
