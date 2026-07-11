@@ -110,6 +110,23 @@ This backend is designed as a portfolio project demonstrating modern .NET backen
 - GitHub Actions
 - ReportGenerator
 
+## Production Container
+
+The backend Dockerfile publishes the API with the .NET 10 SDK and runs it from
+the smaller ASP.NET Core runtime image as a non-root user. The image exposes HTTP
+on port `8080`; TLS is expected at the external reverse proxy or cloud ingress.
+
+In the full-stack Compose configuration, the API:
+
+- waits for PostgreSQL to become healthy,
+- exposes `/health` for container health checks,
+- reads connection and JWT settings from environment variables,
+- applies EF Core migrations at startup through
+  `Database__ApplyMigrationsOnStartup=true`, and
+- is reached by the browser only through the frontend Nginx `/api` proxy.
+
+Automatic startup migrations default to `false` outside the Compose environment.
+
 ---
 
 ## Architecture

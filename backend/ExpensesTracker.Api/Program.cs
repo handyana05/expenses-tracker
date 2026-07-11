@@ -8,6 +8,8 @@ using ExpensesTracker.Infrastructure;
 using ExpensesTracker.Infrastructure.Authentication;
 using FluentValidation;
 using Scalar.AspNetCore;
+using ExpensesTracker.Infrastructure.Persistence.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +48,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+if (builder.Configuration.GetValue<bool>("Database:ApplyMigrationsOnStartup"))
+{
+    await using var scope = app.Services.CreateAsyncScope();
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<ExpensesTrackerDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
+
 app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
@@ -55,7 +65,10 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference();
 }
 
-app.UseHttpsRedirection();
+if (builder.Configuration.GetValue("HttpsRedirection:Enabled", true))
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("Frontend");
 

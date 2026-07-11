@@ -100,6 +100,21 @@ npm start
 
 Open `http://localhost:4200`.
 
+## Production Container
+
+The frontend uses a multi-stage image: Node builds the Angular production bundle,
+then Nginx serves the static files. Nginx provides SPA route fallback, a `/health`
+endpoint, immutable caching for hashed assets, and proxies `/api` to the backend.
+
+Production builds use the relative API URL `/api`. Development builds replace the
+environment file and use `https://localhost:7115/api`.
+
+Run the complete production stack from the repository root:
+
+```bash
+docker compose up --build -d
+```
+
 ## Verification
 
 Run all frontend tests:

@@ -4,6 +4,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { API_URL } from './core/config/api.config';
 import { authInterceptor } from './core/interceptors/auth-interceptor';
+import { environment } from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     ),
     {
       provide: API_URL,
-      useValue: 'https://localhost:7115/api'
+      useValue: environment.apiUrl
     }
   ],
 };

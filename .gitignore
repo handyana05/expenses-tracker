@@ -176,7 +176,6 @@ src/environments/environment.local.ts
 # NPM Packages
 ###########################################################
 
-package-lock.json
 
 ###########################################################
 # Generated Files

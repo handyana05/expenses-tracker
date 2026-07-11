@@ -214,6 +214,7 @@ expense-tracker/
 - Income-versus-expenses report visualization
 - Responsive, categorized recent-transaction presentation
 - Transaction CSV import and export
+- Production multi-stage Docker images and full-stack Compose orchestration
 - Shared Material presentation components
 - Frontend unit tests
 
@@ -221,7 +222,7 @@ expense-tracker/
 
 - Repository Documentation
 - Frontend mobile-layout verification
-- Production Docker and deployment workflow
+- Cloud deployment workflow
 
 ### Planned
 
@@ -279,7 +280,40 @@ Additional documentation is available inside the project.
 | Documentation | Description   |
 |---------------|---------------|
 | [`backend/README.md`](./backend/README.md) | Backend architecture, setup and API documentation |
-| [`frontend/README.md`](./frontend/README.md) | Frontend documentation (planned) |
+| [`frontend/README.md`](./frontend/README.md) | Frontend architecture, setup, routes, testing, CSV, and container documentation |
+
+---
+
+## Full-Stack Docker
+
+The production-oriented Compose stack runs PostgreSQL, the ASP.NET Core API, and
+the Angular application behind Nginx. Nginx serves the SPA and proxies `/api` to
+the backend, so the browser uses one origin.
+
+Create local configuration from the example and replace every placeholder:
+
+```bash
+cp .env.example .env
+```
+
+Start the complete stack:
+
+```bash
+docker compose up --build -d
+```
+
+Open `http://localhost:8080` or the port configured by `FRONTEND_PORT`.
+
+```bash
+docker compose ps
+docker compose logs -f backend frontend
+docker compose down
+```
+
+The PostgreSQL volume survives `docker compose down`. The backend waits for the
+database health check and applies EF Core migrations at startup only when enabled
+by the Compose configuration. Public internet deployment still requires TLS at a
+trusted reverse proxy or cloud ingress and production secret management.
 
 ---
 
