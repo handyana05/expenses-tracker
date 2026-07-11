@@ -117,4 +117,37 @@ public sealed class TransactionService(
         _transactionRepository.Delete(transaction);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<ImportTransactionsResultDto> ImportAsync(
+        Guid userId,
+        IReadOnlyList<CreateTransactionDto> transactions,
+        CancellationToken cancellationToken = default)
+    {
+        var categories = await _categoryRepository
+            .GetByUserIdAsync(userId, cancellationToken);
+        var categoriesById = categories.ToDictionary(x => x.Id);
+
+        if (transactions.Any(x => !categoriesById.ContainsKey(x.CategoryId)))
+        {
+            throw new NotFoundException("One or more categories were not found.");
+        }
+
+        var entities = transactions
+            .Select(x => Transaction.Create(
+                userId,
+                x.CategoryId,
+                x.Amount,
+                x.TransactionDate,
+                x.Description))
+            .ToList();
+
+        foreach (var transaction in entities)
+        {
+            await _transactionRepository.AddAsync(transaction, cancellationToken);
+        }
+
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        return new ImportTransactionsResultDto(entities.Count);
+    }
 }

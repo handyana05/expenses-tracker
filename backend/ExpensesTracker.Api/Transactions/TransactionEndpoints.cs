@@ -36,6 +36,15 @@ public static class TransactionEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .AddEndpointFilter<ValidationFilter<CreateTransactionRequest>>();
 
+        group.MapPost("/import", ImportTransactionsAsync)
+            .WithName("ImportTransactions")
+            .WithSummary("Import transactions")
+            .WithDescription("Creates up to 500 validated transactions in one batch for the current user.")
+            .Produces<ImportTransactionsResultDto>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status404NotFound)
+            .AddEndpointFilter<ValidationFilter<ImportTransactionsRequest>>();
+
         group.MapPut("/{id:guid}", UpdateTransactionAsync)
             .WithName("UpdateTransaction")
             .WithSummary("Update a transaction")
@@ -119,6 +128,28 @@ public static class TransactionEndpoints
         var transaction = await transactionService
             .UpdateAsync(userId, dto, cancellationToken);
         return Results.Ok(transaction);
+    }
+
+    private static async Task<IResult> ImportTransactionsAsync(
+        [FromServices] ITransactionService transactionService,
+        [FromServices] ICurrentUser currentUser,
+        [FromBody] ImportTransactionsRequest request,
+        CancellationToken cancellationToken)
+    {
+        var transactions = request.Transactions
+            .Select(x => new CreateTransactionDto(
+                x.CategoryId,
+                x.Amount,
+                x.TransactionDate,
+                x.Description))
+            .ToList();
+
+        var result = await transactionService.ImportAsync(
+            currentUser.UserId,
+            transactions,
+            cancellationToken);
+
+        return Results.Ok(result);
     }
 
     private static async Task<IResult> DeleteTransactionAsync(

@@ -38,6 +38,7 @@ This backend is designed as a portfolio project demonstrating modern .NET backen
 - Create Expense Transactions
 - Update Transactions
 - Delete Transactions
+- Atomically import transaction batches
 - List user-specific transactions
 - Validate category ownership before creating or updating transactions
 
@@ -473,6 +474,28 @@ PUT /api/transactions/{id}
 
 ```http
 DELETE /api/transactions/{id}
+```
+
+#### Import Transactions
+
+Creates up to 500 validated transactions in one atomic batch. Every category
+must belong to the authenticated user.
+
+```http
+POST /api/transactions/import
+```
+
+```json
+{
+  "transactions": [
+    {
+      "categoryId": "guid",
+      "amount": 50.00,
+      "transactionDate": "2026-07-11T00:00:00Z",
+      "description": "Groceries"
+    }
+  ]
+}
 ```
 
 ---

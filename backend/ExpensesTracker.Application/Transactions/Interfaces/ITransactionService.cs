@@ -27,4 +27,9 @@ public interface ITransactionService
         Guid id,
         Guid userId,
         CancellationToken cancellationToken = default);
+
+    Task<ImportTransactionsResultDto> ImportAsync(
+        Guid userId,
+        IReadOnlyList<CreateTransactionDto> transactions,
+        CancellationToken cancellationToken = default);
 }

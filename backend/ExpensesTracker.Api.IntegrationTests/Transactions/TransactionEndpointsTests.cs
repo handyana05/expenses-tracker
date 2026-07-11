@@ -136,6 +136,32 @@ public sealed class TransactionEndpointsTests(
         getResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
+    [Fact]
+    public async Task Should_ImportTransactions_When_AllRowsAreValid()
+    {
+        var token = await TestAuthHelper.RegisterAndGetTokenAsync(_client);
+        _client.DefaultRequestHeaders.Authorization =
+            new AuthenticationHeaderValue("Bearer", token);
+        var category = await CreateCategoryAsync();
+        var request = new ImportTransactionsRequest([
+            new(category.Id, 12.50m, DateTimeOffset.UtcNow, "Lunch"),
+            new(category.Id, 24.00m, DateTimeOffset.UtcNow, "Dinner")
+        ]);
+
+        var response = await _client.PostAsJsonAsync(
+            "/api/transactions/import",
+            request);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var result = await response.Content
+            .ReadFromJsonAsync<ImportTransactionsResultDto>();
+        result!.ImportedCount.Should().Be(2);
+
+        var transactions = await _client.GetFromJsonAsync<List<TransactionDto>>(
+            "/api/transactions");
+        transactions.Should().HaveCount(2);
+    }
+
     private async Task<CategoryDto> CreateCategoryAsync()
     {
         var response = await _client.PostAsJsonAsync(
