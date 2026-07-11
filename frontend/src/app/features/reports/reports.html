@@ -1,35 +1,66 @@
-<h1>Reports</h1>
+<app-page-header
+  title="Reports"
+  subtitle="Analyze your income, expenses and balance by month">
+</app-page-header>
 
-<label>
-  Year
-  <input
-    type="number"
-    [ngModel]="year()"
-    (ngModelChange)="year.set($event)" />
-</label>
+<app-page-card>
+  <form class="report-filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Year</mat-label>
+      <input
+        matInput
+        type="number"
+        [ngModel]="year()"
+        name="year"
+        (ngModelChange)="year.set($event)" />
+    </mat-form-field>
 
-<label>
-  Month
-  <input
-    type="number"
-    min="1"
-    max="12"
-    [ngModel]="month()"
-    (ngModelChange)="month.set($event)" />
-</label>
+    <mat-form-field appearance="outline">
+      <mat-label>Month</mat-label>
+      <input
+        matInput
+        type="number"
+        min="1"
+        max="12"
+        [ngModel]="month()"
+        name="month"
+        (ngModelChange)="month.set($event)" />
+    </mat-form-field>
 
-<button type="button" (click)="reload()">Load</button>
+    <button mat-flat-button color="primary" type="button" (click)="reload()">
+      <mat-icon>refresh</mat-icon>
+      Load
+    </button>
+  </form>
+</app-page-card>
 
-<hr />
+<br />
 
 @if (monthlySummary.isLoading()) {
-  <p>Loading summary...</p>
+  <app-loading-spinner />
 } @else if (monthlySummary.error()) {
-  <p>Could not load monthly summary.</p>
+  <app-empty-state
+    title="Could not load report"
+    description="Please try again later.">
+  </app-empty-state>
 } @else {
-  <section>
-    <p>Total Income: {{ monthlySummary.value().totalIncome }}</p>
-    <p>Total Expenses: {{ monthlySummary.value().totalExpenses }}</p>
-    <p>Balance: {{ monthlySummary.value().balance }}</p>
-  </section>
+  <div class="summary-grid">
+    <app-summary-card
+    title="Total Income"
+    icon="payments"
+    tone="income"
+    [value]="monthlySummary.value().totalIncome" />
+
+  <app-summary-card
+    title="Total Expenses"
+    icon="receipt_long"
+    tone="expense"
+    [value]="monthlySummary.value().totalExpenses" />
+
+  <app-summary-card
+    title="Balance"
+    icon="account_balance_wallet"
+    tone="balance"
+    [value]="monthlySummary.value().balance" />
+  </div>
 }

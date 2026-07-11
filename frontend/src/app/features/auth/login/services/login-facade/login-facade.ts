@@ -3,6 +3,7 @@ import { Auth } from '../../../../../core/auth/auth/auth';
 import { Router } from '@angular/router';
 import { LoginCommand } from '../../models/login.model';
 import { LoginRequest } from '../../../../../core/models/login-request.model';
+import { AppRoutes } from '../../../../../shared/constants/app-routes';
 
 @Service()
 export class LoginFacade {
@@ -23,7 +24,7 @@ export class LoginFacade {
 
         this.auth.login(request).subscribe({
             next: async () => {
-                await this.router.navigate(['/dashboard']);
+                await this.router.navigate([AppRoutes.dashboard]);
             },
             error: () => {
                 this.error.set('Invalid email or password.');

@@ -3,49 +3,62 @@ import { Category } from '../category/category';
 import { CreateCategoryCommand } from '../../models/create-category.command';
 import { UpdateCategoryCommand } from '../../models/update-category.command';
 import { finalize, Observable, tap } from 'rxjs';
+import { Messages } from '../../../../shared/constants/messages';
 
 @Service()
 export class CategoryFacade {
     private readonly categoryService = inject(Category);
 
-    readonly creating = signal(false);
-    readonly updating = signal(false);
-    readonly deleting = signal(false);
-    readonly error = signal<string | null>(null);
+  readonly creating = signal(false);
+  readonly updating = signal(false);
+  readonly deleting = signal(false);
+  readonly error = signal<string | null>(null);
 
-    create(command: CreateCategoryCommand): Observable<Object> {
-        this.creating.set(true);
-        this.error.set(null);
+  create(command: CreateCategoryCommand) {
+    this.creating.set(true);
+    this.error.set(null);
 
-        return this.categoryService.create(command).pipe(
-            tap({
-                error: () => this.error.set('Could not create category.')
-            }),
-            finalize(() => this.creating.set(false))
-        );
-    }
+    return this.categoryService.create(command).pipe(
+      tap({
+        error: () => {
+          this.error.set('Could not create category.');
+        },
+      }),
+      finalize(() => {
+        this.creating.set(false);
+      })
+    );
+  }
 
-    update(command: UpdateCategoryCommand): Observable<Object> {
-        this.updating.set(true);
-        this.error.set(null);
+  update(command: UpdateCategoryCommand) {
+    this.updating.set(true);
+    this.error.set(null);
 
-        return this.categoryService.update(command).pipe(
-            tap({
-                error: () => this.error.set('Could not update category.')
-            }),
-            finalize(() => this.updating.set(false))
-        );
-    }
+    return this.categoryService.update(command).pipe(
+      tap({
+        error: () => {
+          this.error.set('Could not update category.');
+        },
+      }),
+      finalize(() => {
+        this.updating.set(false);
+      })
+    );
+  }
 
-    delete(id: string): Observable<Object> {
-        this.deleting.set(true);
-        this.error.set(null);
+  delete(id: string) {
+    this.deleting.set(true);
+    this.error.set(null);
 
-        return this.categoryService.delete(id).pipe(
-            tap({
-                error: () => this.error.set('Could not delete category.')
-            }),
-            finalize(() => this.deleting.set(false))
-        );
-    }
+    return this.categoryService.delete(id).pipe(
+      tap({
+        error: () => {
+          this.error.set('Could not delete category.');
+        },
+      }),
+      finalize(() => {
+        this.deleting.set(false);
+      })
+    );
+  }
 }

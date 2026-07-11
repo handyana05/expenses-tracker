@@ -3,10 +3,22 @@ import { LoginFormFactory } from './login.form-factory';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginFacade } from './services/login-facade/login-facade';
 import { LoginCommand } from './models/login.model';
+import { RouterLink } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   providers: [LoginFacade],
   templateUrl: './login.html',
   styleUrl: './login.scss',

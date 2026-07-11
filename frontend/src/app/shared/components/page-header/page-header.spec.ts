@@ -13,7 +13,9 @@ describe('PageHeader', () => {
 
     fixture = TestBed.createComponent(PageHeader);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+
+    fixture.componentRef.setInput('title', 'Categories');
+    fixture.detectChanges();
   });
 
   it('should create', () => {

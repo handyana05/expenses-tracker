@@ -1,0 +1,59 @@
+.summary-card {
+  height: 100%;
+  padding: 20px;
+}
+
+.summary-card__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.summary-card__icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: var(--mat-sys-surface-container-high);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.summary-card__icon--income {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.summary-card__icon--expense {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.summary-card__icon--balance {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+}
+
+.summary-card__title {
+  color: var(--mat-sys-on-surface-variant);
+  font-weight: 500;
+}
+
+.summary-card__value {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.summary-card__value--income {
+  color: #2e7d32;
+}
+
+.summary-card__value--expense {
+  color: #c62828;
+}
+
+.summary-card__value--balance {
+  color: var(--mat-sys-primary);
+}

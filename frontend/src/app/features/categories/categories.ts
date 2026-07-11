@@ -8,19 +8,22 @@ import { CategoryFormFactory } from './category-form.factory';
 import { CreateCategoryCommand } from './models/create-category.command';
 import { CategoryType as SharedCategoryType } from '../../shared/models/category-type.model';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PageHeader, EmptyState, LoadingSpinner } from '../../shared/components';
+import { PageHeader, EmptyState, LoadingSpinner, PageCard } from '../../shared/components';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialog, Snackbar } from '../../shared/services';
+import { Messages } from '../../shared/constants/messages';
 
 @Component({
   selector: 'app-categories',
   imports: [ 
     ReactiveFormsModule,
     PageHeader, 
+    PageCard,
     EmptyState,
     LoadingSpinner,
 
@@ -28,6 +31,7 @@ import { ConfirmDialog, Snackbar } from '../../shared/services';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatIconModule,
     MatTableModule,
   ],
   templateUrl: './categories.html',
@@ -93,7 +97,7 @@ export class Categories {
           this.categories.reload();
         },
         error: () => this.snackbar.error(
-          this.facade.error() || 'Unexpected error.'
+          this.facade.error() || Messages.unexpectedError
         )
       });
       return;
@@ -112,7 +116,7 @@ export class Categories {
         this.categories.reload();
       },
       error: () => this.snackbar.error(
-        this.facade.error() || 'Unexpected error.'
+        this.facade.error() || Messages.unexpectedError
       )
     });
   }
@@ -147,7 +151,7 @@ export class Categories {
           });
         },
         error: () => this.snackbar.error(
-          this.facade.error() || 'Unexpected error.'
+          this.facade.error() || Messages.unexpectedError
         )
       });
   }

@@ -7,6 +7,7 @@ import { API_URL } from '../../core/config/api.config';
 import { provideHttpClient } from '@angular/common/http';
 import { CategoryType } from '../../shared/models/category-type.model';
 import { of } from 'rxjs';
+import { ConfirmDialog } from '../../shared/services';
 
 describe('Categories', () => {
   let fixture: ComponentFixture<Categories>;
@@ -23,6 +24,10 @@ describe('Categories', () => {
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),
+  };
+
+  const confirmDialogMock = {
+    confirm: vi.fn(() => of(true))
   };
 
   beforeEach(async () => {
@@ -46,6 +51,10 @@ describe('Categories', () => {
               provide: CategoryFacade,
               useValue: facadeMock,
             },
+            {
+              provide: ConfirmDialog,
+              useValue: confirmDialogMock,
+            }
           ],
         },
       })
@@ -162,17 +171,16 @@ describe('Categories', () => {
   });
 
   it('should delete category when confirmed', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(true);
     facadeMock.delete.mockReturnValue(of({}));
 
     component.deleteCategory('category-id');
 
-    expect(window.confirm).toHaveBeenCalled();
+    expect(confirmDialogMock.confirm).toHaveBeenCalled();
     expect(facadeMock.delete).toHaveBeenCalledWith('category-id');
   });
 
   it('should not delete category when confirmation is cancelled', () => {
-    vi.spyOn(window, 'confirm').mockReturnValue(false);
+    confirmDialogMock.confirm.mockReturnValue(of(false));
 
     component.deleteCategory('category-id');
 

@@ -1,0 +1,35 @@
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.summary-label {
+  color: var(--mat-sys-on-surface-variant);
+  font-size: 0.875rem;
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.summary-value--income {
+  color: #2e7d32;
+}
+
+.summary-value--expense {
+  color: #d32f2f;
+}
+
+@media (max-width: 900px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

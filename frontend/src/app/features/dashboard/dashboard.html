@@ -1,26 +1,89 @@
-<h1>Expense Tracker</h1>
-
-<nav>
-  <a routerLink="/dashboard">Dashboard</a> |
-  <a routerLink="/categories">Categories</a> |
-  <a routerLink="/transactions">Transactions</a> |
-  <a routerLink="/reports">Reports</a>
-</nav>
-
-<button type="button" (click)="logout()">Logout</button>
-
-<hr />
-
-<h2>This Month</h2>
+<app-page-header
+  title="Dashboard"
+  subtitle="Overview of your finances for the current month">
+</app-page-header>
 
 @if (monthlySummary.isLoading()) {
-  <p>Loading dashboard...</p>
+  <app-loading-spinner />
 } @else if (monthlySummary.error()) {
-  <p>Could not load dashboard.</p>
+  <app-empty-state
+    title="Could not load dashboard"
+    description="Please try again later.">
+  </app-empty-state>
 } @else {
-  <section>
-    <p>Total Income: {{ monthlySummary.value().totalIncome }}</p>
-    <p>Total Expenses: {{ monthlySummary.value().totalExpenses }}</p>
-    <p>Balance: {{ monthlySummary.value().balance }}</p>
-  </section>
+  <div class="summary-grid">
+    <app-summary-card
+      title="Total Income"
+      icon="payments"
+      tone="income"
+      [value]="monthlySummary.value().totalIncome" />
+
+    <app-summary-card
+      title="Total Expenses"
+      icon="receipt_long"
+      tone="expense"
+      [value]="monthlySummary.value().totalExpenses" />
+
+    <app-summary-card
+      title="Balance"
+      icon="account_balance_wallet"
+      [tone]="monthlySummary.value().balance >= 0 ? 'balance' : 'expense'"
+      [value]="monthlySummary.value().balance" />
+  </div>
+
+  <br />
+
+  <app-page-card>
+    <h2>Recent Transactions</h2>
+
+    @if (recentTransactions.isLoading()) {
+      <app-loading-spinner />
+    } @else if (recentTransactions.error()) {
+      <app-empty-state
+        title="Could not load recent transactions"
+        description="Please try again later.">
+      </app-empty-state>
+    } @else if (recentTransactions.value().length === 0) {
+      <app-empty-state
+        title="No transactions yet"
+        description="Create your first transaction to see it here.">
+      </app-empty-state>
+    } @else {
+      <table
+        mat-table
+        [dataSource]="recentTransactions.value().slice(0, 5)">
+
+        <ng-container matColumnDef="transactionDate">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.transactionDate | date: 'yyyy-MM-dd' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="categoryName">
+          <th mat-header-cell *matHeaderCellDef>Category</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.categoryName }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let transaction">
+            {{ transaction.amount | currency: 'EUR' }}
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="recentTransactionColumns">
+        </tr>
+
+        <tr
+          mat-row
+          *matRowDef="let row; columns: recentTransactionColumns">
+        </tr>
+      </table>
+    }
+  </app-page-card>
 }

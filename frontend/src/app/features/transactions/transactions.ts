@@ -7,11 +7,37 @@ import { Category } from '../categories/models/category.model';
 import { Transaction } from './models/transaction.model';
 import { CreateTransactionCommand } from './models/create-transaction.command';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+import { DatePipe, CurrencyPipe } from '@angular/common';
+import { ConfirmDialog, Snackbar } from '../../shared/services';
+import { ApiEndpoints } from '../../shared/constants/api-endpoints';
+import { MatTableModule } from '@angular/material/table';
+import { EmptyState, LoadingSpinner, PageCard, PageHeader } from '../../shared/components';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatIconModule } from '@angular/material/icon';
+
 
 @Component({
   selector: 'app-transactions',
-  imports: [ReactiveFormsModule, DatePipe],
+  imports: [
+    ReactiveFormsModule,
+    DatePipe,
+    CurrencyPipe,
+
+    PageHeader,
+    PageCard,
+    EmptyState,
+    LoadingSpinner,
+
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatSelectModule,
+    MatTableModule,
+  ],
   providers: [TransactionFacade],
   templateUrl: './transactions.html',
   styleUrl: './transactions.scss',
@@ -19,20 +45,31 @@ import { DatePipe } from '@angular/common';
 export class Transactions {
     private readonly apiUrl = inject(API_URL);
 
+    readonly confirmDialog = inject(ConfirmDialog);
+    readonly snackbar = inject(Snackbar);
+
     readonly facade = inject(TransactionFacade);
     readonly form = TransactionFormFactory.create();
 
     private editingTransactionId: string | null = null;
 
     readonly categories = httpResource<Category[]>(
-      () => `${this.apiUrl}/categories`,
+      () => `${this.apiUrl}${ApiEndpoints.categories}`,
       { defaultValue: [] }
     );
 
     readonly transactions = httpResource<Transaction[]>(
-      () => `${this.apiUrl}/transactions`,
+      () => `${this.apiUrl}${ApiEndpoints.transactions}`,
       { defaultValue: [] }
     );
+
+    readonly displayedColumns = [
+      'transactionDate',
+      'categoryName',
+      'amount',
+      'description',
+      'actions',
+    ];
 
     get isEditing(): boolean {
       return this.editingTransactionId !== null;
@@ -66,21 +103,23 @@ export class Transactions {
           {
             ...command,
             id: this.editingTransactionId,
-          },
-          () => {
-            this.resetForm();
-            this.transactions.reload();
-          }
-        );
+          }).subscribe({
+            next: () => {
+              this.resetForm();
+              this.transactions.reload();
+            }
+          });
 
         return;
       }
 
       if (this.facade.creating()) return;
 
-      this.facade.create(command, () => {
-        this.resetForm();
-        this.transactions.reload();
+      this.facade.create(command).subscribe({
+        next: () => {
+          this.resetForm();
+          this.transactions.reload();
+        }
       });
     }
 
@@ -96,15 +135,22 @@ export class Transactions {
     }
 
     deleteTransaction(id: string): void {
-      const confirmed = window.confirm(
-        'Are you sure you want to delete this transaction?'
-      );
+      this.confirmDialog
+        .confirm({
+            title: 'Delete transaction',
+            message: 'Are you sure you want to delete this transaction?',
+        })
+        .subscribe({
+          next: (confirmed) => {
+            if (!confirmed || this.facade.deleting()) return;
 
-      if (!confirmed || this.facade.deleting()) return;
-
-      this.facade.delete(id, () => {
-        this.transactions.reload();
-      });
+            this.facade.delete(id).subscribe({
+              next: () => {
+                this.transactions.reload();
+              }
+            });
+          }
+        });
     }
 
     cancelEdit(): void {

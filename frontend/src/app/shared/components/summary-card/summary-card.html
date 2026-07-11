@@ -1,0 +1,25 @@
+<mat-card class="summary-card">
+  <div class="summary-card__header">
+    <div
+      class="summary-card__icon"
+      [class.summary-card__icon--income]="tone() === 'income'"
+      [class.summary-card__icon--expense]="tone() === 'expense'"
+      [class.summary-card__icon--balance]="tone() === 'balance'">
+
+      <mat-icon>{{ icon() }}</mat-icon>
+    </div>
+
+    <span class="summary-card__title">
+      {{ title() }}
+    </span>
+  </div>
+
+  <div
+    class="summary-card__value"
+    [class.summary-card__value--income]="tone() === 'income'"
+    [class.summary-card__value--expense]="tone() === 'expense'"
+    [class.summary-card__value--balance]="tone() === 'balance'">
+
+    {{ value() | currency: 'EUR' }}
+  </div>
+</mat-card>

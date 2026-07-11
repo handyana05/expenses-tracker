@@ -7,8 +7,14 @@ import { Categories } from './features/categories/categories';
 import { Transactions } from './features/transactions/transactions';
 import { Reports } from './features/reports/reports';
 import { Shell } from './layout/shell/shell';
+import { Landing } from './features/landing/landing';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: Landing,
+    pathMatch: 'full',
+  },
   {
     path: 'login',
     component: Login,

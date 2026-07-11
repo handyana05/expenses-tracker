@@ -1,99 +1,136 @@
-<h1>Transactions</h1>
+<app-page-header
+  title="Transactions"
+  subtitle="Track your income and expense transactions">
+</app-page-header>
 
-<form [formGroup]="form" (ngSubmit)="saveTransaction()">
-  <h2>
-    @if (isEditing) {
-      Edit Transaction
-    } @else {
-      Create Transaction
+<app-page-card>
+  <form [formGroup]="form" (ngSubmit)="saveTransaction()">
+    <h2>
+      @if (isEditing) {
+        Edit Transaction
+      } @else {
+        Create Transaction
+      }
+    </h2>
+
+    @if (facade.error()) {
+      <p>{{ facade.error() }}</p>
     }
-  </h2>
 
-  @if (facade.error()) {
-    <p>{{ facade.error() }}</p>
-  }
+    <mat-form-field appearance="outline">
+      <mat-label>Category</mat-label>
+      <mat-select formControlName="categoryId">
+        <mat-option value="">Select category</mat-option>
 
-  <label>
-    Category
-    <select formControlName="categoryId">
-      <option value="">Select category</option>
+        @for (category of categories.value(); track category.id) {
+          <mat-option [value]="category.id">
+            {{ category.name }}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-      @for (category of categories.value(); track category.id) {
-        <option [value]="category.id">
-          {{ category.name }} ({{ category.type }})
-        </option>
+    <mat-form-field appearance="outline">
+      <mat-label>Amount</mat-label>
+      <input matInput type="number" formControlName="amount" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" formControlName="transactionDate" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [attr.aria-label]="submitButtonText + ' transaction'"
+        [title]="submitButtonText"
+        [disabled]="facade.creating() || facade.updating()">
+        <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
+        {{ submitButtonText }}
+      </button>
+
+      @if (isEditing) {
+        <button mat-flat-button color="primary" type="button" (click)="cancelEdit()">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
       }
-    </select>
-  </label>
+    </div>
+  </form>
+</app-page-card>
 
-  <label>
-    Amount
-    <input type="number" formControlName="amount" />
-  </label>
+<br />
 
-  <label>
-    Date
-    <input type="date" formControlName="transactionDate" />
-  </label>
+<app-page-card>
+  <h2>Your Transactions</h2>
 
-  <label>
-    Description
-    <input type="text" formControlName="description" />
-  </label>
+  @if (transactions.isLoading()) {
+    <app-loading-spinner />
+  } @else if (transactions.error()) {
+    <app-empty-state
+      title="Could not load transactions"
+      description="Please try again later.">
+    </app-empty-state>
+  } @else if (transactions.value().length === 0) {
+    <app-empty-state
+      title="No transactions yet"
+      description="Create your first transaction to start tracking your finances.">
+    </app-empty-state>
+  } @else {
+    <table mat-table [dataSource]="transactions.value()">
+      <ng-container matColumnDef="transactionDate">
+        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <td mat-cell *matCellDef="let transaction">
+          {{ transaction.transactionDate | date: 'yyyy-MM-dd' }}
+        </td>
+      </ng-container>
 
-  <button
-    type="submit"
-    [disabled]="facade.creating() || facade.updating()">
-    {{ submitButtonText }}
-  </button>
+      <ng-container matColumnDef="categoryName">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let transaction">
+          {{ transaction.categoryName }}
+        </td>
+      </ng-container>
 
-  @if (isEditing) {
-    <button type="button" (click)="cancelEdit()">
-      Cancel
-    </button>
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <td mat-cell *matCellDef="let transaction">
+          {{ transaction.amount | currency: 'EUR' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let transaction">
+          {{ transaction.description || '-' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let transaction">
+          <button mat-flat-button color="primary" type="button" (click)="editTransaction(transaction)">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+
+          <button mat-flat-button color="primary" type="button" (click)="deleteTransaction(transaction.id)">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
   }
-</form>
-
-<hr />
-
-<h2>Your Transactions</h2>
-
-@if (transactions.isLoading()) {
-  <p>Loading transactions...</p>
-} @else if (transactions.error()) {
-  <p>Could not load transactions.</p>
-} @else if (transactions.value().length === 0) {
-  <p>No transactions yet.</p>
-} @else {
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Category</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      @for (transaction of transactions.value(); track transaction.id) {
-        <tr>
-          <td>{{ transaction.transactionDate | date: 'yyyy-MM-dd' }}</td>
-          <td>{{ transaction.categoryName }}</td>
-          <td>{{ transaction.amount }}</td>
-          <td>{{ transaction.description }}</td>
-          <td>
-            <button type="button" (click)="editTransaction(transaction)">
-              Edit
-            </button>
-
-            <button type="button" (click)="deleteTransaction(transaction.id)">
-              Delete
-            </button>
-          </td>
-        </tr>
-      }
-    </tbody>
-  </table>
-}
+</app-page-card>

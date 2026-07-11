@@ -58,11 +58,11 @@ describe('CategoryFacade', () => {
     );
 
     facade.create(command).subscribe({
-      error: () => {
-        expect(facade.creating()).toBe(false);
-        expect(facade.error()).toBe('Could not create category.');
-      },
+      error: () => { }
     });
+    
+    expect(facade.creating()).toBe(false);
+    expect(facade.error()).toBe('Could not create category.');
   });
 
   it('should update category successfully', () => {
@@ -93,11 +93,11 @@ describe('CategoryFacade', () => {
     );
 
     facade.update(command).subscribe({
-      error: () => {
-        expect(facade.updating()).toBe(false);
-        expect(facade.error()).toBe('Could not update category.');
-      },
+      error: () => { },
     });
+        
+    expect(facade.updating()).toBe(false);
+    expect(facade.error()).toBe('Could not update category.');
   });
 
   it('should delete category successfully', () => {
@@ -116,10 +116,10 @@ describe('CategoryFacade', () => {
     );
 
     facade.delete('category-id').subscribe({
-      error: () => {
-        expect(facade.deleting()).toBe(false);
-        expect(facade.error()).toBe('Could not delete category.');
-      },
+      error: () => { },
     });
+    
+    expect(facade.deleting()).toBe(false);
+    expect(facade.error()).toBe('Could not delete category.');
   });
 });

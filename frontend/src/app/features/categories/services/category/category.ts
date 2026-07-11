@@ -6,6 +6,7 @@ import { UpdateCategoryCommand } from '../../models/update-category.command';
 import { CategoryType } from '../../../../shared/models/category-type.model';
 import { CreateCategoryRequest } from '../../models/create-category.request';
 import { UpdateCategoryRequest } from '../../models/update-category.request';
+import { ApiEndpoints } from '../../../../shared/constants/api-endpoints';
 
 @Service()
 export class Category {
@@ -17,7 +18,7 @@ export class Category {
             name: command.name,
             type: command.type,
         };
-        return this.http.post(`${this.apiUrl}/categories`, request);
+        return this.http.post(`${this.apiUrl}${ApiEndpoints.categories}`, request);
     }
 
     update(command: UpdateCategoryCommand) {
@@ -28,14 +29,14 @@ export class Category {
         };
 
         return this.http.put<Category>(
-            `${this.apiUrl}/categories/${command.id}`,
+            `${this.apiUrl}${ApiEndpoints.categories}/${command.id}`,
             request
         );
     }
 
     delete(id: string) {
         return this.http.delete(
-            `${this.apiUrl}/categories/${id}`
+            `${this.apiUrl}${ApiEndpoints.categories}/${id}`
         );
     }
 }

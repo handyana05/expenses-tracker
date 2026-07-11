@@ -1,5 +1,25 @@
 .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 32px;
   text-align: center;
   color: var(--mat-sys-on-surface-variant);
+}
+
+.empty-state__icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 12px;
+  color: var(--mat-sys-primary);
+  font-size: 48px;
+}
+
+.empty-state h3,
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state p {
+  margin-top: 8px;
 }

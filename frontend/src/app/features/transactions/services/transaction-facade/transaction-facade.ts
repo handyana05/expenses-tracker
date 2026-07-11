@@ -2,6 +2,8 @@ import { inject, Service, signal } from '@angular/core';
 import { Transaction } from '../transaction/transaction';
 import { CreateTransactionCommand } from '../../models/create-transaction.command';
 import { UpdateTransactionCommand } from '../../models/update-transaction.command';
+import { finalize, Observable, tap } from 'rxjs';
+import { Messages } from '../../../../shared/constants/messages';
 
 @Service()
 export class TransactionFacade {
@@ -12,45 +14,39 @@ export class TransactionFacade {
     readonly deleting = signal(false);
     readonly error = signal<string | null>(null);
 
-    create(command: CreateTransactionCommand, onSuccess?: () => void): void {
+    create(command: CreateTransactionCommand): Observable<Transaction> {
         this.creating.set(true);
         this.error.set(null);
 
-        this.transactionService.create(command).subscribe({
-        next: () => onSuccess?.(),
-        error: () => {
-            this.error.set('Could not create transaction.');
-            this.creating.set(false);
-        },
-        complete: () => this.creating.set(false),
-        });
+        return this.transactionService.create(command).pipe(
+            tap({
+               error: () => this.error.set(Messages.transactionCreated) 
+            }),
+            finalize(() => this.creating.set(false))
+        );
     }
 
-    update(command: UpdateTransactionCommand, onSuccess?: () => void): void {
+    update(command: UpdateTransactionCommand): Observable<Transaction> {
         this.updating.set(true);
         this.error.set(null);
 
-        this.transactionService.update(command).subscribe({
-        next: () => onSuccess?.(),
-        error: () => {
-            this.error.set('Could not update transaction.');
-            this.updating.set(false);
-        },
-        complete: () => this.updating.set(false),
-        });
+        return this.transactionService.update(command).pipe(
+            tap({
+                error: () => this.error.set(Messages.transactionUpdated)
+            }),
+            finalize(() => this.updating.set(false))
+        );
     }
 
-    delete(id: string, onSuccess?: () => void): void {
+    delete(id: string): Observable<Object> {
         this.deleting.set(true);
         this.error.set(null);
 
-        this.transactionService.delete(id).subscribe({
-        next: () => onSuccess?.(),
-        error: () => {
-            this.error.set('Could not delete transaction.');
-            this.deleting.set(false);
-        },
-        complete: () => this.deleting.set(false),
-        });
+        return this.transactionService.delete(id).pipe(
+            tap({
+                error: () => this.error.set(Messages.transactionDeleted)
+            }),
+            finalize(() => this.deleting.set(false))
+        );
     }
 }

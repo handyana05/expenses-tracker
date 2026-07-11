@@ -1,0 +1,48 @@
+.report-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  align-items: start;
+  gap: 16px;
+}
+
+.report-filters button {
+  align-self: start;
+  margin-top: 8px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.summary-value {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.income {
+  color: green;
+}
+
+.expense {
+  color: #d32f2f;
+}
+
+@media (max-width: 900px) {
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .report-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .report-filters button {
+    margin-top: 8px;
+    justify-self: start;
+  }
+}

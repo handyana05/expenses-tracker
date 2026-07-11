@@ -1,4 +1,8 @@
 <section class="empty-state">
+  @if (icon()) {
+    <mat-icon class="empty-state__icon" aria-hidden="true">{{ icon() }}</mat-icon>
+  }
+
   <h3>{{ title() }}</h3>
 
   @if (description()) {

@@ -13,10 +13,25 @@ describe('EmptyState', () => {
 
     fixture = TestBed.createComponent(EmptyState);
     component = fixture.componentInstance;
-    await fixture.whenStable();
+
+    fixture.componentRef.setInput('title', 'No data');
+    fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render the default icon', () => {
+    const icon: HTMLElement = fixture.nativeElement.querySelector('mat-icon');
+    expect(icon.textContent?.trim()).toBe('inbox');
+  });
+
+  it('should render the optional Material icon', () => {
+    fixture.componentRef.setInput('icon', 'inbox');
+    fixture.detectChanges();
+
+    const icon: HTMLElement = fixture.nativeElement.querySelector('mat-icon');
+    expect(icon.textContent?.trim()).toBe('inbox');
   });
 });

@@ -3,7 +3,7 @@
   subtitle="Manage your income and expense categories">
 </app-page-header>
 
-<form [formGroup]="form" (ngSubmit)="createCategory()">
+<app-page-card>
   <h2>
     @if (isEditing) {
       Edit Category
@@ -12,95 +12,104 @@
     }
   </h2>
 
-  @if (facade.error()) {
-    <p>{{ facade.error() }}</p>
-  }
+  <form [formGroup]="form" (ngSubmit)="createCategory()">
+    @if (facade.error()) {
+      <p>{{ facade.error() }}</p>
+    }
 
-  <mat-form-field appearance="outline">
-    <mat-label>Name</mat-label>
-    <input
-        matInput
-        formControlName="name">
-  </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name" />
 
-  @if (form.controls.name.touched && form.controls.name.invalid) {
-    <small>Name is required.</small>
-  }
-
-  <mat-form-field appearance="outline">
-    <mat-label>Type</mat-label>
-    <mat-select formControlName="type">
-        <mat-option [value]="CategoryType.Income">
-            Income
-        </mat-option>
-        <mat-option [value]="CategoryType.Expense">
-            Expense
-        </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <button
-    mat-flat-button
-    color="primary"
-    type="submit"
-    [disabled]="facade.creating() || facade.updating()">
-    {{ submitButtonText }}
-  </button>
-
-  @if (isEditing) {
-    <button
-      mat-button
-      type="button"
-      (click)="cancelEdit()"
-      [disabled]="facade.updating()">
-      Cancel
-    </button>
-  }
-</form>
-
-<hr />
-
-<h2>Your Categories</h2>
-
-@if (categories.isLoading()) {
-  <app-loading-spinner />
-} @else if (categories.error()) {
-  <p>Could not load categories.</p>
-} @else if (categories.value().length === 0) {
-  <app-empty-state
-      title="No categories"
-      description="Create your first category.">
-  </app-empty-state>
-} @else {
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      @for (category of categories.value(); track category.id) {
-        <tr>
-          <td>{{ category.name }}</td>
-          <td>{{ category.type }}</td>
-          <td>
-            <button
-              type="button"
-              (click)="editCategory(category)">
-              Edit
-            </button>
-
-            <button
-              type="button"
-              (click)="deleteCategory(category.id)">
-              Delete
-            </button>
-          </td>
-        </tr>
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <mat-error>Name is required.</mat-error>
       }
-    </tbody>
-  </table>
-}
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <mat-select formControlName="type">
+        <mat-option [value]="CategoryType.Income">Income</mat-option>
+        <mat-option [value]="CategoryType.Expense">Expense</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="form-actions">
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [attr.aria-label]="submitButtonText + ' category'"
+        [title]="submitButtonText"
+        [disabled]="facade.creating() || facade.updating()">
+        <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
+        {{ submitButtonText }}
+      </button>
+
+      @if (isEditing) {
+        <button mat-flat-button color="primary" type="button" (click)="cancelEdit()">
+          <mat-icon>close</mat-icon>
+          Cancel
+        </button>
+      }
+    </div>
+  </form>
+</app-page-card>
+
+<br />
+
+<app-page-card>
+  <h2>Your Categories</h2>
+
+  @if (categories.isLoading()) {
+    <app-loading-spinner />
+  } @else if (categories.error()) {
+    <app-empty-state
+      title="Could not load categories"
+      description="Please try again later.">
+    </app-empty-state>
+  } @else if (categories.value().length === 0) {
+    <app-empty-state
+      title="No categories yet"
+      description="Create your first category to start tracking your finances.">
+    </app-empty-state>
+  } @else {
+    <table mat-table [dataSource]="categories.value()">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let category">
+          {{ category.name }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <td mat-cell *matCellDef="let category">
+          @if (category.type === CategoryType.Income) {
+            Income
+          } @else {
+            Expense
+          }
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let category">
+          <button mat-flat-button color="primary" type="button" (click)="editCategory(category)">
+            <mat-icon>edit</mat-icon>
+            Edit
+          </button>
+
+          <button mat-flat-button color="primary" type="button" (click)="deleteCategory(category.id)">
+            <mat-icon>delete</mat-icon>
+            Delete
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  }
+</app-page-card>

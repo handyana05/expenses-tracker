@@ -1,5 +1,7 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,12 +10,14 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { Auth } from '../../core/auth/auth/auth';
+import { AppRoutes } from '../../shared/constants/app-routes';
 
 @Component({
   selector: 'app-shell',
   imports: [
     RouterOutlet,
     RouterLink,
+    RouterLinkActive,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
@@ -26,9 +30,21 @@ import { Auth } from '../../core/auth/auth/auth';
 export class Shell {
   private readonly auth = inject(Auth);
   private readonly router = inject(Router);
+  private readonly breakpointObserver = inject(BreakpointObserver);
+
+  readonly isMobile = signal(false);
+
+  constructor() {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
+      .pipe(takeUntilDestroyed())
+      .subscribe((result) => {
+        this.isMobile.set(result.matches);
+      });
+  }
 
   async logout(): Promise<void> {
     this.auth.logout();
-    await this.router.navigate(['/login']);
+    await this.router.navigate([AppRoutes.login]);
   }
 }
