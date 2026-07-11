@@ -1,69 +1,129 @@
-# ExpensesTrackerFrontend
+# Expense Tracker Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.0.4.
+Angular 22 frontend for the Expense Tracker application. It provides a public
+landing page and an authenticated personal-finance workspace for categories,
+transactions, dashboard summaries, and monthly reports.
 
-## Frontend Architecture Decisions
+## Technology
 
-| Decision | Reason |
-|----------|--------|
-| Facades for commands | Keep components thin and isolate workflows such as create, update, delete and navigation |
-| `httpResource` for queries | Use Angular's built-in loading, error and value handling for GET requests |
-| Signals for UI state | Avoid unnecessary RxJS state management for local reactive state |
-| `@Service()` and `inject()` | Follow modern Angular 22 dependency injection style |
-| Feature-based folders | Keep feature-specific components, forms, facades and models together |
+- Angular 22 with standalone components
+- Angular Material
+- Signals and `httpResource`
+- Typed Reactive Forms
+- RxJS for command workflows
+- Vitest and Angular TestBed
+- Chart.js and ng2-charts (installed for planned report visualizations)
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Public landing page
+- Registration and login
+- JWT persistence and authenticated route guard
+- Automatic logout and login redirect when an authenticated request returns 401
+- Responsive authenticated shell with active navigation
+- Category CRUD
+- Transaction CRUD
+- Current-month dashboard summary and recent transactions
+- Monthly income, expense, and balance reports
+- Reusable loading, empty-state, page-card, page-header, summary-card, confirmation,
+  and snackbar UI
 
-```bash
-ng serve
+## Architecture
+
+```text
+src/app/
+├── core/       Application-wide technical concerns
+├── shared/     Reusable non-business UI, models, constants, and services
+├── layout/     Authenticated application shell
+└── features/   Landing, authentication, and finance features
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Simple GET requests use `httpResource` directly in the component. Mutations use
+the following flow:
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
+```text
+Component → Facade → HTTP Service → Backend API
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Components own forms and UI orchestration. Facades own mutation state. Services
+only perform HTTP communication. More detail is available in
+[`docs/adr`](../docs/adr) and the
+[frontend coding guidelines](../docs/development/coding-guidelines.md).
+
+## Routes
+
+| Route | Access | Purpose |
+|---|---|---|
+| `/` | Public | Landing page |
+| `/login` | Public | Sign in |
+| `/register` | Public | Create an account |
+| `/dashboard` | Authenticated | Current-month overview |
+| `/categories` | Authenticated | Category management |
+| `/transactions` | Authenticated | Transaction management |
+| `/reports` | Authenticated | Monthly summary |
+
+The authenticated routes render inside the responsive application shell. If an
+API request made with a token returns `401 Unauthorized`, the interceptor clears
+the local session and redirects to `/login`. A `403 Forbidden` response does not
+clear the session.
+
+## Local Development
+
+### Prerequisites
+
+- Node.js version supported by Angular 22
+- npm
+- The Expense Tracker backend and PostgreSQL database
+
+Install dependencies:
 
 ```bash
-ng generate --help
+npm install
 ```
 
-## Building
+The API base URL is currently provided through `API_URL` in
+`src/app/app.config.ts`. Ensure it matches the HTTPS URL used by the local backend.
 
-To build the project run:
+Start the frontend:
 
 ```bash
-ng build
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Open `http://localhost:4200`.
 
-## Running unit tests
+## Verification
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Run all frontend tests:
 
 ```bash
-ng test
+npm test -- --watch=false
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Create a production build:
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The build currently reports an existing initial-bundle budget warning. New
+features should avoid adding further budget warnings.
 
-## Additional Resources
+## Testing Conventions
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- Services verify HTTP methods, URLs, bodies, and responses.
+- Facades verify service calls, loading signals, errors, and Observable behavior.
+- Components verify form behavior and UI orchestration.
+- Required signal inputs are set before the first `detectChanges()`.
+- Expected Observable errors are always consumed in tests.
+- Components using router directives provide a test router.
+
+## Current Frontend Roadmap
+
+1. Keep the complete test suite and production build green.
+2. Finish mobile-layout verification at phone and tablet widths.
+3. Add useful Reports visualizations.
+4. Improve Dashboard recent-transaction presentation.
+5. Add CSV import and export.
+6. Complete production Docker configuration and deployment.
+7. Add observability and, later, AI-powered spending insights.

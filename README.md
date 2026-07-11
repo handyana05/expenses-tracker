@@ -6,17 +6,17 @@
 
 # Personal Finance Management System
 
-> A production-style **Personal Finance Management System** built with **ASP.NET 10, Clean Architecture, PostgreSQL, Docker, JWT Authentication**, and comprehensive automated testing.
+> A production-style **Personal Finance Management System** built with **ASP.NET 10, Angular 22, PostgreSQL, Docker, JWT Authentication**, and comprehensive automated testing.
 
 ---
 
 ## Overview
 
-Expense Tracker is a backend-first personal finance management application designed to demonstrate modern software engineering practices rather than simply implementing CRUD operations.
+Expense Tracker is a full-stack personal finance management application designed to demonstrate modern software engineering practices rather than simply implementing CRUD operations.
 
 The project emphasizes maintainability, scalability, testability, and clean software architecture while providing a solid foundation for a future Angular frontend and cloud-native deployment.
 
-Although the frontend is still under development, the backend is fully functional and designed to support real-world personal finance scenarios.
+The application includes a tested backend API and an Angular frontend with authentication, a public landing page, responsive navigation, finance management, dashboard summaries, and monthly reports.
 
 ---
 
@@ -68,6 +68,17 @@ This project focuses on demonstrating **how production-quality backend applicati
 - Monthly expense summary
 - Monthly balance calculation
 
+### Angular Frontend
+
+- Public landing page
+- Login and registration
+- Responsive authenticated shell
+- Category and transaction management
+- Dashboard summary and recent transactions
+- Monthly reports
+- Automatic redirect when an authenticated session expires
+- Angular Material UI and Vitest coverage
+
 ### Quality
 
 - Clean Architecture
@@ -107,11 +118,13 @@ This project focuses on demonstrating **how production-quality backend applicati
 - Docker Compose
 - GitHub Actions
 
-### Planned Frontend
+### Frontend
 
-- Angular
+- Angular 22
 - TypeScript
 - Angular Material
+- Signals and `httpResource`
+- Vitest
 - Chart.js
 
 ---
@@ -123,7 +136,7 @@ The solution follows **Clean Architecture** to separate business logic from infr
 ```mermaid
 flowchart TD
 
-    Client["Client Applications<br/>(Future Angular Frontend)"]
+    Client["Angular Frontend"]
 
     API["Presentation Layer<br/>ASP.NET Core Minimal API"]
 
@@ -188,17 +201,25 @@ expense-tracker/
 - Integration Tests
 - GitHub Actions CI
 - Code Coverage
+- Angular landing page
+- Angular authentication and protected routes
+- Responsive application shell and active navigation
+- Categories and Transactions UI
+- Dashboard and Monthly Reports UI
+- Shared Material presentation components
+- Frontend unit tests
 
 ### In Progress
 
 - Repository Documentation
-- API Screenshots
+- Frontend mobile-layout verification
+- Reports visualization
 
 ### Planned
 
-- Angular Frontend
-- Dashboard
-- Charts
+- Reports charts
+- CSV import and export
+- Production deployment
 - Budget Planning
 - OpenTelemetry
 - Prometheus
@@ -285,12 +306,20 @@ Additional documentation is available inside the project.
 - Transactions
 - Reports
 
-### Phase 2
+### Phase 2 — Current
 
 - Angular Frontend
 - Dashboard
-- Charts
 - Responsive UI
+- Frontend automated tests
+- Public landing page
+
+### Phase 2.1 — Next
+
+- Complete mobile-layout verification
+- Reports charts
+- Dashboard presentation polish
+- CSV import and export
 
 ### Phase 3
 

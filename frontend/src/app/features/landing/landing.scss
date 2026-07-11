@@ -104,11 +104,6 @@ h1 {
   background: var(--mat-sys-surface-container);
 }
 
-.preview-card span {
-  color: var(--mat-sys-on-surface-variant);
-  font-size: 0.7rem;
-}
-
 .preview-card--income mat-icon,
 .transaction-row--income strong {
   color: #2e7d32;
@@ -117,10 +112,6 @@ h1 {
 .preview-card--expense mat-icon,
 .transaction-row:not(.transaction-row--income) strong {
   color: var(--mat-sys-error);
-}
-
-.preview-card--balance mat-icon {
-  color: var(--mat-sys-primary);
 }
 
 .preview__body {
@@ -159,10 +150,6 @@ h1 {
   padding: 12px 0;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
   font-size: 0.75rem;
-}
-
-.transaction-row span {
-  flex: 1;
 }
 
 .features {
@@ -222,11 +209,9 @@ h1 {
 footer {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px 32px;
-  color: var(--mat-sys-on-surface-variant);
 }
 
 @media (max-width: 960px) {
