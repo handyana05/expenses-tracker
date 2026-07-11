@@ -8,6 +8,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { Auth } from '../../core/auth/auth/auth';
 import { AppRoutes } from '../../shared/constants/app-routes';
@@ -24,6 +26,8 @@ import { AuthState } from '../../core/auth/auth-state/auth-state';
     MatListModule,
     MatIconModule,
     MatButtonModule,
+    MatMenuModule,
+    MatTooltipModule,
   ],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',
@@ -35,6 +39,7 @@ export class Shell {
   private readonly breakpointObserver = inject(BreakpointObserver);
 
   readonly isMobile = signal(false);
+  readonly isCollapsed = signal(false);
 
   constructor() {
     this.breakpointObserver
@@ -43,6 +48,10 @@ export class Shell {
       .subscribe((result) => {
         this.isMobile.set(result.matches);
       });
+  }
+
+  toggleSidenav(): void {
+    this.isCollapsed.update((collapsed) => !collapsed);
   }
 
   async logout(): Promise<void> {

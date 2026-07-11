@@ -35,8 +35,17 @@ describe('Shell', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should show the authenticated user initials and display name', () => {
+  it('should show only the authenticated user initials in the toolbar', () => {
     expect(fixture.nativeElement.querySelector('.shell__avatar').textContent.trim()).toBe('JD');
-    expect(fixture.nativeElement.querySelector('.shell__user-label').textContent.trim()).toBe('Jane Doe');
+    expect(fixture.nativeElement.querySelector('.shell__user-button').title).toBe('Jane Doe');
+    expect(fixture.nativeElement.querySelector('.shell__user-label')).toBeNull();
+  });
+
+  it('should toggle the collapsed sidenav state', () => {
+    expect(component.isCollapsed()).toBe(false);
+
+    component.toggleSidenav();
+
+    expect(component.isCollapsed()).toBe(true);
   });
 });

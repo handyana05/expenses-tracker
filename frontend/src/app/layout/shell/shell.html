@@ -2,53 +2,79 @@
   <mat-sidenav
     #sidenav
     class="shell__sidenav"
+    [class.shell__sidenav--collapsed]="isCollapsed() && !isMobile()"
     [mode]="isMobile() ? 'over' : 'side'"
     [opened]="!isMobile()">
+    <div class="shell__sidenav-content">
+      @if (!isMobile()) {
+        <button
+          class="shell__collapse-button"
+          mat-icon-button
+          type="button"
+          [attr.aria-label]="isCollapsed() ? 'Expand navigation' : 'Collapse navigation'"
+          [matTooltip]="isCollapsed() ? 'Expand navigation' : 'Collapse navigation'"
+          matTooltipPosition="right"
+          (click)="toggleSidenav()">
+          <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+        </button>
+      }
 
-    <h2 class="shell__brand">Expense Tracker</h2>
-
-    <mat-nav-list>
+      <mat-nav-list>
       <a
         mat-list-item
+        matTooltip="Dashboard"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/dashboard"
         routerLinkActive="shell__nav-item--active"
         [routerLinkActiveOptions]="{ exact: true }"
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span matListItemTitle>Dashboard</span>
+        <span class="shell__nav-label" matListItemTitle>Dashboard</span>
       </a>
 
       <a
         mat-list-item
+        matTooltip="Categories"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/categories"
         routerLinkActive="shell__nav-item--active"
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>category</mat-icon>
-        <span matListItemTitle>Categories</span>
+        <span class="shell__nav-label" matListItemTitle>Categories</span>
       </a>
 
       <a
         mat-list-item
+        matTooltip="Transactions"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/transactions"
         routerLinkActive="shell__nav-item--active"
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>receipt_long</mat-icon>
-        <span matListItemTitle>Transactions</span>
+        <span class="shell__nav-label" matListItemTitle>Transactions</span>
       </a>
 
       <a
         mat-list-item
+        matTooltip="Reports"
+        matTooltipPosition="right"
+        [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/reports"
         routerLinkActive="shell__nav-item--active"
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>bar_chart</mat-icon>
-        <span matListItemTitle>Reports</span>
+        <span class="shell__nav-label" matListItemTitle>Reports</span>
       </a>
-    </mat-nav-list>
+      </mat-nav-list>
+
+    </div>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -66,17 +92,28 @@
       <span>Expense Tracker</span>
       <span class="shell__spacer"></span>
 
-      <div class="shell__user" [title]="authState.userLabel()">
+      <button
+        class="shell__user-button"
+        mat-icon-button
+        type="button"
+        aria-label="Open user menu"
+        [title]="authState.userLabel()"
+        [matMenuTriggerFor]="userMenu">
         <span class="shell__avatar" aria-hidden="true">
           {{ authState.userInitials() }}
         </span>
-        <span class="shell__user-label">{{ authState.userLabel() }}</span>
-      </div>
-
-      <button mat-button type="button" (click)="logout()">
-        <mat-icon>logout</mat-icon>
-        Logout
       </button>
+
+      <mat-menu #userMenu="matMenu" xPosition="before">
+        <div class="shell__menu-header" role="presentation">
+          <span class="shell__menu-avatar">{{ authState.userInitials() }}</span>
+          <strong>{{ authState.userLabel() }}</strong>
+        </div>
+        <button mat-menu-item type="button" (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
     </mat-toolbar>
 
     <main class="shell__content">
