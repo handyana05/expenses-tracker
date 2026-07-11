@@ -186,11 +186,12 @@ backend
 ```mermaid
 sequenceDiagram
 
-    participant Client 
+    participant Client as Nginx / API proxy
     participant API as Minimal API Endpoint 
     participant Filter as Validation Filter 
     participant Service as Application Service 
     participant Repo as Repository 
+    participant UoW as Unit of Work
     participant DB as PostgreSQL 
     
     Client->>API: HTTP Request 
@@ -201,6 +202,11 @@ sequenceDiagram
     Repo->>DB: EF Core operation 
     DB-->>Repo: Result 
     Repo-->>Service: Data 
+    opt Mutation
+        Service->>UoW: SaveChangesAsync
+        UoW->>DB: Commit transaction
+        DB-->>UoW: Commit result
+    end
     Service-->>API: DTO 
     API-->>Client: HTTP Response
 ```
@@ -250,7 +256,7 @@ erDiagram
     CATEGORIES { 
         uuid Id 
         string Name 
-        string Type 
+        int CategoryType
         uuid UserId 
     } 
     

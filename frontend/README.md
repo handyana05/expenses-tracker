@@ -37,6 +37,27 @@ transactions, dashboard summaries, and monthly reports.
 
 ## Architecture
 
+```mermaid
+flowchart TD
+    Browser["Browser"] --> Router["Angular Router"]
+
+    Router --> Landing["Landing page"]
+    Router --> GuestGuard["guestGuard"]
+    GuestGuard --> Login["Login / Register"]
+    Router --> AuthGuard["authGuard"]
+    AuthGuard --> Shell["Authenticated shell"]
+    Shell --> Features["Dashboard / Categories / Transactions / Reports"]
+
+    Features -->|"simple GET"| Resource["httpResource"]
+    Features -->|"commands"| Facade["Feature facade"]
+    Facade --> Service["HTTP service"]
+    Resource --> Interceptor["Auth interceptor"]
+    Service --> Interceptor
+    Interceptor -->|"Bearer token"| API["Backend /api"]
+    Interceptor -->|"401: clear session"| AuthState["AuthState"]
+    AuthState --> Login
+```
+
 ```text
 src/app/
 ├── core/       Application-wide technical concerns

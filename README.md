@@ -136,30 +136,35 @@ This project focuses on demonstrating **how production-quality backend applicati
 
 ## Architecture
 
-The solution follows **Clean Architecture** to separate business logic from infrastructure and presentation concerns.
+The browser-facing application is served through Nginx, which hosts Angular and
+proxies same-origin `/api` requests to the ASP.NET Core backend. The backend
+follows Clean Architecture to separate business logic from infrastructure and
+presentation concerns.
 
 ```mermaid
-flowchart TD
+flowchart LR
+    Browser["Browser"]
+    Ingress["Cloud ingress / TLS<br/>(public deployment)"]
 
-    Client["Angular Frontend"]
+    subgraph Containers["Containerized application"]
+        Nginx["Nginx<br/>Angular SPA + /api proxy"]
+        API["ASP.NET Core Minimal API"]
+        APP["Application<br/>Use cases, DTOs, interfaces"]
+        DOMAIN["Domain<br/>Entities and business rules"]
+        INFRA["Infrastructure<br/>EF Core, repositories, JWT"]
+        DB[(PostgreSQL)]
 
-    API["Presentation Layer<br/>ASP.NET Core Minimal API"]
+        Nginx -->|"/api"| API
+        API --> APP
+        API -->|"composition"| INFRA
+        APP --> DOMAIN
+        INFRA --> APP
+        INFRA --> DOMAIN
+        INFRA --> DB
+    end
 
-    APP["Application Layer<br/>Services, DTOs, Interfaces"]
-
-    DOMAIN["Domain Layer<br/>Entities & Business Rules"]
-
-    INFRA["Infrastructure Layer<br/>EF Core, Repositories, PostgreSQL"]
-
-    DB[(PostgreSQL)]
-
-    Client --> API
-    API --> APP
-    API --> INFRA
-    APP --> DOMAIN
-    INFRA --> APP
-    INFRA --> DOMAIN
-    INFRA --> DB
+    Browser -->|"HTTPS"| Ingress
+    Ingress --> Nginx
 ```
 
 ### Design Principles
