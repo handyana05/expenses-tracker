@@ -151,4 +151,4 @@ category ownership and saves the batch in one unit of work.
 
 ### Landing page
 
-![LandingPage](../docs/frontend-lading-page.png)
+![LandingPage](../docs/frontend-landing-page.png)
