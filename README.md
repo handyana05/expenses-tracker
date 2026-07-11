@@ -281,6 +281,7 @@ Additional documentation is available inside the project.
 |---------------|---------------|
 | [`backend/README.md`](./backend/README.md) | Backend architecture, setup and API documentation |
 | [`frontend/README.md`](./frontend/README.md) | Frontend architecture, setup, routes, testing, CSV, and container documentation |
+| [`docs/adr`](./docs/adr) | Accepted architectural decisions and their trade-offs |
 
 ---
 
