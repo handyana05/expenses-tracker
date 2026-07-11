@@ -302,6 +302,25 @@ Create local configuration from the example and replace every placeholder:
 cp .env.example .env
 ```
 
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Required configuration:
+
+| Variable | Purpose | Local default/example |
+|---|---|---|
+| `POSTGRES_DB` | PostgreSQL database name | `ExpenseTrackerDb` |
+| `POSTGRES_USER` | PostgreSQL user | `postgres` |
+| `POSTGRES_PASSWORD` | PostgreSQL password | Replace with a secure value |
+| `POSTGRES_PORT` | PostgreSQL port published to the host | `5430` |
+| `JWT_SECRET_KEY` | JWT signing key, at least 32 characters | Replace with a random secret |
+| `FRONTEND_PORT` | Browser-facing Nginx port | `8080` |
+
+The `.env` file contains secrets, is ignored by Git, and must never be committed.
+
 Start the complete stack:
 
 ```bash
@@ -310,16 +329,50 @@ docker compose up --build -d
 
 Open `http://localhost:8080` or the port configured by `FRONTEND_PORT`.
 
+Check that all services become healthy:
+
 ```bash
 docker compose ps
+```
+
+Follow application or database logs:
+
+```bash
 docker compose logs -f backend frontend
+docker compose logs -f postgres
+```
+
+Rebuild after source or dependency changes:
+
+```bash
+docker compose up --build -d
+```
+
+Stop the stack while preserving PostgreSQL data:
+
+```bash
 docker compose down
 ```
 
 The PostgreSQL volume survives `docker compose down`. The backend waits for the
 database health check and applies EF Core migrations at startup only when enabled
-by the Compose configuration. Public internet deployment still requires TLS at a
-trusted reverse proxy or cloud ingress and production secret management.
+by the Compose configuration.
+
+To completely reset the local database:
+
+```bash
+docker compose down -v
+```
+
+> **Warning:** `docker compose down -v` permanently deletes the PostgreSQL volume
+> and all locally stored application data.
+
+If startup reports that a port is already allocated, stop the local process or
+container using port `8080` or `5430`, or change `FRONTEND_PORT` or
+`POSTGRES_PORT` in `.env`.
+
+Public internet deployment still requires TLS at a trusted reverse proxy or cloud
+ingress and managed production secrets.
 
 ---
 
