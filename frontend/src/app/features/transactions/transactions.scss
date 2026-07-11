@@ -44,8 +44,38 @@ table {
   color: var(--mat-sys-error);
 }
 
+.transactions-header,
+.csv-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transactions-header {
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.transactions-header h2 {
+  margin: 0;
+}
+
+.csv-input {
+  display: none;
+}
+
 @media (max-width: 600px) {
   form {
     grid-template-columns: 1fr;
+  }
+
+  .transactions-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .csv-actions {
+    flex-wrap: wrap;
   }
 }

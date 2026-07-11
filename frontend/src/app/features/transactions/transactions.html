@@ -70,7 +70,33 @@
 <br />
 
 <app-page-card>
-  <h2>Your Transactions</h2>
+  <div class="transactions-header">
+    <h2>Your Transactions</h2>
+    <div class="csv-actions">
+      <input
+        #csvInput
+        class="csv-input"
+        type="file"
+        accept=".csv,text/csv"
+        (change)="importCsv($event)" />
+      <button
+        mat-stroked-button
+        type="button"
+        [disabled]="facade.importing() || categories.value().length === 0"
+        (click)="csvInput.click()">
+        <mat-icon>upload_file</mat-icon>
+        {{ facade.importing() ? 'Importing...' : 'Import CSV' }}
+      </button>
+      <button
+        mat-stroked-button
+        type="button"
+        [disabled]="transactions.value().length === 0"
+        (click)="exportCsv()">
+        <mat-icon>download</mat-icon>
+        Export CSV
+      </button>
+    </div>
+  </div>
 
   @if (transactions.isLoading()) {
     <app-loading-spinner />

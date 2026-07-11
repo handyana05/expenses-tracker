@@ -4,6 +4,7 @@ import { CreateTransactionCommand } from '../../models/create-transaction.comman
 import { UpdateTransactionCommand } from '../../models/update-transaction.command';
 import { finalize, Observable, tap } from 'rxjs';
 import { Messages } from '../../../../shared/constants/messages';
+import { ImportTransactionsResult } from '../../models/import-transactions-result.model';
 
 @Service()
 export class TransactionFacade {
@@ -12,6 +13,7 @@ export class TransactionFacade {
     readonly creating = signal(false);
     readonly updating = signal(false);
     readonly deleting = signal(false);
+    readonly importing = signal(false);
     readonly error = signal<string | null>(null);
 
     create(command: CreateTransactionCommand): Observable<Transaction> {
@@ -47,6 +49,18 @@ export class TransactionFacade {
                 error: () => this.error.set(Messages.transactionDeleted)
             }),
             finalize(() => this.deleting.set(false))
+        );
+    }
+
+    import(commands: readonly CreateTransactionCommand[]): Observable<ImportTransactionsResult> {
+        this.importing.set(true);
+        this.error.set(null);
+
+        return this.transactionService.import(commands).pipe(
+            tap({
+                error: () => this.error.set('Could not import transactions.')
+            }),
+            finalize(() => this.importing.set(false))
         );
     }
 }

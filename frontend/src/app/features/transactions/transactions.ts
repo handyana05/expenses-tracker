@@ -17,6 +17,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
+import { TransactionCsv } from './transaction-csv';
+import { Messages } from '../../shared/constants/messages';
 
 
 @Component({
@@ -151,6 +153,52 @@ export class Transactions {
             });
           }
         });
+    }
+
+    exportCsv(): void {
+      const csv = TransactionCsv.serialize(this.transactions.value());
+      const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+
+      link.href = url;
+      link.download = `transactions-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async importCsv(event: Event): Promise<void> {
+      const input = event.target as HTMLInputElement;
+      const file = input.files?.[0];
+
+      if (!file || this.facade.importing()) {
+        return;
+      }
+
+      try {
+        const commands = TransactionCsv.parse(
+          await file.text(),
+          this.categories.value()
+        );
+
+        this.facade.import(commands).subscribe({
+          next: (result) => {
+            this.snackbar.success(
+              `${result.importedCount} transaction${result.importedCount === 1 ? '' : 's'} imported.`
+            );
+            this.transactions.reload();
+          },
+          error: () => this.snackbar.error(
+            this.facade.error() || Messages.unexpectedError
+          ),
+        });
+      } catch (error) {
+        this.snackbar.error(
+          error instanceof Error ? error.message : Messages.unexpectedError
+        );
+      } finally {
+        input.value = '';
+      }
     }
 
     cancelEdit(): void {
