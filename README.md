@@ -289,7 +289,7 @@ Additional documentation is available inside the project.
 
 ## Frontend Landing Page
 
-![LandingPage](../docs/frontend-lading-page.png)
+![LandingPage](./docs/frontend-lading-page.png)
 
 ## GitHub Actions
 
