@@ -1,4 +1,5 @@
 export const AppRoutes = {
+  landing: '/',
   login: '/login',
   register: '/register',
   dashboard: '/dashboard',

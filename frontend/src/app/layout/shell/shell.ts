@@ -45,6 +45,6 @@ export class Shell {
 
   async logout(): Promise<void> {
     this.auth.logout();
-    await this.router.navigate([AppRoutes.login]);
+    await this.router.navigate([AppRoutes.landing]);
   }
 }
