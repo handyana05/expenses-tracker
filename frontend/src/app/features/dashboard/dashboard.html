@@ -1,31 +1,31 @@
 <app-page-header
-  title="Dashboard"
-  subtitle="Overview of your finances for the current month">
+  [title]="'Dashboard' | translate"
+  [subtitle]="'Overview of your finances for the current month' | translate">
 </app-page-header>
 
 @if (monthlySummary.isLoading()) {
   <app-loading-spinner />
 } @else if (monthlySummary.error()) {
   <app-empty-state
-    title="Could not load dashboard"
-    description="Please try again later.">
+    [title]="'Could not load dashboard' | translate"
+    [description]="'Please try again later.' | translate">
   </app-empty-state>
 } @else {
   <div class="summary-grid">
     <app-summary-card
-      title="Total Income"
+      [title]="'Total Income' | translate"
       icon="payments"
       tone="income"
       [value]="monthlySummary.value().totalIncome" />
 
     <app-summary-card
-      title="Total Expenses"
+      [title]="'Total Expenses' | translate"
       icon="receipt_long"
       tone="expense"
       [value]="monthlySummary.value().totalExpenses" />
 
     <app-summary-card
-      title="Balance"
+      [title]="'Balance' | translate"
       icon="account_balance_wallet"
       [tone]="monthlySummary.value().balance >= 0 ? 'balance' : 'expense'"
       [value]="monthlySummary.value().balance" />
@@ -36,11 +36,11 @@
   <app-page-card>
     <div class="recent-header">
       <div>
-        <h2>Recent Transactions</h2>
-        <p>Your latest financial activity</p>
+        <h2>{{ 'Recent Transactions' | translate }}</h2>
+        <p>{{ 'Your latest financial activity' | translate }}</p>
       </div>
       <a mat-button routerLink="/transactions">
-        View all
+        {{ 'View all' | translate }}
         <mat-icon>arrow_forward</mat-icon>
       </a>
     </div>
@@ -49,13 +49,13 @@
       <app-loading-spinner />
     } @else if (recentTransactions.error()) {
       <app-empty-state
-        title="Could not load recent transactions"
-        description="Please try again later.">
+        [title]="'Could not load recent transactions' | translate"
+        [description]="'Please try again later.' | translate">
       </app-empty-state>
     } @else if (recentTransactions.value().length === 0) {
       <app-empty-state
-        title="No transactions yet"
-        description="Create your first transaction to see it here.">
+        [title]="'No transactions yet' | translate"
+        [description]="'Create your first transaction to see it here.' | translate">
       </app-empty-state>
     } @else {
       <div class="transaction-list">
@@ -72,17 +72,17 @@
 
             <div class="transaction-details">
               <strong>{{ transaction.categoryName }}</strong>
-              <span>{{ transaction.description || 'No description' }}</span>
+              <span>{{ transaction.description || localization.translate('No description') }}</span>
             </div>
 
             <div class="transaction-meta">
               <strong
                 [class.amount--income]="transaction.categoryType === CategoryType.Income"
                 [class.amount--expense]="transaction.categoryType === CategoryType.Expense">
-                {{ transaction.categoryType === CategoryType.Income ? '+' : '−' }}{{ transaction.amount | currency: 'EUR' }}
+                {{ transaction.categoryType === CategoryType.Income ? '+' : '−' }}{{ localization.formatCurrency(transaction.amount) }}
               </strong>
               <time [attr.datetime]="transaction.transactionDate">
-                {{ transaction.transactionDate | date: 'MMM d, y' }}
+                {{ localization.formatDate(transaction.transactionDate) }}
               </time>
             </div>
           </article>

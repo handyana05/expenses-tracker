@@ -7,7 +7,7 @@ import { Category } from '../categories/models/category.model';
 import { Transaction } from './models/transaction.model';
 import { CreateTransactionCommand } from './models/create-transaction.command';
 import { ReactiveFormsModule } from '@angular/forms';
-import { DatePipe, CurrencyPipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { ConfirmDialog, Snackbar } from '../../shared/services';
 import { ApiEndpoints } from '../../shared/constants/api-endpoints';
 import { MatTableModule } from '@angular/material/table';
@@ -19,6 +19,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { TransactionCsv } from './transaction-csv';
 import { Messages } from '../../shared/constants/messages';
+import { Localization } from '../../core/localization/localization';
+import { TranslatePipe } from '../../core/localization/translate.pipe';
 
 
 @Component({
@@ -26,7 +28,6 @@ import { Messages } from '../../shared/constants/messages';
   imports: [
     ReactiveFormsModule,
     DatePipe,
-    CurrencyPipe,
 
     PageHeader,
     PageCard,
@@ -39,6 +40,7 @@ import { Messages } from '../../shared/constants/messages';
     MatIconModule,
     MatSelectModule,
     MatTableModule,
+    TranslatePipe,
   ],
   providers: [TransactionFacade],
   templateUrl: './transactions.html',
@@ -49,6 +51,7 @@ export class Transactions {
 
     readonly confirmDialog = inject(ConfirmDialog);
     readonly snackbar = inject(Snackbar);
+    readonly localization = inject(Localization);
 
     readonly facade = inject(TransactionFacade);
     readonly form = TransactionFormFactory.create();
@@ -78,9 +81,9 @@ export class Transactions {
     }
 
     get submitButtonText(): string {
-      if (this.facade.creating()) return 'Creating...';
-      if (this.facade.updating()) return 'Updating...';
-      return this.isEditing ? 'Update' : 'Create';
+      if (this.facade.creating()) return this.localization.translate('Creating...');
+      if (this.facade.updating()) return this.localization.translate('Updating...');
+      return this.localization.translate(this.isEditing ? 'Update' : 'Create');
     }
 
     saveTransaction(): void {
@@ -139,8 +142,8 @@ export class Transactions {
     deleteTransaction(id: string): void {
       this.confirmDialog
         .confirm({
-            title: 'Delete transaction',
-            message: 'Are you sure you want to delete this transaction?',
+            title: this.localization.translate('Delete transaction'),
+            message: this.localization.translate('Are you sure you want to delete this transaction?'),
         })
         .subscribe({
           next: (confirmed) => {
@@ -184,17 +187,17 @@ export class Transactions {
         this.facade.import(commands).subscribe({
           next: (result) => {
             this.snackbar.success(
-              `${result.importedCount} transaction${result.importedCount === 1 ? '' : 's'} imported.`
+              this.localization.importedTransactions(result.importedCount)
             );
             this.transactions.reload();
           },
           error: () => this.snackbar.error(
-            this.facade.error() || Messages.unexpectedError
+            this.facade.error() || this.localization.translate(Messages.unexpectedError)
           ),
         });
       } catch (error) {
         this.snackbar.error(
-          error instanceof Error ? error.message : Messages.unexpectedError
+          error instanceof Error ? error.message : this.localization.translate(Messages.unexpectedError)
         );
       } finally {
         input.value = '';

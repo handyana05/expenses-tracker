@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslatePipe } from '../../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    TranslatePipe,
   ],
   providers: [LoginFacade],
   templateUrl: './login.html',

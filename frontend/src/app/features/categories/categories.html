@@ -1,14 +1,14 @@
 <app-page-header
-  title="Categories"
-  subtitle="Manage your income and expense categories">
+  [title]="'Categories' | translate"
+  [subtitle]="'Manage your income and expense categories' | translate">
 </app-page-header>
 
 <app-page-card>
   <h2>
     @if (isEditing) {
-      Edit Category
+      {{ 'Edit Category' | translate }}
     } @else {
-      Create Category
+      {{ 'Create Category' | translate }}
     }
   </h2>
 
@@ -18,19 +18,19 @@
     }
 
     <mat-form-field appearance="outline">
-      <mat-label>Name</mat-label>
+      <mat-label>{{ 'Name' | translate }}</mat-label>
       <input matInput type="text" formControlName="name" />
 
       @if (form.controls.name.touched && form.controls.name.invalid) {
-        <mat-error>Name is required.</mat-error>
+        <mat-error>{{ 'Name is required.' | translate }}</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Type</mat-label>
+      <mat-label>{{ 'Type' | translate }}</mat-label>
       <mat-select formControlName="type">
-        <mat-option [value]="CategoryType.Income">Income</mat-option>
-        <mat-option [value]="CategoryType.Expense">Expense</mat-option>
+        <mat-option [value]="CategoryType.Income">{{ 'Income' | translate }}</mat-option>
+        <mat-option [value]="CategoryType.Expense">{{ 'Expense' | translate }}</mat-option>
       </mat-select>
     </mat-form-field>
 
@@ -39,7 +39,7 @@
         mat-flat-button
         color="primary"
         type="submit"
-        [attr.aria-label]="submitButtonText + ' category'"
+        [attr.aria-label]="submitButtonText + ' ' + ('Category' | translate)"
         [title]="submitButtonText"
         [disabled]="facade.creating() || facade.updating()">
         <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
@@ -49,7 +49,7 @@
       @if (isEditing) {
         <button mat-button type="button" (click)="cancelEdit()">
           <mat-icon>close</mat-icon>
-          Cancel
+          {{ 'Cancel' | translate }}
         </button>
       }
     </div>
@@ -59,51 +59,51 @@
 <br />
 
 <app-page-card>
-  <h2>Your Categories</h2>
+  <h2>{{ 'Your Categories' | translate }}</h2>
 
   @if (categories.isLoading()) {
     <app-loading-spinner />
   } @else if (categories.error()) {
     <app-empty-state
-      title="Could not load categories"
-      description="Please try again later.">
+      [title]="'Could not load categories' | translate"
+      [description]="'Please try again later.' | translate">
     </app-empty-state>
   } @else if (categories.value().length === 0) {
     <app-empty-state
-      title="No categories yet"
-      description="Create your first category to start tracking your finances.">
+      [title]="'No categories yet' | translate"
+      [description]="'Create your first category to start tracking your finances.' | translate">
     </app-empty-state>
   } @else {
     <table mat-table [dataSource]="categories.value()">
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Name' | translate }}</th>
         <td mat-cell *matCellDef="let category">
           {{ category.name }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="type">
-        <th mat-header-cell *matHeaderCellDef>Type</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Type' | translate }}</th>
         <td mat-cell *matCellDef="let category">
           @if (category.type === CategoryType.Income) {
-            Income
+            {{ 'Income' | translate }}
           } @else {
-            Expense
+            {{ 'Expense' | translate }}
           }
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Actions' | translate }}</th>
         <td mat-cell class="table-actions" *matCellDef="let category">
           <button mat-button type="button" (click)="editCategory(category)">
             <mat-icon>edit</mat-icon>
-            Edit
+            {{ 'Edit' | translate }}
           </button>
 
           <button class="danger-action" mat-button type="button" (click)="deleteCategory(category.id)">
             <mat-icon>delete</mat-icon>
-            Delete
+            {{ 'Delete' | translate }}
           </button>
         </td>
       </ng-container>

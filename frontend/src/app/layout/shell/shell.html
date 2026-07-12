@@ -11,8 +11,8 @@
           class="shell__collapse-button"
           mat-icon-button
           type="button"
-          [attr.aria-label]="(isCollapsed() ? 'nav.expand' : 'nav.collapse') | translate"
-          [matTooltip]="(isCollapsed() ? 'nav.expand' : 'nav.collapse') | translate"
+          [attr.aria-label]="(isCollapsed() ? 'Expand navigation' : 'Collapse navigation') | translate"
+          [matTooltip]="(isCollapsed() ? 'Expand navigation' : 'Collapse navigation') | translate"
           matTooltipPosition="right"
           (click)="toggleSidenav()">
           <mat-icon>{{ isCollapsed() ? 'chevron_right' : 'chevron_left' }}</mat-icon>
@@ -22,7 +22,7 @@
       <mat-nav-list>
       <a
         mat-list-item
-        [matTooltip]="'nav.dashboard' | translate"
+        [matTooltip]="'Dashboard' | translate"
         matTooltipPosition="right"
         [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/dashboard"
@@ -31,12 +31,12 @@
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'nav.dashboard' | translate }}</span>
+        <span class="shell__nav-label" matListItemTitle>{{ 'Dashboard' | translate }}</span>
       </a>
 
       <a
         mat-list-item
-        [matTooltip]="'nav.categories' | translate"
+        [matTooltip]="'Categories' | translate"
         matTooltipPosition="right"
         [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/categories"
@@ -44,12 +44,12 @@
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>category</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'nav.categories' | translate }}</span>
+        <span class="shell__nav-label" matListItemTitle>{{ 'Categories' | translate }}</span>
       </a>
 
       <a
         mat-list-item
-        [matTooltip]="'nav.transactions' | translate"
+        [matTooltip]="'Transactions' | translate"
         matTooltipPosition="right"
         [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/transactions"
@@ -57,12 +57,12 @@
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>receipt_long</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'nav.transactions' | translate }}</span>
+        <span class="shell__nav-label" matListItemTitle>{{ 'Transactions' | translate }}</span>
       </a>
 
       <a
         mat-list-item
-        [matTooltip]="'nav.reports' | translate"
+        [matTooltip]="'Reports' | translate"
         matTooltipPosition="right"
         [matTooltipDisabled]="!isCollapsed() || isMobile()"
         routerLink="/reports"
@@ -70,7 +70,7 @@
         ariaCurrentWhenActive="page"
         (click)="isMobile() && sidenav.close()">
         <mat-icon matListItemIcon>bar_chart</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'nav.reports' | translate }}</span>
+        <span class="shell__nav-label" matListItemTitle>{{ 'Reports' | translate }}</span>
       </a>
       </mat-nav-list>
 
@@ -83,36 +83,36 @@
         <button
           mat-icon-button
           type="button"
-          [attr.aria-label]="'nav.open' | translate"
+          [attr.aria-label]="'Open navigation' | translate"
           (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
       }
 
-      <span>{{ 'app.name' | translate }}</span>
+      <span>{{ 'Expense Tracker' | translate }}</span>
       <span class="shell__spacer"></span>
 
       <button
         mat-icon-button
         type="button"
-        [attr.aria-label]="(theme.current() === 'dark' ? 'theme.light' : 'theme.dark') | translate"
-        [matTooltip]="(theme.current() === 'dark' ? 'theme.light' : 'theme.dark') | translate"
+        [attr.aria-label]="(theme.current() === 'dark' ? 'Use light theme' : 'Use dark theme') | translate"
+        [matTooltip]="(theme.current() === 'dark' ? 'Use light theme' : 'Use dark theme') | translate"
         (click)="theme.toggle()">
         <mat-icon>{{ theme.current() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
       </button>
 
       <button mat-button type="button" [matMenuTriggerFor]="languageMenu"
-        [attr.aria-label]="'preferences.language' | translate">
+        [attr.aria-label]="'Language' | translate">
         <mat-icon>language</mat-icon>
         {{ localization.locale().toUpperCase() }}
       </button>
 
       <mat-menu #languageMenu="matMenu" xPosition="before">
         <button mat-menu-item type="button" (click)="localization.setLocale('en')">
-          <span>{{ 'language.english' | translate }}</span>
+          <span>{{ 'English' | translate }}</span>
         </button>
         <button mat-menu-item type="button" (click)="localization.setLocale('de')">
-          <span>{{ 'language.german' | translate }}</span>
+          <span>{{ 'German' | translate }}</span>
         </button>
       </mat-menu>
 
@@ -120,7 +120,7 @@
         class="shell__user-button"
         mat-icon-button
         type="button"
-        [attr.aria-label]="'account.openMenu' | translate"
+        [attr.aria-label]="'Open user menu' | translate"
         [title]="authState.userLabel()"
         [matMenuTriggerFor]="userMenu">
         <span class="shell__avatar" aria-hidden="true">
@@ -135,7 +135,7 @@
         </div>
         <button mat-menu-item type="button" (click)="logout()">
           <mat-icon>logout</mat-icon>
-          <span>{{ 'account.logout' | translate }}</span>
+          <span>{{ 'Logout' | translate }}</span>
         </button>
       </mat-menu>
     </mat-toolbar>

@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { RegisterFacade } from './services/register-facade/register-facade';
 import { RegisterFormFactory } from './register.form-factory';
 import { RegisterCommand } from './models/register.model';
+import { TranslatePipe } from '../../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-register',
@@ -18,6 +19,7 @@ import { RegisterCommand } from './models/register.model';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    TranslatePipe,
   ],
   templateUrl: './register.html',
   styleUrl: './register.scss',

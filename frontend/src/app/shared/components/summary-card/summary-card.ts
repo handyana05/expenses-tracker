@@ -1,7 +1,7 @@
-import { CurrencyPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { Localization } from '../../../core/localization/localization';
 
 export type SummaryCardTone =
   | 'default'
@@ -12,7 +12,6 @@ export type SummaryCardTone =
 @Component({
   selector: 'app-summary-card',
   imports: [
-    CurrencyPipe,
     MatCardModule,
     MatIconModule,
   ],
@@ -20,6 +19,7 @@ export type SummaryCardTone =
   styleUrl: './summary-card.scss',
 })
 export class SummaryCard {
+  readonly localization = inject(Localization);
   readonly title = input.required<string>();
   readonly value = input.required<number>();
   readonly icon = input.required<string>();

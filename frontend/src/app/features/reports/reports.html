@@ -1,12 +1,12 @@
 <app-page-header
-  title="Reports"
-  subtitle="Analyze your income, expenses and balance by month">
+  [title]="'Reports' | translate"
+  [subtitle]="'Analyze your income, expenses and balance by month' | translate">
 </app-page-header>
 
 <app-page-card>
   <form class="report-filters">
     <mat-form-field appearance="outline">
-      <mat-label>Year</mat-label>
+      <mat-label>{{ 'Year' | translate }}</mat-label>
       <input
         matInput
         type="number"
@@ -16,7 +16,7 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Month</mat-label>
+      <mat-label>{{ 'Month' | translate }}</mat-label>
       <input
         matInput
         type="number"
@@ -29,7 +29,7 @@
 
     <button mat-flat-button color="primary" type="button" (click)="reload()">
       <mat-icon>refresh</mat-icon>
-      Load
+      {{ 'Load' | translate }}
     </button>
   </form>
 </app-page-card>
@@ -40,25 +40,25 @@
   <app-loading-spinner />
 } @else if (monthlySummary.error()) {
   <app-empty-state
-    title="Could not load report"
-    description="Please try again later.">
+    [title]="'Could not load report' | translate"
+    [description]="'Please try again later.' | translate">
   </app-empty-state>
 } @else {
   <div class="summary-grid">
     <app-summary-card
-    title="Total Income"
+    [title]="'Total Income' | translate"
     icon="payments"
     tone="income"
     [value]="monthlySummary.value().totalIncome" />
 
   <app-summary-card
-    title="Total Expenses"
+    [title]="'Total Expenses' | translate"
     icon="receipt_long"
     tone="expense"
     [value]="monthlySummary.value().totalExpenses" />
 
   <app-summary-card
-    title="Balance"
+    [title]="'Balance' | translate"
     icon="account_balance_wallet"
     tone="balance"
     [value]="monthlySummary.value().balance" />
@@ -69,8 +69,8 @@
   <app-page-card>
     <div class="chart-heading">
       <div>
-        <h2>Income and Expenses</h2>
-        <p>Compare money earned and spent for the selected month.</p>
+        <h2>{{ 'Income and Expenses' | translate }}</h2>
+        <p>{{ 'Compare money earned and spent for the selected month.' | translate }}</p>
       </div>
       <mat-icon>donut_large</mat-icon>
     </div>
@@ -80,7 +80,7 @@
         <canvas
           baseChart
           type="doughnut"
-          aria-label="Income and expenses comparison chart"
+          [aria-label]="'Income and expenses comparison chart' | translate"
           role="img"
           [data]="comparisonChartData()"
           [options]="comparisonChartOptions">
@@ -89,8 +89,8 @@
     } @else {
       <app-empty-state
         icon="donut_small"
-        title="No activity this month"
-        description="Add income or expense transactions to see a comparison.">
+        [title]="'No activity this month' | translate"
+        [description]="'Add income or expense transactions to see a comparison.' | translate">
       </app-empty-state>
     }
   </app-page-card>

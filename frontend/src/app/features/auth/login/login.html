@@ -1,9 +1,9 @@
 <div class="auth-page">
   <mat-card class="auth-card">
     <mat-card-header>
-      <mat-card-title>Sign in</mat-card-title>
+      <mat-card-title>{{ 'Sign in' | translate }}</mat-card-title>
       <mat-card-subtitle>
-        Sign in to manage your personal finances
+        {{ 'Sign in to manage your personal finances' | translate }}
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -14,7 +14,7 @@
         }
 
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
+          <mat-label>{{ 'Email' | translate }}</mat-label>
 
           <input
             matInput
@@ -26,17 +26,17 @@
             form.controls.email.touched &&
             form.controls.email.hasError('required')
           ) {
-            <mat-error>Email is required.</mat-error>
+            <mat-error>{{ 'Email is required.' | translate }}</mat-error>
           } @else if (
             form.controls.email.touched &&
             form.controls.email.hasError('email')
           ) {
-            <mat-error>Please enter a valid email address.</mat-error>
+            <mat-error>{{ 'Please enter a valid email address.' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'Password' | translate }}</mat-label>
 
           <input
             matInput
@@ -48,7 +48,7 @@
             form.controls.password.touched &&
             form.controls.password.hasError('required')
           ) {
-            <mat-error>Password is required.</mat-error>
+            <mat-error>{{ 'Password is required.' | translate }}</mat-error>
           }
         </mat-form-field>
 
@@ -57,17 +57,17 @@
           type="submit"
           [disabled]="facade.loading()">
           @if (facade.loading()) {
-            Signing in...
+            {{ 'Signing in...' | translate }}
           } @else {
-            Sign in
+            {{ 'Sign in' | translate }}
           }
         </button>
       </form>
     </mat-card-content>
 
     <mat-card-actions>
-      <span>Do not have an account?</span>
-      <a mat-button routerLink="/register">Create account</a>
+      <span>{{ 'Do not have an account?' | translate }}</span>
+      <a mat-button routerLink="/register">{{ 'Create account' | translate }}</a>
     </mat-card-actions>
   </mat-card>
 </div>

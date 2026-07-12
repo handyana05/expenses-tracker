@@ -6,10 +6,10 @@
 
 <mat-dialog-actions align="end">
   <button mat-button type="button" (click)="cancel()">
-    {{ data.cancelText ?? 'Cancel' }}
+    {{ data.cancelText ?? localization.translate('Cancel') }}
   </button>
 
   <button mat-flat-button color="warn" type="button" (click)="confirm()">
-    {{ data.confirmText ?? 'Delete' }}
+    {{ data.confirmText ?? localization.translate('Delete') }}
   </button>
 </mat-dialog-actions>

@@ -18,6 +18,14 @@ describe('Localization', () => {
   it('returns the translation for the active locale', () => {
     const service = TestBed.inject(Localization);
     service.setLocale('de');
-    expect(service.translate('account.logout')).toBe('Abmelden');
+    expect(service.translate('Logout')).toBe('Abmelden');
+  });
+
+  it('formats values and pluralized feedback for the active locale', () => {
+    const service = TestBed.inject(Localization);
+    service.setLocale('de');
+
+    expect(service.formatCurrency(1234.5)).toContain('1.234,50');
+    expect(service.importedTransactions(2)).toBe('2 Transaktionen importiert.');
   });
 });

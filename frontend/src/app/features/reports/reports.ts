@@ -4,7 +4,6 @@ import { httpResource } from '@angular/common/http';
 import { MonthlySummary } from './models/report.model';
 import { FormsModule } from '@angular/forms';
 import { ApiEndpoints } from '../../shared/constants/api-endpoints';
-import { CurrencyPipe } from '@angular/common';
 import { EmptyState, LoadingSpinner, PageCard, PageHeader, SummaryCard } from '../../shared/components';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,6 +18,8 @@ import {
   Tooltip,
 } from 'chart.js';
 import { BaseChartDirective, provideCharts } from 'ng2-charts';
+import { Localization } from '../../core/localization/localization';
+import { TranslatePipe } from '../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-reports',
@@ -36,6 +37,7 @@ import { BaseChartDirective, provideCharts } from 'ng2-charts';
     MatInputModule,
     MatIconModule,
     BaseChartDirective,
+    TranslatePipe,
   ],
   providers: [
     provideCharts({
@@ -47,6 +49,7 @@ import { BaseChartDirective, provideCharts } from 'ng2-charts';
 })
 export class Reports {
   private readonly apiUrl = inject(API_URL);
+  readonly localization = inject(Localization);
 
   readonly year = signal(new Date().getFullYear());
   readonly month = signal(new Date().getMonth() + 1);
@@ -72,7 +75,7 @@ export class Reports {
     const summary = this.monthlySummary.value();
 
     return {
-      labels: ['Income', 'Expenses'],
+      labels: [this.localization.translate('Income'), this.localization.translate('Expenses')],
       datasets: [
         {
           data: [summary.totalIncome, summary.totalExpenses],
@@ -95,10 +98,7 @@ export class Reports {
       tooltip: {
         callbacks: {
           label: (context) =>
-            `${context.label}: ${new Intl.NumberFormat('de-DE', {
-              style: 'currency',
-              currency: 'EUR',
-            }).format(context.parsed)}`,
+            `${context.label}: ${this.localization.formatCurrency(context.parsed)}`,
         },
       },
     },

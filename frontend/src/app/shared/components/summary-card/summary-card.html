@@ -20,6 +20,6 @@
     [class.summary-card__value--expense]="tone() === 'expense'"
     [class.summary-card__value--balance]="tone() === 'balance'">
 
-    {{ value() | currency: 'EUR' }}
+    {{ localization.formatCurrency(value()) }}
   </div>
 </mat-card>

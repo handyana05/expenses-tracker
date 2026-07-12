@@ -1,15 +1,15 @@
 <header class="landing-header">
-  <a class="brand" routerLink="/" aria-label="Expense Tracker home">
+  <a class="brand" routerLink="/" [aria-label]="'Expense Tracker home' | translate">
     <mat-icon>account_balance_wallet</mat-icon>
-    <span>Expense Tracker</span>
+    <span>{{ 'Expense Tracker' | translate }}</span>
   </a>
 
-  <nav class="header-actions" aria-label="Account navigation">
+  <nav class="header-actions" [aria-label]="'Account navigation' | translate">
     @if (authState.isAuthenticated()) {
-      <a mat-flat-button routerLink="/dashboard">Open dashboard</a>
+      <a mat-flat-button routerLink="/dashboard">{{ 'Open dashboard' | translate }}</a>
     } @else {
-      <a mat-button routerLink="/login">Sign in</a>
-      <a mat-flat-button routerLink="/register">Create account</a>
+      <a mat-button routerLink="/login">{{ 'Sign in' | translate }}</a>
+      <a mat-flat-button routerLink="/register">{{ 'Create account' | translate }}</a>
     }
   </nav>
 </header>
@@ -17,34 +17,33 @@
 <main>
   <section class="hero">
     <div class="hero__content">
-      <p class="eyebrow">Personal finance, made clear</p>
-      <h1>Know where your money goes.</h1>
+      <p class="eyebrow">{{ 'Personal finance, made clear' | translate }}</p>
+      <h1>{{ 'Know where your money goes.' | translate }}</h1>
       <p class="hero__description">
-        Track income and expenses, understand your monthly balance, and build
-        healthier financial habits from one simple dashboard.
+        {{ 'Track income and expenses, understand your monthly balance, and build healthier financial habits from one simple dashboard.' | translate }}
       </p>
 
       <div class="hero__actions">
         @if (authState.isAuthenticated()) {
           <a mat-flat-button routerLink="/dashboard">
             <mat-icon>dashboard</mat-icon>
-            Open dashboard
+            {{ 'Open dashboard' | translate }}
           </a>
         } @else {
           <a mat-flat-button routerLink="/register">
             <mat-icon>rocket_launch</mat-icon>
-            Get started
+            {{ 'Get started' | translate }}
           </a>
-          <a mat-stroked-button routerLink="/login">Sign in</a>
+          <a mat-stroked-button routerLink="/login">{{ 'Sign in' | translate }}</a>
         }
       </div>
     </div>
 
-    <div class="preview" aria-label="Expense Tracker dashboard preview">
+    <div class="preview" [aria-label]="'Expense Tracker dashboard preview' | translate">
       <div class="preview__header">
         <div>
-          <span class="preview__label">Dashboard</span>
-          <strong>July overview</strong>
+          <span class="preview__label">{{ 'Dashboard' | translate }}</span>
+          <strong>{{ 'July overview' | translate }}</strong>
         </div>
         <span class="preview__avatar">JD</span>
       </div>
@@ -52,17 +51,17 @@
       <div class="preview__summaries">
         <div class="preview-card preview-card--income">
           <mat-icon>trending_up</mat-icon>
-          <span>Income</span>
+          <span>{{ 'Income' | translate }}</span>
           <strong>€4,250</strong>
         </div>
         <div class="preview-card preview-card--expense">
           <mat-icon>trending_down</mat-icon>
-          <span>Expenses</span>
+          <span>{{ 'Expenses' | translate }}</span>
           <strong>€2,780</strong>
         </div>
         <div class="preview-card preview-card--balance">
           <mat-icon>savings</mat-icon>
-          <span>Balance</span>
+          <span>{{ 'Balance' | translate }}</span>
           <strong>€1,470</strong>
         </div>
       </div>
@@ -70,8 +69,8 @@
       <div class="preview__body">
         <div class="chart-card">
           <div class="preview__section-heading">
-            <strong>Monthly activity</strong>
-            <span>Last 6 months</span>
+            <strong>{{ 'Monthly activity' | translate }}</strong>
+            <span>{{ 'Last 6 months' | translate }}</span>
           </div>
           <div class="chart" aria-hidden="true">
             <span style="--bar-height: 42%"></span>
@@ -85,22 +84,22 @@
 
         <div class="transactions-card">
           <div class="preview__section-heading">
-            <strong>Recent</strong>
-            <span>Today</span>
+            <strong>{{ 'Recent' | translate }}</strong>
+            <span>{{ 'Today' | translate }}</span>
           </div>
           <div class="transaction-row">
             <mat-icon>shopping_cart</mat-icon>
-            <span>Groceries</span>
+            <span>{{ 'Groceries' | translate }}</span>
             <strong>−€64</strong>
           </div>
           <div class="transaction-row">
             <mat-icon>home</mat-icon>
-            <span>Rent</span>
+            <span>{{ 'Rent' | translate }}</span>
             <strong>−€950</strong>
           </div>
           <div class="transaction-row transaction-row--income">
             <mat-icon>payments</mat-icon>
-            <span>Salary</span>
+            <span>{{ 'Salary' | translate }}</span>
             <strong>+€3,400</strong>
           </div>
         </div>
@@ -110,38 +109,38 @@
 
   <section class="features" aria-labelledby="features-title">
     <div class="section-heading">
-      <p class="eyebrow">Everything in one place</p>
-      <h2 id="features-title">Simple tools for confident decisions</h2>
+      <p class="eyebrow">{{ 'Everything in one place' | translate }}</p>
+      <h2 id="features-title">{{ 'Simple tools for confident decisions' | translate }}</h2>
     </div>
 
     <div class="feature-grid">
       <mat-card appearance="outlined">
         <mat-icon>receipt_long</mat-icon>
         <mat-card-header>
-          <mat-card-title>Track transactions</mat-card-title>
+          <mat-card-title>{{ 'Track transactions' | translate }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          Record income and expenses with categories, dates, and descriptions.
+          {{ 'Record income and expenses with categories, dates, and descriptions.' | translate }}
         </mat-card-content>
       </mat-card>
 
       <mat-card appearance="outlined">
         <mat-icon>category</mat-icon>
         <mat-card-header>
-          <mat-card-title>Stay organized</mat-card-title>
+          <mat-card-title>{{ 'Stay organized' | translate }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          Create categories that make your spending patterns easy to understand.
+          {{ 'Create categories that make your spending patterns easy to understand.' | translate }}
         </mat-card-content>
       </mat-card>
 
       <mat-card appearance="outlined">
         <mat-icon>monitoring</mat-icon>
         <mat-card-header>
-          <mat-card-title>See the big picture</mat-card-title>
+          <mat-card-title>{{ 'See the big picture' | translate }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          Review monthly income, expenses, and balance through clear reports.
+          {{ 'Review monthly income, expenses, and balance through clear reports.' | translate }}
         </mat-card-content>
       </mat-card>
     </div>
@@ -149,17 +148,17 @@
 
   <section class="cta">
     <div>
-      <h2>Ready to understand your finances?</h2>
-      <p>Create an account and start tracking in minutes.</p>
+      <h2>{{ 'Ready to understand your finances?' | translate }}</h2>
+      <p>{{ 'Create an account and start tracking in minutes.' | translate }}</p>
     </div>
     @if (authState.isAuthenticated()) {
       <a mat-flat-button routerLink="/dashboard">
-        Open dashboard
+        {{ 'Open dashboard' | translate }}
         <mat-icon>arrow_forward</mat-icon>
       </a>
     } @else {
       <a mat-flat-button routerLink="/register">
-        Create your account
+        {{ 'Create your account' | translate }}
         <mat-icon>arrow_forward</mat-icon>
       </a>
     }
@@ -167,6 +166,6 @@
 </main>
 
 <footer>
-  <span>© 2026 Handyana Sumitra Atmaja. All rights reserved.</span>
-  <span>Built for clearer personal finances.</span>
+  <span>{{ '© 2026 Handyana Sumitra Atmaja. All rights reserved.' | translate }}</span>
+  <span>{{ 'Built for clearer personal finances.' | translate }}</span>
 </footer>

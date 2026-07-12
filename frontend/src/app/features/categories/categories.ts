@@ -17,6 +17,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmDialog, Snackbar } from '../../shared/services';
 import { Messages } from '../../shared/constants/messages';
+import { Localization } from '../../core/localization/localization';
+import { TranslatePipe } from '../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-categories',
@@ -33,6 +35,7 @@ import { Messages } from '../../shared/constants/messages';
     MatButtonModule,
     MatIconModule,
     MatTableModule,
+    TranslatePipe,
   ],
   templateUrl: './categories.html',
   styleUrl: './categories.scss',
@@ -43,6 +46,7 @@ export class Categories {
 
   readonly confirmDialog = inject(ConfirmDialog);
   readonly snackbar = inject(Snackbar);
+  readonly localization = inject(Localization);
   
   readonly facade = inject(CategoryFacade);
   readonly form = CategoryFormFactory.create();
@@ -67,12 +71,12 @@ export class Categories {
 
   get submitButtonText(): string {
     if (this.facade.creating()) {
-      return 'Creating...';
+      return this.localization.translate('Creating...');
     }
     if (this.facade.updating()) {
-      return 'Updating...';
+      return this.localization.translate('Updating...');
     }
-    return this.isEditing ? 'Update' : 'Create';
+    return this.localization.translate(this.isEditing ? 'Update' : 'Create');
   }
 
   createCategory(): void {
@@ -91,13 +95,13 @@ export class Categories {
       this.facade.update({ ...command, id: this.editingCategoryId }).subscribe({
         next: () => {
           this.snackbar.success(
-              'Category updated.'
+              this.localization.translate('Category updated.')
           );
           this.resetForm();
           this.categories.reload();
         },
         error: () => this.snackbar.error(
-          this.facade.error() || Messages.unexpectedError
+          this.facade.error() || this.localization.translate(Messages.unexpectedError)
         )
       });
       return;
@@ -110,13 +114,13 @@ export class Categories {
     this.facade.create(command).subscribe({
       next: () => {
          this.snackbar.success(
-            'Category created.'
+            this.localization.translate('Category created.')
         );
         this.resetForm();
         this.categories.reload();
       },
       error: () => this.snackbar.error(
-        this.facade.error() || Messages.unexpectedError
+        this.facade.error() || this.localization.translate(Messages.unexpectedError)
       )
     });
   }
@@ -132,8 +136,8 @@ export class Categories {
   deleteCategory(id: string): void {
     this.confirmDialog
       .confirm({
-          title: 'Delete category',
-          message: 'Are you sure you want to delete this category?',
+          title: this.localization.translate('Delete category'),
+          message: this.localization.translate('Are you sure you want to delete this category?'),
       })
       .subscribe({
         next: (confirmed) => {
@@ -144,14 +148,14 @@ export class Categories {
           this.facade.delete(id).subscribe({
             next: () => {
               this.snackbar.success(
-                  'Category deleted.'
+                  this.localization.translate('Category deleted.')
               );
               this.categories.reload();
             }
           });
         },
         error: () => this.snackbar.error(
-          this.facade.error() || Messages.unexpectedError
+          this.facade.error() || this.localization.translate(Messages.unexpectedError)
         )
       });
   }

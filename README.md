@@ -84,7 +84,7 @@ This project focuses on demonstrating **how production-quality backend applicati
 - Automatic redirect when an authenticated session expires
 - Angular Material UI and Vitest coverage
 - Persistent light and dark themes
-- Runtime English and German localization for application navigation and preferences
+- Runtime English and German localization across the frontend
 
 ### Quality
 
@@ -224,7 +224,7 @@ expense-tracker/
 - Production multi-stage Docker images and full-stack Compose orchestration
 - Shared Material presentation components
 - Frontend unit tests
-- Light/dark appearance and English/German navigation preferences
+- Light/dark appearance and English/German language preferences
 
 ### In Progress
 

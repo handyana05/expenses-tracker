@@ -1,15 +1,15 @@
 <app-page-header
-  title="Transactions"
-  subtitle="Track your income and expense transactions">
+  [title]="'Transactions' | translate"
+  [subtitle]="'Track your income and expense transactions' | translate">
 </app-page-header>
 
 <app-page-card>
   <form [formGroup]="form" (ngSubmit)="saveTransaction()">
     <h2>
       @if (isEditing) {
-        Edit Transaction
+        {{ 'Edit Transaction' | translate }}
       } @else {
-        Create Transaction
+        {{ 'Create Transaction' | translate }}
       }
     </h2>
 
@@ -18,9 +18,9 @@
     }
 
     <mat-form-field appearance="outline">
-      <mat-label>Category</mat-label>
+      <mat-label>{{ 'Category' | translate }}</mat-label>
       <mat-select formControlName="categoryId">
-        <mat-option value="">Select category</mat-option>
+        <mat-option value="">{{ 'Select category' | translate }}</mat-option>
 
         @for (category of categories.value(); track category.id) {
           <mat-option [value]="category.id">
@@ -31,17 +31,17 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Amount</mat-label>
+      <mat-label>{{ 'Amount' | translate }}</mat-label>
       <input matInput type="number" formControlName="amount" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Date</mat-label>
+      <mat-label>{{ 'Date' | translate }}</mat-label>
       <input matInput type="date" formControlName="transactionDate" />
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Description</mat-label>
+      <mat-label>{{ 'Description' | translate }}</mat-label>
       <input matInput type="text" formControlName="description" />
     </mat-form-field>
 
@@ -50,7 +50,7 @@
         mat-flat-button
         color="primary"
         type="submit"
-        [attr.aria-label]="submitButtonText + ' transaction'"
+        [attr.aria-label]="submitButtonText + ' ' + ('Transactions' | translate)"
         [title]="submitButtonText"
         [disabled]="facade.creating() || facade.updating()">
         <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
@@ -60,7 +60,7 @@
       @if (isEditing) {
         <button mat-button type="button" (click)="cancelEdit()">
           <mat-icon>close</mat-icon>
-          Cancel
+          {{ 'Cancel' | translate }}
         </button>
       }
     </div>
@@ -71,7 +71,7 @@
 
 <app-page-card>
   <div class="transactions-header">
-    <h2>Your Transactions</h2>
+    <h2>{{ 'Your Transactions' | translate }}</h2>
     <div class="csv-actions">
       <input
         #csvInput
@@ -85,7 +85,7 @@
         [disabled]="facade.importing() || categories.value().length === 0"
         (click)="csvInput.click()">
         <mat-icon>upload_file</mat-icon>
-        {{ facade.importing() ? 'Importing...' : 'Import CSV' }}
+        {{ (facade.importing() ? 'Importing...' : 'Import CSV') | translate }}
       </button>
       <button
         mat-stroked-button
@@ -93,7 +93,7 @@
         [disabled]="transactions.value().length === 0"
         (click)="exportCsv()">
         <mat-icon>download</mat-icon>
-        Export CSV
+        {{ 'Export CSV' | translate }}
       </button>
     </div>
   </div>
@@ -102,55 +102,55 @@
     <app-loading-spinner />
   } @else if (transactions.error()) {
     <app-empty-state
-      title="Could not load transactions"
-      description="Please try again later.">
+      [title]="'Could not load transactions' | translate"
+      [description]="'Please try again later.' | translate">
     </app-empty-state>
   } @else if (transactions.value().length === 0) {
     <app-empty-state
-      title="No transactions yet"
-      description="Create your first transaction to start tracking your finances.">
+      [title]="'No transactions yet' | translate"
+      [description]="'Create your first transaction to start tracking your finances.' | translate">
     </app-empty-state>
   } @else {
     <table mat-table [dataSource]="transactions.value()">
       <ng-container matColumnDef="transactionDate">
-        <th mat-header-cell *matHeaderCellDef>Date</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Date' | translate }}</th>
         <td mat-cell *matCellDef="let transaction">
           {{ transaction.transactionDate | date: 'yyyy-MM-dd' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="categoryName">
-        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Category' | translate }}</th>
         <td mat-cell *matCellDef="let transaction">
           {{ transaction.categoryName }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="amount">
-        <th mat-header-cell *matHeaderCellDef>Amount</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Amount' | translate }}</th>
         <td mat-cell *matCellDef="let transaction">
-          {{ transaction.amount | currency: 'EUR' }}
+          {{ localization.formatCurrency(transaction.amount) }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Description' | translate }}</th>
         <td mat-cell *matCellDef="let transaction">
           {{ transaction.description || '-' }}
         </td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'Actions' | translate }}</th>
         <td mat-cell class="table-actions" *matCellDef="let transaction">
           <button mat-button type="button" (click)="editTransaction(transaction)">
             <mat-icon>edit</mat-icon>
-            Edit
+            {{ 'Edit' | translate }}
           </button>
 
           <button class="danger-action" mat-button type="button" (click)="deleteTransaction(transaction.id)">
             <mat-icon>delete</mat-icon>
-            Delete
+            {{ 'Delete' | translate }}
           </button>
         </td>
       </ng-container>

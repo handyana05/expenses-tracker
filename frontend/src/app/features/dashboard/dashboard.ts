@@ -4,18 +4,17 @@ import { API_URL } from '../../core/config/api.config';
 import { MonthlySummary } from '../reports/models/report.model';
 import { httpResource } from '@angular/common/http';
 import { ApiEndpoints } from '../../shared/constants/api-endpoints';
-import { CurrencyPipe, DatePipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { EmptyState, LoadingSpinner, PageCard, PageHeader, SummaryCard } from '../../shared/components';
 import { Transaction } from '../transactions/models/transaction.model';
 import { MatIconModule } from '@angular/material/icon';
 import { CategoryType } from '../../shared/models/category-type.model';
+import { Localization } from '../../core/localization/localization';
+import { TranslatePipe } from '../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-dashboard',
   imports: [
-    DatePipe,
-    CurrencyPipe,
     RouterLink,
     MatButtonModule,
     MatIconModule,
@@ -24,12 +23,14 @@ import { CategoryType } from '../../shared/models/category-type.model';
     SummaryCard,
     LoadingSpinner,
     EmptyState,
+    TranslatePipe,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
 export class Dashboard {
   private readonly apiUrl = inject(API_URL);
+  readonly localization = inject(Localization);
 
   private readonly currentDate = new Date();
 

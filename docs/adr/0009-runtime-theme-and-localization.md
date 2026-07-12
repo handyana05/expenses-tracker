@@ -6,7 +6,7 @@
 ## Context
 
 The Angular application needs light and dark presentation and must allow users
-to change the shell interface language without a reload. Both preferences must remain
+to change the interface language without a reload. Both preferences must remain
 stable between visits.
 
 Angular compile-time i18n is optimized for separately deployed locale builds.

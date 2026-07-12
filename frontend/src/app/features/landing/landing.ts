@@ -4,10 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthState } from '../../core/auth/auth-state/auth-state';
+import { TranslatePipe } from '../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-landing',
-  imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule],
+  imports: [RouterLink, MatButtonModule, MatCardModule, MatIconModule, TranslatePipe],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })

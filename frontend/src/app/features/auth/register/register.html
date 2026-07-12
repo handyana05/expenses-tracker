@@ -1,10 +1,10 @@
 <div class="auth-page">
   <mat-card class="auth-card">
     <mat-card-header>
-      <mat-card-title>Create account</mat-card-title>
+      <mat-card-title>{{ 'Create account' | translate }}</mat-card-title>
 
       <mat-card-subtitle>
-        Start tracking your income and expenses
+        {{ 'Start tracking your income and expenses' | translate }}
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -21,7 +21,7 @@
         }
 
         <mat-form-field appearance="outline">
-          <mat-label>Display name</mat-label>
+          <mat-label>{{ 'Display name' | translate }}</mat-label>
 
           <input
             matInput
@@ -33,12 +33,12 @@
             form.controls.displayName.touched &&
             form.controls.displayName.hasError('required')
           ) {
-            <mat-error>Display name is required.</mat-error>
+            <mat-error>{{ 'Display name is required.' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
+          <mat-label>{{ 'Email' | translate }}</mat-label>
 
           <input
             matInput
@@ -50,17 +50,17 @@
             form.controls.email.touched &&
             form.controls.email.hasError('required')
           ) {
-            <mat-error>Email is required.</mat-error>
+            <mat-error>{{ 'Email is required.' | translate }}</mat-error>
           } @else if (
             form.controls.email.touched &&
             form.controls.email.hasError('email')
           ) {
-            <mat-error>Please enter a valid email address.</mat-error>
+            <mat-error>{{ 'Please enter a valid email address.' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Password</mat-label>
+          <mat-label>{{ 'Password' | translate }}</mat-label>
 
           <input
             matInput
@@ -72,12 +72,12 @@
             form.controls.password.touched &&
             form.controls.password.hasError('required')
           ) {
-            <mat-error>Password is required.</mat-error>
+            <mat-error>{{ 'Password is required.' | translate }}</mat-error>
           } @else if (
             form.controls.password.touched &&
             form.controls.password.hasError('minlength')
           ) {
-            <mat-error>Password must contain at least 8 characters.</mat-error>
+            <mat-error>{{ 'Password must contain at least 8 characters.' | translate }}</mat-error>
           }
         </mat-form-field>
 
@@ -87,17 +87,17 @@
           [disabled]="facade.loading()">
 
           @if (facade.loading()) {
-            Creating account...
+            {{ 'Creating account...' | translate }}
           } @else {
-            Create account
+            {{ 'Create account' | translate }}
           }
         </button>
       </form>
     </mat-card-content>
 
     <mat-card-actions>
-      <span>Already have an account?</span>
-      <a mat-button routerLink="/login">Sign in</a>
+      <span>{{ 'Already have an account?' | translate }}</span>
+      <a mat-button routerLink="/login">{{ 'Sign in' | translate }}</a>
     </mat-card-actions>
   </mat-card>
 </div>

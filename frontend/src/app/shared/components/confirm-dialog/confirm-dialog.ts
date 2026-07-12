@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { Localization } from '../../../core/localization/localization';
 
 export interface ConfirmDialogData {
   title: string;
@@ -17,6 +18,7 @@ export interface ConfirmDialogData {
 })
 export class ConfirmDialog {
   readonly data = inject<ConfirmDialogData>(MAT_DIALOG_DATA);
+  readonly localization = inject(Localization);
   private readonly dialogRef = inject(MatDialogRef<ConfirmDialog>);
 
   confirm(): void {
