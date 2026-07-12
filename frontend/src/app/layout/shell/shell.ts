@@ -14,6 +14,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Auth } from '../../core/auth/auth/auth';
 import { AppRoutes } from '../../shared/constants/app-routes';
 import { AuthState } from '../../core/auth/auth-state/auth-state';
+import { Theme } from '../../core/preferences/theme';
+import { Localization } from '../../core/localization/localization';
+import { TranslatePipe } from '../../core/localization/translate.pipe';
 
 @Component({
   selector: 'app-shell',
@@ -28,6 +31,7 @@ import { AuthState } from '../../core/auth/auth-state/auth-state';
     MatButtonModule,
     MatMenuModule,
     MatTooltipModule,
+    TranslatePipe,
   ],
   templateUrl: './shell.html',
   styleUrl: './shell.scss',
@@ -37,6 +41,8 @@ export class Shell {
   readonly authState = inject(AuthState);
   private readonly router = inject(Router);
   private readonly breakpointObserver = inject(BreakpointObserver);
+  readonly theme = inject(Theme);
+  readonly localization = inject(Localization);
 
   readonly isMobile = signal(false);
   readonly isCollapsed = signal(false);

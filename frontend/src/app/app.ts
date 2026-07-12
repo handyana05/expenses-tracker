@@ -1,5 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Theme } from './core/preferences/theme';
+import { Localization } from './core/localization/localization';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +10,6 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss',
 })
 export class App {
-  protected readonly title = signal('expenses-tracker-frontend');
+  private readonly theme = inject(Theme);
+  private readonly localization = inject(Localization);
 }
