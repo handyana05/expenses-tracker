@@ -89,10 +89,11 @@
         </button>
       }
 
-      <span>{{ 'Expense Tracker' | translate }}</span>
+      <span class="shell__brand">{{ 'Expense Tracker' | translate }}</span>
       <span class="shell__spacer"></span>
 
       <button
+        class="shell__toolbar-preference"
         mat-icon-button
         type="button"
         [attr.aria-label]="(theme.current() === 'dark' ? 'Use light theme' : 'Use dark theme') | translate"
@@ -101,7 +102,7 @@
         <mat-icon>{{ theme.current() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
       </button>
 
-      <button mat-button type="button" [matMenuTriggerFor]="languageMenu"
+      <button class="shell__toolbar-preference" mat-button type="button" [matMenuTriggerFor]="languageMenu"
         [attr.aria-label]="'Language' | translate">
         <mat-icon>language</mat-icon>
         {{ localization.locale().toUpperCase() }}
@@ -133,6 +134,14 @@
           <span class="shell__menu-avatar">{{ authState.userInitials() }}</span>
           <strong>{{ authState.userLabel() }}</strong>
         </div>
+        <button mat-menu-item type="button" (click)="theme.toggle()">
+          <mat-icon>{{ theme.current() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+          <span>{{ (theme.current() === 'dark' ? 'Use light theme' : 'Use dark theme') | translate }}</span>
+        </button>
+        <button mat-menu-item type="button" [matMenuTriggerFor]="languageMenu">
+          <mat-icon>language</mat-icon>
+          <span>{{ 'Language' | translate }}: {{ localization.locale().toUpperCase() }}</span>
+        </button>
         <button mat-menu-item type="button" (click)="logout()">
           <mat-icon>logout</mat-icon>
           <span>{{ 'Logout' | translate }}</span>

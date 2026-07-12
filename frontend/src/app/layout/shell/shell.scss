@@ -40,11 +40,19 @@
   flex: 1;
 }
 
+.shell__brand {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .shell__user-button {
   display: inline-grid;
   place-items: center;
   padding: 0;
   margin-left: 8px;
+  flex: 0 0 48px;
 }
 
 .shell__avatar {
@@ -96,5 +104,15 @@
 @media (max-width: 900px) {
   .shell__content {
     padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .shell__toolbar-preference {
+    display: none;
+  }
+
+  .shell__user-button {
+    margin-left: 0;
   }
 }

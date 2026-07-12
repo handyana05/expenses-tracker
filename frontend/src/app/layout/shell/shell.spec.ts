@@ -48,4 +48,13 @@ describe('Shell', () => {
 
     expect(component.isCollapsed()).toBe(true);
   });
+
+  it('should expose theme and language preferences through the user menu', () => {
+    component.theme.set('light');
+    component.theme.toggle();
+    component.localization.setLocale('de');
+
+    expect(component.theme.current()).toBe('dark');
+    expect(component.localization.locale()).toBe('de');
+  });
 });
