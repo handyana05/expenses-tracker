@@ -4,6 +4,8 @@ import { Shell } from './shell';
 import { API_URL } from '../../core/config/api.config';
 import { provideRouter } from '@angular/router';
 import { AuthState } from '../../core/auth/auth-state/auth-state';
+import { By } from '@angular/platform-browser';
+import { MatSidenavContainer } from '@angular/material/sidenav';
 
 describe('Shell', () => {
   let component: Shell;
@@ -47,6 +49,13 @@ describe('Shell', () => {
     component.toggleSidenav();
 
     expect(component.isCollapsed()).toBe(true);
+  });
+
+  it('should autosize the sidenav container when its width changes', () => {
+    const container = fixture.debugElement.query(By.directive(MatSidenavContainer))
+      .componentInstance as MatSidenavContainer;
+
+    expect(container.autosize).toBe(true);
   });
 
   it('should expose theme and language preferences through the user menu', () => {
