@@ -27,6 +27,8 @@ transactions, dashboard summaries, and monthly reports.
 - JWT persistence and authenticated route guard
 - Automatic logout and login redirect when an authenticated request returns 401
 - Responsive authenticated shell with active navigation
+- Persistent light and dark themes, initialized from the operating-system preference
+- Runtime English and German shell localization with a persisted language preference
 - Category CRUD
 - Transaction CRUD
 - Current-month dashboard summary and responsive, categorized recent activity
@@ -77,6 +79,20 @@ Components own forms and UI orchestration. Facades own mutation state. Services
 only perform HTTP communication. More detail is available in
 [`docs/adr`](../docs/adr) and the
 [frontend coding guidelines](../docs/development/coding-guidelines.md).
+
+### Appearance and language
+
+The authenticated toolbar provides theme and language controls. The application
+shell navigation and preference labels are localized in English and German. Theme and locale
+are held by application-wide signal services under `core/`, apply immediately,
+and are saved in browser local storage. On the first visit, the theme follows
+`prefers-color-scheme` and the locale follows the browser language, falling back
+to English.
+
+Angular Material colors are generated for both themes. Feature styles should use
+Material system tokens instead of fixed surface or text colors. New interface
+copy must be added to both typed dictionaries in
+`src/app/core/localization/translations.ts`.
 
 ## Routes
 

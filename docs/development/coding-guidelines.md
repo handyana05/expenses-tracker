@@ -107,3 +107,12 @@ require a production build.
 
 Update documentation when behavior, architecture, setup, or conventions change.
 Do not create ADRs for local styling or ordinary component implementation details.
+
+## Theme and Localization
+
+- Use Angular Material system tokens for surfaces, text, outlines, and semantic colors.
+- Do not set component-specific light or dark modes; the `Theme` core service owns the root theme.
+- Put interface translations in both typed dictionaries under `core/localization`.
+- Use `TranslatePipe` in templates and `Localization` for values created in TypeScript.
+- Do not translate user-entered data, API identifiers, or persisted domain values.
+- Keep locale-sensitive date, number, and currency formatting aligned with the active locale.
