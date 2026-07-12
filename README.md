@@ -394,6 +394,7 @@ ingress and managed production secrets.
 ![CategoriesPage](./docs/frontend-categories-page.png)
 ![TransactionsPage](./docs/frontend-transactions-page.png)
 ![ReportsPage](./docs/frontend-reports-page.png)
+![DarkTheme](./docs/frontend-dark-theme.png)
 
 ## GitHub Actions
 

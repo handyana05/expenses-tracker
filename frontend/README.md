@@ -221,4 +221,14 @@ category ownership and saves the batch in one unit of work.
 
 ### Reports Page
 
-![ReportsPage](../docs/frontend-reports-page.png)
+#### English
+
+![ReportsPageEn](../docs/frontend-reports-page.png)
+
+#### German
+
+![ReportsPageDe](../docs/frontend-reports-page-de.png)
+
+### Dark Theme
+
+![DarkTheme](../docs/frontend-dark-theme.png)
