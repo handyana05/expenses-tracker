@@ -166,6 +166,9 @@ Create a production build:
 npm run build
 ```
 
+GitHub Actions runs the complete frontend test suite and production build on
+every push and pull request targeting `main`.
+
 The build currently reports an existing initial-bundle budget warning. New
 features should avoid adding further budget warnings.
 

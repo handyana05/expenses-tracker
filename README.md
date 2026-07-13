@@ -6,7 +6,8 @@
 ![Chart.js](https://img.shields.io/badge/Chart.js-4-FF6384?logo=chartdotjs&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql)
 ![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)
-![GitHub Actions](https://img.shields.io/github/actions/workflow/status/handyana05/expenses-tracker/backend-ci.yml?branch=main)
+![Backend CI](https://github.com/handyana05/expenses-tracker/actions/workflows/backend-ci.yml/badge.svg?branch=main)
+![Frontend CI](https://github.com/handyana05/expenses-tracker/actions/workflows/frontend-ci.yml/badge.svg?branch=main)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 # Personal Finance Management System
@@ -278,6 +279,13 @@ The project includes multiple layers of automated quality checks.
 - Report Endpoints
 
 Integration tests execute against a real PostgreSQL database using Testcontainers.
+
+### Continuous Integration
+
+GitHub Actions validates every push and pull request targeting `main`. Backend CI
+builds the .NET solution, runs the automated tests, generates coverage, and
+publishes the coverage report. Frontend CI installs locked dependencies, runs the
+complete Vitest suite, and creates an Angular production build.
 
 ---
 
