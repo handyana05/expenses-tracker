@@ -357,6 +357,95 @@ Open `http://localhost:8080` or the port configured by `FRONTEND_PORT` and confi
 - creating a category and transaction succeeds
 - reports render without errors
 
+### Using deploy.sh (simple deploy helper)
+
+This repository includes a small deploy helper script, `deploy.sh`, which simplifies deploying the Compose stack either by building locally or by pointing Compose to pre-built registry images.
+
+Quick usage:
+
+- Build locally and start the stack (useful on a development laptop):
+
+```bash
+./deploy.sh
+```
+
+- Deploy specific registry images (recommended for CI-driven or immutable deployments):
+
+```bash
+./deploy.sh <registry>/expenses-tracker-backend:<tag> <registry>/expenses-tracker-frontend:<tag>
+```
+
+- Or via environment variables:
+
+```bash
+BACKEND_IMAGE=<registry>/expenses-tracker-backend:<tag> FRONTEND_IMAGE=<registry>/expenses-tracker-frontend:<tag> ./deploy.sh
+```
+
+What the script does:
+
+- If image names are provided, it creates a temporary Compose override that references those images, pulls them, and starts the stack with `docker compose -f docker-compose.yml -f <override> up -d`.
+- If no images are provided, it runs `docker compose up -d --build` to build from local sources.
+
+Notes:
+
+- Make the script executable before using it: `chmod +x deploy.sh`.
+- Keep a secure `.env` file in the deploy target; do not commit secrets.
+- The script is intentionally simple — CI systems (GitHub Actions) can SSH to the target and call this script with the image tags produced by the build pipeline.
+
+### Self-hosted deployment (laptop or VM)
+
+Use this approach for quick, low-cost deployments where you control the host. For multi-service deployments the recommended flow is "Compose with registry images" (Method B): build images in CI, push to a registry, and pull them on the target with a Compose override.
+
+Quick steps:
+
+1. Ensure Docker and Docker Compose are installed on the target (laptop or VM).
+2. Create a local `.env` from `.env.example` and set secure values (POSTGRES_PASSWORD, JWT_SECRET_KEY).
+3. Place the provided `deploy.sh` in the repository root on the target and make it executable (`chmod +x deploy.sh`).
+4. Deploy the tested images pushed by CI:
+
+```bash
+./deploy.sh <registry>/expenses-tracker-backend:<tag> <registry>/expenses-tracker-frontend:<tag>
+```
+
+5. Verify health:
+
+```bash
+docker compose ps
+curl -fsS http://localhost:8080/health
+```
+
+Docs and automation:
+
+- Full self-hosted runbook: [`docs/development/self-hosted-vm-deployment.md`](./docs/development/self-hosted-vm-deployment.md)
+- GitHub Actions workflow that can optionally SSH to your host and run `deploy.sh`: `.github/workflows/self-hosted-deploy.yml`
+
+Security notes:
+
+- If you expose your laptop to external SSH for CI-driven deploys, use a dedicated deploy user, restrict the SSH key, and only enable this flow when needed. A safer option is to register a GitHub self-hosted runner on the machine so Actions jobs run locally without SSH.
+
+### Cloud deployment (Azure example)
+
+For production-grade hosting and managed services, use the cloud deployment path. The repository includes an example CI workflow and an Azure guidance document to help get started.
+
+Quick steps (summary):
+
+1. Configure an image registry (ACR or Docker Hub).
+2. Use the provided GitHub Actions workflow to build images and push to the registry: `.github/workflows/ci-cd.yml`.
+3. Provision managed infrastructure: App Service / Container Apps, Azure Database for PostgreSQL, and Key Vault (or equivalent services on other clouds).
+4. Configure the runtime to read secrets from Key Vault / environment variables and point the apps to the registry images.
+5. Deploy and validate health and smoke tests.
+
+Docs and automation:
+
+- Azure deployment example and guidance: [`docs/development/azure-deployment-example.md`](./docs/development/azure-deployment-example.md)
+- CI/CD workflow for ACR + App Service: `.github/workflows/ci-cd.yml`
+
+Security notes:
+
+- Use managed databases in production and Key Vault (or your cloud secret manager) for secrets.
+- Use TLS at the cloud ingress/front door and private networking for DB access.
+
+
 ### Production notes
 
 Public internet deployment still requires:
