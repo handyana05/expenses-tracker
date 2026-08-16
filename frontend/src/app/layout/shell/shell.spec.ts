@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { fakeAsync, tick } from '@angular/core/testing';
 
 import { Shell } from './shell';
 import { API_URL } from '../../core/config/api.config';
@@ -10,6 +12,7 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
 describe('Shell', () => {
   let component: Shell;
   let fixture: ComponentFixture<Shell>;
+  let breakpointObserver: BreakpointObserver;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -22,6 +25,8 @@ describe('Shell', () => {
         },
       ],
     }).compileComponents();
+
+    breakpointObserver = TestBed.inject(BreakpointObserver);
 
     TestBed.inject(AuthState).setAuthenticated('test-token', {
       email: 'jane@example.com',
@@ -49,6 +54,13 @@ describe('Shell', () => {
     component.toggleSidenav();
 
     expect(component.isCollapsed()).toBe(true);
+  });
+
+  it('should keep the sidenav in overlay mode on handset layouts', () => {
+    component.isMobile.set(true);
+    fixture.detectChanges();
+
+    expect(component.isMobile()).toBe(true);
   });
 
   it('should autosize the sidenav container when its width changes', () => {

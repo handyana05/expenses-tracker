@@ -2,7 +2,7 @@
   <mat-sidenav
     #sidenav
     class="shell__sidenav"
-    [class.shell__sidenav--collapsed]="isCollapsed() && !isMobile()"
+    [class.shell__sidenav--collapsed]="isCollapsed() && !isCompact()"
     [mode]="isMobile() ? 'over' : 'side'"
     [opened]="!isMobile()">
     <div class="shell__sidenav-content">
@@ -20,60 +20,63 @@
       }
 
       <mat-nav-list>
-      <a
-        mat-list-item
-        [matTooltip]="'Dashboard' | translate"
-        matTooltipPosition="right"
-        [matTooltipDisabled]="!isCollapsed() || isMobile()"
-        routerLink="/dashboard"
-        routerLinkActive="shell__nav-item--active"
-        [routerLinkActiveOptions]="{ exact: true }"
-        ariaCurrentWhenActive="page"
-        (click)="isMobile() && sidenav.close()">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'Dashboard' | translate }}</span>
-      </a>
+        <a
+          class="shell__nav-item"
+          mat-list-item
+          [matTooltip]="'Dashboard' | translate"
+          matTooltipPosition="right"
+          [matTooltipDisabled]="!isCollapsed() || isMobile()"
+          routerLink="/dashboard"
+          routerLinkActive="shell__nav-item--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          ariaCurrentWhenActive="page"
+          (click)="isMobile() && sidenav.close()">
+          <mat-icon matListItemIcon>dashboard</mat-icon>
+          <span class="shell__nav-label" matListItemTitle>{{ 'Dashboard' | translate }}</span>
+        </a>
 
-      <a
-        mat-list-item
-        [matTooltip]="'Categories' | translate"
-        matTooltipPosition="right"
-        [matTooltipDisabled]="!isCollapsed() || isMobile()"
-        routerLink="/categories"
-        routerLinkActive="shell__nav-item--active"
-        ariaCurrentWhenActive="page"
-        (click)="isMobile() && sidenav.close()">
-        <mat-icon matListItemIcon>category</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'Categories' | translate }}</span>
-      </a>
+        <a
+          class="shell__nav-item"
+          mat-list-item
+          [matTooltip]="'Categories' | translate"
+          matTooltipPosition="right"
+          [matTooltipDisabled]="!isCollapsed() || isMobile()"
+          routerLink="/categories"
+          routerLinkActive="shell__nav-item--active"
+          ariaCurrentWhenActive="page"
+          (click)="isMobile() && sidenav.close()">
+          <mat-icon matListItemIcon>category</mat-icon>
+          <span class="shell__nav-label" matListItemTitle>{{ 'Categories' | translate }}</span>
+        </a>
 
-      <a
-        mat-list-item
-        [matTooltip]="'Transactions' | translate"
-        matTooltipPosition="right"
-        [matTooltipDisabled]="!isCollapsed() || isMobile()"
-        routerLink="/transactions"
-        routerLinkActive="shell__nav-item--active"
-        ariaCurrentWhenActive="page"
-        (click)="isMobile() && sidenav.close()">
-        <mat-icon matListItemIcon>receipt_long</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'Transactions' | translate }}</span>
-      </a>
+        <a
+          class="shell__nav-item"
+          mat-list-item
+          [matTooltip]="'Transactions' | translate"
+          matTooltipPosition="right"
+          [matTooltipDisabled]="!isCollapsed() || isMobile()"
+          routerLink="/transactions"
+          routerLinkActive="shell__nav-item--active"
+          ariaCurrentWhenActive="page"
+          (click)="isMobile() && sidenav.close()">
+          <mat-icon matListItemIcon>receipt_long</mat-icon>
+          <span class="shell__nav-label" matListItemTitle>{{ 'Transactions' | translate }}</span>
+        </a>
 
-      <a
-        mat-list-item
-        [matTooltip]="'Reports' | translate"
-        matTooltipPosition="right"
-        [matTooltipDisabled]="!isCollapsed() || isMobile()"
-        routerLink="/reports"
-        routerLinkActive="shell__nav-item--active"
-        ariaCurrentWhenActive="page"
-        (click)="isMobile() && sidenav.close()">
-        <mat-icon matListItemIcon>bar_chart</mat-icon>
-        <span class="shell__nav-label" matListItemTitle>{{ 'Reports' | translate }}</span>
-      </a>
+        <a
+          class="shell__nav-item"
+          mat-list-item
+          [matTooltip]="'Reports' | translate"
+          matTooltipPosition="right"
+          [matTooltipDisabled]="!isCollapsed() || isMobile()"
+          routerLink="/reports"
+          routerLinkActive="shell__nav-item--active"
+          ariaCurrentWhenActive="page"
+          (click)="isMobile() && sidenav.close()">
+          <mat-icon matListItemIcon>bar_chart</mat-icon>
+          <span class="shell__nav-label" matListItemTitle>{{ 'Reports' | translate }}</span>
+        </a>
       </mat-nav-list>
-
     </div>
   </mat-sidenav>
 
@@ -102,7 +105,11 @@
         <mat-icon>{{ theme.current() === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
       </button>
 
-      <button class="shell__toolbar-preference" mat-button type="button" [matMenuTriggerFor]="languageMenu"
+      <button
+        class="shell__toolbar-preference"
+        mat-button
+        type="button"
+        [matMenuTriggerFor]="languageMenu"
         [attr.aria-label]="'Language' | translate">
         <mat-icon>language</mat-icon>
         {{ localization.locale().toUpperCase() }}

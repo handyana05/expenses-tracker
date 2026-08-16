@@ -45,14 +45,30 @@ export class Shell {
   readonly localization = inject(Localization);
 
   readonly isMobile = signal(false);
+  readonly isCompact = signal(false);
   readonly isCollapsed = signal(false);
 
   constructor() {
     this.breakpointObserver
-      .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
+      .observe([
+        Breakpoints.Handset,
+        Breakpoints.Tablet,
+        Breakpoints.TabletPortrait,
+        Breakpoints.Small
+      ])
       .pipe(takeUntilDestroyed())
       .subscribe((result) => {
-        this.isMobile.set(result.matches);
+        const isHandset = result.breakpoints[Breakpoints.Handset];
+        const isTablet = result.breakpoints[Breakpoints.Tablet]
+          || result.breakpoints[Breakpoints.TabletPortrait]
+          || result.breakpoints[Breakpoints.Small];
+
+        this.isMobile.set(isHandset);
+        this.isCompact.set(isTablet);
+
+        if (isHandset) {
+          this.isCollapsed.set(false);
+        }
       });
   }
 
