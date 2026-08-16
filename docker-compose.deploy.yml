@@ -1,0 +1,21 @@
+# Override compose file for deploying registry-hosted images.
+# Usage:
+# - Set BACKEND_IMAGE and FRONTEND_IMAGE environment variables (e.g. export BACKEND_IMAGE=myreg/my-backend:tag)
+# - Or pass explicit image names to deploy.sh which will create a temporary override file.
+#
+# This file is intentionally minimal — it only points the backend/frontend services
+# to pre-built images in a registry. It relies on the main docker-compose.yml for
+# networks, volumes, and other configuration.
+
+version: '3.8'
+
+services:
+  backend:
+    image: "${BACKEND_IMAGE}"
+    restart: unless-stopped
+    environment:
+      - Database__ApplyMigrationsOnStartup=true
+
+  frontend:
+    image: "${FRONTEND_IMAGE}"
+    restart: unless-stopped
