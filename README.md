@@ -301,6 +301,73 @@ Additional documentation is available inside the project.
 
 ---
 
+## Production Deployment Workflow
+
+This project is designed to run as a Docker Compose stack for local development and
+for production-like deployment on a single host or managed infrastructure.
+
+### Required environment variables
+
+Create a local `.env` file from `.env.example` and replace every placeholder:
+
+```bash
+cp .env.example .env
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Required values:
+
+| Variable | Purpose | Local default/example |
+|---|---|---|
+| `POSTGRES_DB` | PostgreSQL database name | `ExpenseTrackerDb` |
+| `POSTGRES_USER` | PostgreSQL user | `postgres` |
+| `POSTGRES_PASSWORD` | PostgreSQL password | Replace with a secure value |
+| `POSTGRES_PORT` | PostgreSQL port published to the host | `5430` |
+| `JWT_SECRET_KEY` | JWT signing key, at least 32 characters | Replace with a random secret |
+| `FRONTEND_PORT` | Browser-facing Nginx port | `8080` |
+
+The `.env` file contains secrets, is ignored by Git, and must never be committed.
+
+### Start the stack
+
+```bash
+docker compose up --build -d
+```
+
+### Validate health
+
+```bash
+docker compose ps
+Invoke-WebRequest http://localhost:8080/health
+```
+
+The frontend health endpoint should return `200 OK` and the body `healthy`.
+
+### Verify the application
+
+Open `http://localhost:8080` or the port configured by `FRONTEND_PORT` and confirm:
+
+- login or registration works
+- the dashboard loads
+- creating a category and transaction succeeds
+- reports render without errors
+
+### Production notes
+
+Public internet deployment still requires:
+
+- TLS termination at a reverse proxy or ingress
+- secure secret management
+- firewall and port configuration appropriate for the host environment
+- backups for the PostgreSQL volume
+
+Do not expose the raw ASP.NET or PostgreSQL ports directly without a trusted network boundary.
+
 ## Full-Stack Docker
 
 The production-oriented Compose stack runs PostgreSQL, the ASP.NET Core API, and

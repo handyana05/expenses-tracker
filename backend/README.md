@@ -127,6 +127,32 @@ In the full-stack Compose configuration, the API:
 
 Automatic startup migrations default to `false` outside the Compose environment.
 
+## Deployment Notes
+
+The backend is designed to run behind a trusted reverse proxy or ingress in production. The container exposes HTTP on port `8080`, but TLS termination should happen outside the application process.
+
+### Required environment configuration
+
+The Compose stack provides the following values to the API:
+
+- `ConnectionStrings__DefaultConnection`
+- `Jwt__Issuer`
+- `Jwt__Audience`
+- `Jwt__SecretKey`
+- `Jwt__ExpirationInMinutes`
+- `Database__ApplyMigrationsOnStartup`
+
+For local and Docker-based development, these are supplied in the root `.env` file by the Compose configuration. In a real deployment, provide them through a secure secret store or environment-management system instead of hardcoded values.
+
+### Production checklist
+
+- Keep PostgreSQL behind a private network or managed database service.
+- Use a reverse proxy or cloud ingress for TLS and HTTP routing.
+- Store the JWT signing key in a secure secret manager.
+- Keep `Database__ApplyMigrationsOnStartup` disabled unless you explicitly want startup migration execution.
+- Validate container health and application responsiveness before exposing the service publicly.
+- Prefer managed secrets and environment variables over checking `.env` files into source control.
+
 ---
 
 ## Architecture
