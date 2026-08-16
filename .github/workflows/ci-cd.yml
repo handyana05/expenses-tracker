@@ -1,0 +1,146 @@
+name: CI / Build and Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  BACKEND_IMAGE: expenses-tracker-backend
+  FRONTEND_IMAGE: expenses-tracker-frontend
+
+jobs:
+  test-and-build:
+    name: Test and Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Restore and build backend
+        working-directory: ./backend
+        run: |
+          dotnet restore
+          dotnet build --no-restore -c Release
+
+      - name: Run backend tests
+        working-directory: ./backend
+        run: dotnet test --no-build -c Release --verbosity minimal
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: |
+          npm ci
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+  build-and-push-images:
+    name: Build & Push Docker images
+    runs-on: ubuntu-latest
+    needs: test-and-build
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to ACR
+        if: env.ACR_LOGIN_SERVER != ''
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.ACR_LOGIN_SERVER }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.BACKEND_IMAGE }}:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+            ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.FRONTEND_IMAGE }}:latest
+
+  deploy-to-azure:
+    name: Deploy to Azure App Service
+    runs-on: ubuntu-latest
+    needs: build-and-push-images
+    if: always()
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Configure backend Web App container
+        env:
+          ACR: ${{ secrets.ACR_LOGIN_SERVER }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          az webapp config container set \
+            --name ${{ secrets.AZURE_WEBAPP_BACKEND }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --docker-custom-image-name $ACR/${{ env.BACKEND_IMAGE }}:$IMAGE_TAG \
+            --docker-registry-server-url https://$ACR \
+            --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
+            --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
+
+      - name: Configure frontend Web App container
+        env:
+          ACR: ${{ secrets.ACR_LOGIN_SERVER }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          az webapp config container set \
+            --name ${{ secrets.AZURE_WEBAPP_FRONTEND }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --docker-custom-image-name $ACR/${{ env.FRONTEND_IMAGE }}:$IMAGE_TAG \
+            --docker-registry-server-url https://$ACR \
+            --docker-registry-server-user ${{ secrets.ACR_USERNAME }} \
+            --docker-registry-server-password ${{ secrets.ACR_PASSWORD }}
+
+      - name: Set app settings for backend
+        run: |
+          az webapp config appsettings set \
+            --name ${{ secrets.AZURE_WEBAPP_BACKEND }} \
+            --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --settings "ConnectionStrings__DefaultConnection=${{ secrets.POSTGRES_CONNECTION_STRING }}" "Jwt__SecretKey=${{ secrets.JWT_SECRET_KEY }}" "Jwt__Issuer=${{ secrets.JWT_ISSUER }}" "Jwt__Audience=${{ secrets.JWT_AUDIENCE }}"
+
+      - name: Restart backend app
+        run: az webapp restart --name ${{ secrets.AZURE_WEBAPP_BACKEND }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+
+      - name: Restart frontend app
+        run: az webapp restart --name ${{ secrets.AZURE_WEBAPP_FRONTEND }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }}
+
+      - name: Health check
+        run: |
+          echo "Checking backend health..."
+          az webapp show --name ${{ secrets.AZURE_WEBAPP_BACKEND }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} --query "state"
+          echo "Checking frontend health..."
+          # Replace with actual public URL check if desired

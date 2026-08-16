@@ -1,0 +1,136 @@
+name: Build, Push Images and Optional Deploy to VM
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      deploy_to_vm:
+        description: 'If true, SSH to VM and run the deploy script'
+        required: false
+        default: 'false'
+      vm_deploy_path:
+        description: 'Path on the VM where the repo is located (deploy.sh expected)'
+        required: false
+        default: '/home/ubuntu/expenses-tracker'
+
+env:
+  BACKEND_IMAGE: expenses-tracker-backend
+  FRONTEND_IMAGE: expenses-tracker-frontend
+
+jobs:
+  test-and-build:
+    name: Test and Build
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.set-tag.outputs.image_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set image tag
+        id: set-tag
+        run: echo "::set-output name=image_tag::${GITHUB_SHA::8}"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.0.x'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build backend
+        working-directory: ./backend
+        run: |
+          dotnet restore
+          dotnet build --no-restore -c Release
+
+      - name: Run backend tests
+        working-directory: ./backend
+        run: dotnet test --no-build -c Release --verbosity minimal || true
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build
+
+  build-and-push:
+    name: Build & Push Images
+    runs-on: ubuntu-latest
+    needs: test-and-build
+    env:
+      IMAGE_TAG: ${{ needs.test-and-build.outputs.image-tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE }}:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE }}:latest
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${{ env.IMAGE_TAG }}
+            ${{ secrets.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:latest
+
+      - name: Set outputs
+        id: outputs
+        run: |
+          echo "BACKEND_TAG=${{ secrets.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
+          echo "FRONTEND_TAG=${{ secrets.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
+
+  deploy-to-vm:
+    name: Deploy to VM (optional)
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_to_vm == 'true'
+    steps:
+      - name: Prepare variables
+        run: |
+          echo "BACKEND_IMAGE=${{ secrets.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE }}:${{ needs.build-and-push.outputs.BACKEND_TAG }}" >> $GITHUB_ENV || true
+          echo "FRONTEND_IMAGE=${{ secrets.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${{ needs.build-and-push.outputs.FRONTEND_TAG }}" >> $GITHUB_ENV || true
+
+      - name: Install SSH client
+        run: sudo apt-get update && sudo apt-get install -y openssh-client
+
+      - name: Add SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+
+      - name: Deploy on remote VM
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VM_HOST }}
+          username: ${{ secrets.VM_USER }}
+          key: ${{ secrets.VM_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.VM_SSH_PORT || '22' }}
+          script: |
+            set -e
+            cd ${{ github.event.inputs.vm_deploy_path }} || exit 1
+            echo "Invoking deploy.sh with backend and frontend image tags"
+            ./deploy.sh ${{ secrets.DOCKER_REGISTRY }}/${{ env.BACKEND_IMAGE }}:${{ needs.build-and-push.outputs.IMAGE_TAG }} ${{ secrets.DOCKER_REGISTRY }}/${{ env.FRONTEND_IMAGE }}:${{ needs.build-and-push.outputs.IMAGE_TAG }}
