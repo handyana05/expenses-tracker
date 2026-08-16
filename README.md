@@ -609,21 +609,26 @@ ingress and managed production secrets.
 - Production multi-stage Docker images
 - Full-stack Docker Compose orchestration
 
-### Phase 3 — Current: Deployment Readiness
+### Phase 3 — Current: Finish Register & Test Stabilization (Next Priority)
+
+Status: Deployment readiness is largely complete — deployment runbooks, CI workflows, and helper artifacts have been added and the local full-stack Compose stack was validated. A frontend UI bug (sidenav clipping) was fixed. The next immediate priority is finishing the Register feature and stabilizing tests so CI can fully validate builds and images.
+
+Done (deployment-focused):
 
 - Deployment runbooks and documentation added (self-hosted VM, cloud/Azure, and production checklist).
-- CI/CD workflows and helper artifacts added: GitHub Actions workflows for ACR/App Service and self-hosted deploy, `deploy.sh`, and `docker-compose.deploy.yml`. (Some workflow files may still be uncommitted in the working tree.)
+- CI/CD workflows and helper artifacts added: GitHub Actions workflows for ACR/App Service and self-hosted deploy, `deploy.sh`, and `docker-compose.deploy.yml`.
 - Docker Compose healthchecks hardened and local full-stack Compose validated (frontend, backend, PostgreSQL). Frontend health endpoint behavior improved.
-- Frontend and backend test/build baseline re-established. Note: Vitest/browser runner requires a browser runtime in some environments; backend integration tests ran under Docker.
 - Small UI polish and bug fixes applied (sidenav collapsed/expanded clipping fix).
 
-Remaining work / next actions:
+In progress / Next actions (prioritized):
 
-- Decide production database strategy (managed cloud DB vs. host-managed Postgres) and finalize domain name(s).
-- Add required GitHub repository secrets and run CI builds to verify image builds and registry pushes (no deploy).
-- Provision target infrastructure (Azure resources or prepare target VM) and decide whether to use an SSH-driven CI deploy or a GitHub self-hosted runner.
-- Configure TLS, secret management (Key Vault or equivalent), backups, and post-deploy smoke tests/health checks.
-- Validate rollback and disaster recovery procedures in a staging run.
+1. Finish and verify the Register feature (complete functionality, validation, and tests).
+2. Stabilize frontend and backend test suites in CI (address Vitest/browser runtime concerns, flaky tests, and ensure production build succeeds).
+3. Add required GitHub repository secrets and run CI to perform image build and push (dry-run without automated deploy).
+4. Decide production DB strategy (managed cloud DB vs. host-managed Postgres) and finalize provisioning plan (domains, DNS).
+5. Configure TLS, secret management (Key Vault or equivalent), backups, and post-deploy smoke tests; prepare rollback and recovery procedures.
+
+After the above items complete, move Phase 3 to "Complete" and proceed to Phase 4 (Observability).
 
 ### Phase 4 — Observability
 
