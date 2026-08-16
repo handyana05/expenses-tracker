@@ -597,12 +597,19 @@ ingress and managed production secrets.
 
 ### Phase 3 — Current: Deployment Readiness
 
-- Complete phone and tablet viewport verification
-- Resolve dependency security advisories
-- Reduce the initial Angular bundle warning
-- Choose and provision the cloud hosting platform
-- Configure managed secrets, TLS, and production database access
-- Add deployment CI/CD and post-deployment health verification
+- Deployment runbooks and documentation added (self-hosted VM, cloud/Azure, and production checklist).
+- CI/CD workflows and helper artifacts added: GitHub Actions workflows for ACR/App Service and self-hosted deploy, `deploy.sh`, and `docker-compose.deploy.yml`. (Some workflow files may still be uncommitted in the working tree.)
+- Docker Compose healthchecks hardened and local full-stack Compose validated (frontend, backend, PostgreSQL). Frontend health endpoint behavior improved.
+- Frontend and backend test/build baseline re-established. Note: Vitest/browser runner requires a browser runtime in some environments; backend integration tests ran under Docker.
+- Small UI polish and bug fixes applied (sidenav collapsed/expanded clipping fix).
+
+Remaining work / next actions:
+
+- Decide production database strategy (managed cloud DB vs. host-managed Postgres) and finalize domain name(s).
+- Add required GitHub repository secrets and run CI builds to verify image builds and registry pushes (no deploy).
+- Provision target infrastructure (Azure resources or prepare target VM) and decide whether to use an SSH-driven CI deploy or a GitHub self-hosted runner.
+- Configure TLS, secret management (Key Vault or equivalent), backups, and post-deploy smoke tests/health checks.
+- Validate rollback and disaster recovery procedures in a staging run.
 
 ### Phase 4 — Observability
 
