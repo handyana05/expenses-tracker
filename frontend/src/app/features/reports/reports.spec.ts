@@ -49,6 +49,7 @@ describe('Reports', () => {
   it('should create comparison chart data from the monthly summary', () => {
     expect(component.comparisonChartData().labels).toEqual(['Income', 'Expenses']);
     expect(component.comparisonChartData().datasets[0].data).toEqual([0, 0]);
+    expect(component.comparisonChartData().datasets[0].backgroundColor).toEqual(['#2e7d32', '#d32f2f']);
     expect(component.hasActivity()).toBe(false);
   });
 });

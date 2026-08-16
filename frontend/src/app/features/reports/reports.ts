@@ -75,13 +75,19 @@ export class Reports {
     const summary = this.monthlySummary.value();
 
     return {
-      labels: [this.localization.translate('Income'), this.localization.translate('Expenses')],
+      labels: [
+        this.localization.translate('Income'), 
+        this.localization.translate('Expenses')
+      ],
       datasets: [
         {
-          data: [summary.totalIncome, summary.totalExpenses],
+          label: this.localization.translate('Monthly comparison'),
+          data: [Math.max(summary.totalIncome, 0), Math.max(summary.totalExpenses, 0)],
           backgroundColor: ['#2e7d32', '#d32f2f'],
-          borderWidth: 0,
-          hoverOffset: 6,
+          borderColor: ['#1b5e20', '#b71c1c'],
+          borderWidth: 2,
+          hoverOffset: 8,
+          spacing: 2,
         },
       ],
     };
@@ -91,16 +97,36 @@ export class Reports {
     responsive: true,
     maintainAspectRatio: false,
     cutout: '68%',
+    layout: {
+      padding: {
+        top: 8,
+        bottom: 8,
+      },
+    },
     plugins: {
       legend: {
         position: 'bottom',
+        labels: {
+          usePointStyle: true,
+          pointStyle: 'circle',
+          padding: 16,
+          color: 'var(--mat-sys-on-surface)',
+        },
       },
       tooltip: {
+        backgroundColor: 'var(--mat-sys-surface-container-highest)',
+        titleColor: 'var(--mat-sys-on-surface)',
+        bodyColor: 'var(--mat-sys-on-surface)',
+        borderColor: 'var(--mat-sys-outline-variant)',
+        borderWidth: 1,
         callbacks: {
           label: (context) =>
             `${context.label}: ${this.localization.formatCurrency(context.parsed)}`,
         },
       },
+    },
+    animation: {
+      duration: 500,
     },
   };
 
