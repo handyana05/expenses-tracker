@@ -298,6 +298,20 @@ Additional documentation is available inside the project.
 | [`backend/README.md`](./backend/README.md) | Backend architecture, setup and API documentation |
 | [`frontend/README.md`](./frontend/README.md) | Frontend architecture, setup, routes, testing, CSV, and container documentation |
 | [`docs/adr`](./docs/adr) | Accepted architectural decisions and their trade-offs |
+| [`docs/development/self-hosted-vm-deployment.md`](./docs/development/self-hosted-vm-deployment.md) | Step-by-step self-hosted VM / laptop deployment runbook (Docker Compose, Nginx, Certbot, systemd) |
+| [`docs/development/cloud-deployment.md`](./docs/development/cloud-deployment.md) | Cloud deployment guidance and checklist (Azure example) |
+| [`docs/development/production-deployment.md`](./docs/development/production-deployment.md) | Production deployment checklist and operational considerations |
+
+Deployment & CI artifacts
+
+- GitHub Actions workflows:
+  - `.github/workflows/ci-cd.yml` — example workflow for building, testing, and pushing images to a registry (ACR example) and optional App Service deploy.
+  - `.github/workflows/self-hosted-deploy.yml` — workflow to build/push images and optionally SSH to a target host or leverage a self-hosted runner for deployment.
+- Deploy helper and Compose override:
+  - `deploy.sh` — small helper script to run the Compose stack either by building locally or by using pre-built registry images.
+  - `docker-compose.deploy.yml` — Compose override template for registry-image deployments.
+
+These artifacts are intended to simplify local, self-hosted, and CI-driven deployments. Review the runbooks above before using the workflows; several CI secrets (registry credentials, SSH key or Azure credentials) are required for automated deploys.
 
 ---
 
