@@ -35,7 +35,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.0.x'
+          dotnet-version: '10.0.x'
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -50,7 +50,7 @@ jobs:
 
       - name: Run backend tests
         working-directory: ./backend
-        run: dotnet test --no-build -c Release --verbosity minimal || true
+        run: dotnet test --no-build -c Release --verbosity minimal
 
       - name: Install frontend dependencies
         working-directory: ./frontend
