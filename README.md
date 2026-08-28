@@ -287,6 +287,43 @@ builds the .NET solution, runs the automated tests, generates coverage, and
 publishes the coverage report. Frontend CI installs locked dependencies, runs the
 complete Vitest suite, and creates an Angular production build.
 
+### Local test baseline
+
+Restore dependencies before running tests:
+
+```powershell
+cd backend
+dotnet restore
+cd ../frontend
+npm ci
+```
+
+Run frontend validation:
+
+```powershell
+cd frontend
+npm test -- --watch=false --isolate=false
+npm run build
+```
+
+Run backend validation:
+
+```powershell
+cd ../backend
+dotnet build --no-restore --configuration Release
+dotnet test --no-build --configuration Release
+dotnet test --no-build --configuration Release .\ExpensesTracker.Api.IntegrationTests\ExpensesTracker.Api.IntegrationTests.csproj
+```
+
+Backend integration tests require Docker Desktop with the Linux daemon running:
+
+```powershell
+docker desktop start
+docker info
+```
+
+The frontend production build currently reports an existing initial-bundle budget warning.
+
 ---
 
 ## Documentation

@@ -160,6 +160,14 @@ Run all frontend tests:
 npm test -- --watch=false
 ```
 
+On Windows environments where Vitest worker initialization fails, run:
+
+```bash
+npm test -- --watch=false --isolate=false
+```
+
+This is a local workaround. CI continues using the standard test command.
+
 Create a production build:
 
 ```bash
